@@ -25,7 +25,7 @@
 				<word type="regular" link="3"> are</word>
 				<word type="regular" link="4"> about</word>
 				<word type="regular" link="5"> to</word>
-				<word type="button" link="6"> come</word>
+				<word type="button" link="6" event="1"> come</word>
 				<word type="regular" link="7"> to</word>
 				<word type="regular" link="8"> the</word>
 				<word type="separator">...</word>
@@ -34,49 +34,49 @@
 				<annotation id="1">
 					<word type="regular">A</word>
 					<word type="separator"> - </word>
-					<word type="event" id="1">symbol</word>
+					<word type="button" event="1">symbol</word>
 					<word type="separator">.</word>
 				</annotation>
 				<annotation id="2">
 					<word type="regular">A</word>
 					<word type="separator"> - </word>
-					<word type="button">symbol</word>
+					<word type="button" event="1">symbol</word>
 					<word type="separator">.</word>
 				</annotation>
 				<annotation id="3">
 					<word type="regular">A</word>
 					<word type="separator"> - </word>
-					<word type="button">symbol</word>
+					<word type="button" event="1">symbol</word>
 					<word type="separator">.</word>
 				</annotation>
 				<annotation id="4">
 					<word type="regular">A</word>
 					<word type="separator"> - </word>
-					<word type="button">symbol</word>
+					<word type="button" event="1">symbol</word>
 					<word type="separator">.</word>
 				</annotation>
 				<annotation id="5">
 					<word type="regular">A</word>
 					<word type="separator"> - </word>
-					<word type="button">symbol</word>
+					<word type="button" event="1">symbol</word>
 					<word type="separator">.</word>
 				</annotation>
 				<annotation id="6">
 					<word type="regular">A</word>
 					<word type="separator"> - </word>
-					<word type="button">symbol</word>
+					<word type="button" event="1">symbol</word>
 					<word type="separator">.</word>
 				</annotation>
 				<annotation id="7">
 					<word type="regular">A</word>
 					<word type="separator"> - </word>
-					<word type="button">symbol</word>
+					<word type="button" event="1">symbol</word>
 					<word type="separator">.</word>
 				</annotation>
 				<annotation id="8">
 					<word type="regular">A</word>
 					<word type="separator"> - </word>
-					<word type="button" >symbol</word>
+					<word type="button" event="1">symbol</word>
 					<word type="separator">.</word>
 				</annotation>
 			</annotations>
