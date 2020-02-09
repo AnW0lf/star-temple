@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 367523453835579762}
   - component: {fileID: 367523453835579760}
   - component: {fileID: 367523453835579761}
-  - component: {fileID: -2309137298468906911}
   - component: {fileID: 6728921354769543768}
   m_Layer: 5
   m_Name: StoryWord
@@ -39,7 +38,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 80}
+  m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &367523453835579763
 CanvasRenderer:
@@ -71,11 +70,11 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 70
+    m_FontSize: 80
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 7
-    m_MaxSize: 75
+    m_MinSize: 1
+    m_MaxSize: 100
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -142,22 +141,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &-2309137298468906911
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 367523453835579772}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb8b803998db34e418641d817a123ff6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  second: 1.5
-  images: []
-  texts:
-  - {fileID: 367523453835579762}
 --- !u!114 &6728921354769543768
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Game : MonoBehaviour
+public class GameController : MonoBehaviour
 {
     [Header("Hero header")]
     public RectTransform heroHeader;
@@ -14,10 +14,13 @@ public class Game : MonoBehaviour
     public float error = 1f;
 
     [Header("Story")]
-    public Story story;
+    public StoryController story;
 
     private bool moveHero;
     private Hero hero = Hero.Empty("");
+
+    public int RoomCounter { get; private set; }
+    private Room room;
 
     private void OnEnable()
     {
@@ -30,16 +33,19 @@ public class Game : MonoBehaviour
         if (moveHero) MoveHero();
     }
 
-    public void Fill(Hero hero)
+    public void StartStory(Hero hero)
     {
         this.hero = hero;
-        heroName.text = hero.name;
-        level.text = string.Format("Level {0}", hero.level);
-        money.text = string.Format("{0} Coins", hero.money);
-        description.text = string.Format("{0} strength, {1} persistence, {2} agility, {3} attention.",
-            Hero.Convert(hero.strength), Hero.Convert(hero.persistence), Hero.Convert(hero.agility), Hero.Convert(hero.attention));
+        FillHero(this.hero);
+        RoomCounter = 0;
+        NextRoom();
+    }
 
-        story.AddWords(new string[] { "Привет", ", Мама,", " я", " в", " телевизоре*.", " ЕЕЕЕЕЕЕ!" });
+    private void NextRoom()
+    {
+        room = Helper.instance.LoadRoom("room_1");
+        RoomCounter++;
+        story.SetStory(room);
     }
 
     private void MoveHero()
@@ -52,5 +58,14 @@ public class Game : MonoBehaviour
             heroHeader.anchoredPosition = Vector2.zero;
             moveHero = false;
         }
+    }
+
+    private void FillHero(Hero hero)
+    {
+        heroName.text = hero.name;
+        level.text = string.Format("Level {0}", hero.level);
+        money.text = string.Format("{0} Coins", hero.money);
+        description.text = string.Format("{0} strength, {1} persistence, {2} agility, {3} attention.",
+            Hero.Convert(hero.strength), Hero.Convert(hero.persistence), Hero.Convert(hero.agility), Hero.Convert(hero.attention));
     }
 }

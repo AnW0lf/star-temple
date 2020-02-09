@@ -124,6 +124,12 @@ public class Helper : MonoBehaviour
         XDocument doc = new XDocument(root);
         File.WriteAllText(heroPath, doc.ToString());
     }
+
+    public Room LoadRoom(string roomName)
+    {
+
+        return Room.Empty;
+    }
 }
 
 public struct Hero
@@ -178,5 +184,98 @@ public struct Item
     {
         this.name = name;
         this.count = count;
+    }
+}
+
+public enum WordType { EMPTY, REGULAR, SEPARATOR, BUTTON }
+
+public enum StoryType { EMPTY, COMMON, BEFORE_BUTTLE, BATTLE }
+
+public struct StoryWord
+{
+    public string word;
+    public WordType type;
+    public int annotation_id, event_id;
+
+    public StoryWord(string word, WordType type, int annotation_id, int event_id)
+    {
+        this.word = word;
+        this.type = type;
+        this.annotation_id = annotation_id;
+        this.event_id = event_id;
+    }
+
+    public static StoryWord Empty
+    {
+        get
+        {
+            return new StoryWord("", WordType.EMPTY, -1, -1);
+        }
+    }
+}
+
+public struct AnnotationWord
+{
+    public string word;
+    public WordType type;
+    public int event_id;
+
+    public AnnotationWord(string word, WordType type, int event_id)
+    {
+        this.word = word;
+        this.type = type;
+        this.event_id = event_id;
+    }
+
+    public static AnnotationWord Empty
+    {
+        get
+        {
+            return new AnnotationWord("", WordType.EMPTY, -1);
+        }
+    }
+}
+
+public struct Annotation
+{
+    public int id;
+    public AnnotationWord[] words;
+
+    public Annotation(int id, AnnotationWord[] words)
+    {
+        this.id = id;
+        this.words = words;
+    }
+
+    public static Annotation Empty
+    {
+        get
+        {
+            return new Annotation(-1, new AnnotationWord[0]);
+        }
+    }
+}
+
+public struct Room
+{
+    public string name;
+    public StoryType type;
+    public StoryWord[] story;
+    public Annotation[] annotations;
+
+    public Room(string name, StoryType type, StoryWord[] story, Annotation[] annotations)
+    {
+        this.name = name;
+        this.type = type;
+        this.story = story;
+        this.annotations = annotations;
+    }
+
+    public static Room Empty
+    {
+        get
+        {
+            return new Room("", StoryType.EMPTY, new StoryWord[0], new Annotation[0]);
+        }
     }
 }

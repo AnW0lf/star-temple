@@ -1,0 +1,67 @@
+<room name="five rocks">
+	<story>
+		<word type="regular" annotation="1">So</word>
+		<word type="separator">,</word>
+		<word type="regular" annotation="2"> you</word>
+		<word type="regular" annotation="3"> are</word>
+		<word type="regular" annotation="4"> about</word>
+		<word type="regular" annotation="5"> to</word>
+		<word type="button" annotation="6" event="1"> come</word>
+		<word type="regular" annotation="7"> to</word>
+		<word type="regular" annotation="8"> the</word>
+		<word type="separator">...</word>
+	</story>
+	<annotations>
+		<annotation id="1">
+			<word type="regular">A</word>
+			<word type="separator"> - </word>
+			<word type="button" event="1">symbol</word>
+			<word type="separator">.</word>
+		</annotation>
+		<annotation id="2">
+			<word type="regular">A</word>
+			<word type="separator"> - </word>
+			<word type="button" event="1">symbol</word>
+			<word type="separator">.</word>
+		</annotation>
+		<annotation id="3">
+			<word type="regular">A</word>
+			<word type="separator"> - </word>
+			<word type="button" event="1">symbol</word>
+			<word type="separator">.</word>
+		</annotation>
+		<annotation id="4">
+			<word type="regular">A</word>
+			<word type="separator"> - </word>
+			<word type="button" event="1">symbol</word>
+			<word type="separator">.</word>
+		</annotation>
+		<annotation id="5">
+			<word type="regular">A</word>
+			<word type="separator"> - </word>
+			<word type="button" event="1">symbol</word>
+			<word type="separator">.</word>
+		</annotation>
+		<annotation id="6">
+			<word type="regular">A</word>
+			<word type="separator"> - </word>
+			<word type="button" event="1">symbol</word>
+			<word type="separator">.</word>
+		</annotation>
+		<annotation id="7">
+			<word type="regular">A</word>
+			<word type="separator"> - </word>
+			<word type="button" event="1">symbol</word>
+			<word type="separator">.</word>
+		</annotation>
+		<annotation id="8">
+			<word type="regular">A</word>
+			<word type="separator"> - </word>
+			<word type="button" event="1">symbol</word>
+			<word type="separator">.</word>
+		</annotation>
+	</annotations>
+	<events>
+		<event id="1" tupe="item" reward="star" min_count="2" max_count="4" chance="linear"/>
+	</events>
+</room>

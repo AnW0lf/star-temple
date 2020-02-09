@@ -25,7 +25,7 @@ public class MainMenu : MonoBehaviour
         }
 
         game.SetActive(true);
-        game.GetComponent<Game>().Fill(Helper.instance.LoadHero(heroBlankList.selected.heroName.text));
+        game.GetComponent<GameController>().StartStory(Helper.instance.LoadHero(heroBlankList.selected.heroName.text));
         gameObject.SetActive(false);
     }
 }

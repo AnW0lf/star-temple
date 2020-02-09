@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Annotations : MonoBehaviour
+public class AnnotationsController : MonoBehaviour
 {
     public GameObject annotationPrefab, annotationWordPrefab;
     public Transform content;
