@@ -127,8 +127,79 @@ public class Helper : MonoBehaviour
 
     public Room LoadRoom(string roomName)
     {
+        XElement room = null;
 
-        return Room.Empty;
+        string path = directoryPath + @"/" + roomName + @".xml";
+
+        if (!File.Exists(path))
+            throw new FileNotFoundException(string.Format("File {1} not found. Check it and try again."));
+
+        room = XDocument.Parse(File.ReadAllText(path)).Element("room");
+
+        List<StoryWord> story = new List<StoryWord>();
+        List<Annotation> annotations = new List<Annotation>();
+
+        room.Element("story").Elements("word").ToList().ForEach(XWord =>
+        {
+            WordType storyWordType = WordType.EMPTY;
+            int annotation_id = -1, event_id = -1;
+            switch (XWord.Attribute("type").Value)
+            {
+                case "regular":
+                    storyWordType = WordType.REGULAR;
+                    annotation_id = int.Parse(XWord.Attribute("annotation").Value);
+                    break;
+                case "separator":
+                    storyWordType = WordType.SEPARATOR;
+                    break;
+                case "button":
+                    storyWordType = WordType.BUTTON;
+                    annotation_id = int.Parse(XWord.Attribute("annotation").Value);
+                    event_id = int.Parse(XWord.Attribute("event").Value);
+                    break;
+            }
+            story.Add(new StoryWord(XWord.Value, storyWordType, annotation_id, event_id));
+        });
+
+        room.Element("annotations").Elements("annotation").ToList().ForEach(XAnnotation => {
+            int id = int.Parse(XAnnotation.Attribute("id").Value);
+            List<AnnotationWord> words = new List<AnnotationWord>();
+            XAnnotation.Elements("word").ToList().ForEach(XWord => {
+                WordType annotationWordType = WordType.EMPTY;
+                int event_id = -1;
+                switch (XWord.Attribute("type").Value)
+                {
+                    case "regular":
+                        annotationWordType = WordType.REGULAR;
+                        break;
+                    case "separator":
+                        annotationWordType = WordType.SEPARATOR;
+                        break;
+                    case "button":
+                        annotationWordType = WordType.BUTTON;
+                        event_id = int.Parse(XWord.Attribute("event").Value);
+                        break;
+                }
+                words.Add(new AnnotationWord(XWord.Value, annotationWordType, event_id));
+            });
+            Annotation annotation = new Annotation(id, words.ToArray());
+        });
+
+        StoryType storyType = StoryType.EMPTY;
+        switch (room.Attribute("type").Value)
+        {
+            case "common":
+                storyType = StoryType.COMMON;
+                break;
+            case "before_battle":
+                storyType = StoryType.BEFORE_BATTLE;
+                break;
+            case "battle":
+                storyType = StoryType.BATTLE;
+                break;
+        }
+
+        return new Room(room.Attribute("name").Value, storyType, story.ToArray(), annotations.ToArray());
     }
 }
 
@@ -189,7 +260,7 @@ public struct Item
 
 public enum WordType { EMPTY, REGULAR, SEPARATOR, BUTTON }
 
-public enum StoryType { EMPTY, COMMON, BEFORE_BUTTLE, BATTLE }
+public enum StoryType { EMPTY, COMMON, BEFORE_BATTLE, BATTLE }
 
 public struct StoryWord
 {
