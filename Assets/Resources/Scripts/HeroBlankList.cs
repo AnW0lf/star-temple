@@ -89,7 +89,7 @@ public class HeroBlankList : MonoBehaviour
     public void RemoveSelectedHero()
     {
         if (selected == null) return;
-        Helper.instance.RemoveHero(selected.heroName.text);
+        Helper.Instance.RemoveHero(selected.heroName.text);
         int id = heroes.IndexOf(selected);
         heroes.Remove(selected);
         Destroy(selected.gameObject);

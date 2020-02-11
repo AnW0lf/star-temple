@@ -48,7 +48,7 @@ public class CreateHeroWindow : GameWindow
     {
         bool canCreate = true;
         if (name.Length == 0) canCreate = false;
-        if (Helper.instance.ContainsHero(name)) canCreate = false;
+        if (Helper.Instance.ContainsHero(name)) canCreate = false;
 
         btnCreate.interactable = canCreate;
 
@@ -62,7 +62,7 @@ public class CreateHeroWindow : GameWindow
 
     private void CreateHero()
     {
-        Hero hero = Helper.instance.CreateHero(textfield.text);
+        Hero hero = Helper.Instance.CreateHero(textfield.text);
 
         heroBlankList.GetComponent<HeroBlankList>().AddHero(hero);
     }

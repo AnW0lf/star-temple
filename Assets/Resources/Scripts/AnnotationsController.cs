@@ -11,17 +11,17 @@ public class AnnotationsController : MonoBehaviour
 
     public List<GameObject> annotations { get; private set; } = new List<GameObject>();
 
-    public void AddAnnotation(string[] words)
+    public void AddAnnotation(Annotation annotation)
     {
-        Transform annotation = Instantiate(annotationPrefab, content).transform;
-        annotations.Add(annotation.gameObject);
-        foreach(string word in words)
+        Transform annotationTransform = Instantiate(annotationPrefab, content).transform;
+        annotations.Add(annotationTransform.gameObject);
+        foreach(AnnotationWord word in annotation.words)
         {
-            GameObject obj = Instantiate(annotationWordPrefab, annotation);
-            obj.GetComponent<Text>().text = word;
+            GameObject obj = Instantiate(annotationWordPrefab, annotationTransform);
+            obj.GetComponent<Text>().text = word.word;
             Invoke("Show", 0.5f);
         }
-        annotation.GetComponent<RowLayoutGroup>().Post();
+        Show();
     }
 
     private void Show()

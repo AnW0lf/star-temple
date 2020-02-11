@@ -1,15 +1,22 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class StoryWordController : MonoBehaviour, IWord
+public class StoryWordController : MonoBehaviour, IWord, IDropHandler
 {
     public StoryController story { get; private set; }
 
+    [SerializeField]
     private Text text;
+    private Image img;
     private Button btn;
     private int annotation_id, event_id;
+    public StoryWord word { get; private set; }
+
+    private bool annotated = false;
 
     private void Awake()
     {
@@ -18,18 +25,8 @@ public class StoryWordController : MonoBehaviour, IWord
         else
             story = transform.parent.GetChild(0).GetComponent<StoryWordController>().story;
 
-        text = GetComponent<Text>();
+        img = GetComponent<Image>();
         btn = GetComponent<Button>();
-    }
-
-    private void Start()
-    {
-        btn.onClick.AddListener(Interact);
-    }
-
-    public void Interact()
-    {
-        story.AddAnnotation(0);
     }
 
     public void Show(float delay)
@@ -63,6 +60,7 @@ public class StoryWordController : MonoBehaviour, IWord
 
     public void SetWord(StoryWord word)
     {
+        this.word = word;
         text.text = word.word;
         annotation_id = word.annotation_id;
         event_id = word.event_id;
@@ -71,18 +69,29 @@ public class StoryWordController : MonoBehaviour, IWord
             case WordType.REGULAR:
                 text.fontStyle = FontStyle.Normal;
                 btn.interactable = false;
-                text.raycastTarget = true;
+                img.raycastTarget = true;
                 break;
             case WordType.SEPARATOR:
                 text.fontStyle = FontStyle.Normal;
                 btn.interactable = false;
-                text.raycastTarget = false;
+                img.raycastTarget = false;
                 break;
             case WordType.BUTTON:
                 text.fontStyle = FontStyle.Bold;
                 btn.interactable = true;
-                text.raycastTarget = true;
+                img.raycastTarget = true;
                 break;
+        }
+    }
+
+    public void OnDrop(PointerEventData eventData)
+    {
+        if(!annotated && DragHelper.Instance.item.Item.name == Helper.Star.name)
+        {
+            Inventory.Instance.SubtractItem(new Item(Helper.Star.name, -1));
+            text.text += Helper.Star.name;
+            annotated = true;
+            story.AddAnnotation(word.annotation_id);
         }
     }
 }

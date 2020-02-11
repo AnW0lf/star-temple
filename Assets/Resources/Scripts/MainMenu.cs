@@ -10,7 +10,7 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {
-        foreach(Hero hero in Helper.instance.LoadHeroes())
+        foreach(Hero hero in Helper.Instance.LoadHeroes())
         {
             heroBlankList.AddHero(hero);
         }
@@ -25,7 +25,7 @@ public class MainMenu : MonoBehaviour
         }
 
         game.SetActive(true);
-        game.GetComponent<GameController>().StartStory(Helper.instance.LoadHero(heroBlankList.selected.heroName.text));
+        game.GetComponent<GameController>().StartStory(Helper.Instance.LoadHero(heroBlankList.selected.heroName.text));
         gameObject.SetActive(false);
     }
 }

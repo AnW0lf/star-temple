@@ -17,21 +17,9 @@ public class StoryController : MonoBehaviour
     [Header("Annotations")]
     public AnnotationsController annotations;
 
-    public List<IWord> words { get; private set; } = new List<IWord>();
-
-    private RowLayoutGroup rowLayoutGroup;
+    public List<StoryWordController> words { get; private set; } = new List<StoryWordController>();
 
     private Room room;
-
-    private void OnEnable()
-    {
-        Initialize();
-    }
-
-    private void Initialize()
-    {
-        rowLayoutGroup = GetComponent<RowLayoutGroup>();
-    }
 
     public void SetStory(Room room)
     {
@@ -48,17 +36,17 @@ public class StoryController : MonoBehaviour
 
     private void AddWords(StoryWord[] story)
     {
-        story.ToList().ForEach(word => {
-            words.Add(Instantiate(storyWordPrefab, transform).GetComponent<IWord>());
+        story.ToList().ForEach(word =>
+        {
+            words.Add(Instantiate(storyWordPrefab, transform).GetComponent<StoryWordController>());
             words.Last().SetWord(word);
-            });
-        rowLayoutGroup.Post();
+        });
     }
 
     private IEnumerator ShowWords()
     {
         WaitForSeconds delay = new WaitForSeconds(showDelayStep);
-        foreach(IWord word in words)
+        foreach (IWord word in words)
         {
             word.Show(showDelay);
             yield return delay;
@@ -67,6 +55,19 @@ public class StoryController : MonoBehaviour
 
     public void AddAnnotation(int index)
     {
-        annotations.AddAnnotation(new string[] {" Телевизор - ", ", это штука", ", где", " я", " нахожусь", " ЕЕЕЕЕЕЕ!" });
+        if (room.annotations.ToList().Where(a => a.id == index).Count() > 0)
+        {
+            Annotation annotation = room.annotations.ToList().Find(a => a.id == index);
+            print(string.Format("{0} - {1} words", annotation.id, annotation.words.Length));
+            annotations.AddAnnotation(annotation);
+        }
+        else
+        {
+            print("Not found!!!");
+            foreach (var annotation in room.annotations)
+            {
+                print(string.Format("{0} - {1} words", annotation.id, annotation.words.Length));
+            }
+        }
     }
 }

@@ -11,7 +11,8 @@ public class Fader : MonoBehaviour
     public List<Image> images;
     public List<Text> texts;
 
-    private bool showing = false, hiding = false;
+    public bool showing { get; private set; } = false;
+    public bool hiding { get; private set; } = false;
 
     private void Update()
     {

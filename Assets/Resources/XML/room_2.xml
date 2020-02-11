@@ -1,4 +1,4 @@
-<room name="five rocks">
+<room name="five rocks" type="common">
 	<story>
 		<word type="regular" annotation="1">So</word>
 		<word type="separator">,</word>

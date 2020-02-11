@@ -16,6 +16,9 @@ public class GameController : MonoBehaviour
     [Header("Story")]
     public StoryController story;
 
+    [Header("Inventory")]
+    public Inventory inv;
+
     private bool moveHero;
     private Hero hero = Hero.Empty("");
 
@@ -37,13 +40,19 @@ public class GameController : MonoBehaviour
     {
         this.hero = hero;
         FillHero(this.hero);
+        LoadInventory();
         RoomCounter = 0;
         NextRoom();
     }
 
+    private void LoadInventory()
+    {
+        inv.LoadItems(hero.items.ToArray());
+    }
+
     private void NextRoom()
     {
-        room = Helper.instance.LoadRoom("room_1");
+        room = Helper.Instance.LoadRoom("room_1");
         RoomCounter++;
         story.SetStory(room);
     }

@@ -89,7 +89,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4622aa05732aebb4ba96880d7c68ecd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spacing: 1.1
+  spacing: 10
+  orientation: 0
+  resize: 1
 --- !u!114 &973847094921845778
 MonoBehaviour:
   m_ObjectHideFlags: 0

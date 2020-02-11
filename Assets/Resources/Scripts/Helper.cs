@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,16 +8,17 @@ using UnityEngine;
 
 public class Helper : MonoBehaviour
 {
-    public static Helper instance = null;
+    public static Helper Instance = null;
+
+    public static readonly Item Star = new Item("*", 0);
 
     private string directoryPath, heroPath;
 
-    // Метод, выполняемый при старте игры
     void Awake()
     {
-        if (instance == null)
-            instance = this;
-        else if (instance == this)
+        if (Instance == null)
+            Instance = this;
+        else if (Instance == this)
             Destroy(gameObject);
 
         DontDestroyOnLoad(gameObject);
@@ -182,7 +184,7 @@ public class Helper : MonoBehaviour
                 }
                 words.Add(new AnnotationWord(XWord.Value, annotationWordType, event_id));
             });
-            Annotation annotation = new Annotation(id, words.ToArray());
+            annotations.Add(new Annotation(id, words.ToArray()));
         });
 
         StoryType storyType = StoryType.EMPTY;
@@ -201,6 +203,8 @@ public class Helper : MonoBehaviour
 
         return new Room(room.Attribute("name").Value, storyType, story.ToArray(), annotations.ToArray());
     }
+
+
 }
 
 public struct Hero
