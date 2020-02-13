@@ -11,14 +11,14 @@ public class ItemController : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
     public string ItemName { get; private set; }
     public int Count { get; private set; }
 
+    private Image selfImg;
     private Transform container;
-    private Transform canvas;
+    private Transform grandparent;
 
     private void Awake()
     {
-        itemNameTxt = GetComponent<Text>();
-        countTxt = transform.GetChild(0).GetComponent<Text>();
-        canvas = FindObjectOfType<Canvas>().transform;
+        selfImg = GetComponent<Image>();
+        grandparent = transform.parent.parent;
     }
 
     public void Fill(Item item)
@@ -38,15 +38,16 @@ public class ItemController : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
 
     public void OnDrag(PointerEventData eventData)
     {
-        transform.position = eventData.pointerCurrentRaycast.worldPosition;
+        transform.position = eventData.pointerCurrentRaycast.screenPosition;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         container = transform.parent;
-        transform.SetParent(canvas);
+        transform.SetParent(grandparent);
         countTxt.enabled = false;
         DragHelper.Instance.item = this;
+        selfImg.raycastTarget = false;
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -55,5 +56,6 @@ public class ItemController : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
         if (Item.name.Equals(Helper.Star.name))
             transform.SetAsFirstSibling();
         countTxt.enabled = true;
+        selfImg.raycastTarget = true;
     }
 }
