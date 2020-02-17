@@ -79,6 +79,7 @@ public class StoryWordController : MonoBehaviour, IWord, IDropHandler
             case WordType.BUTTON:
                 text.fontStyle = FontStyle.Bold;
                 btn.interactable = true;
+                btn.onClick.AddListener(() => EventController.Instance.Execute(event_id));
                 img.raycastTarget = true;
                 break;
         }
@@ -91,7 +92,7 @@ public class StoryWordController : MonoBehaviour, IWord, IDropHandler
             Inventory.Instance.SubtractItem(new Item(Helper.Star.name, -1));
             text.text += Helper.Star.name;
             annotated = true;
-            story.AddAnnotation(word.annotation_id);
+            story.AddAnnotation(annotation_id);
         }
     }
 }

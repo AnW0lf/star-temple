@@ -54,6 +54,39 @@ public class Helper : MonoBehaviour
         return LoadHero(heroName);
     }
 
+    public void SaveHero(Hero hero)
+    {
+        XElement root = XDocument.Parse(File.ReadAllText(heroPath)).Element("root");
+        XElement XHero = root.Elements("hero").ToList().Find(h => h.Attribute("name").Value.Equals(hero.name));
+        if (XHero == null) return;
+        XHero.Attribute("level").Value = hero.level.ToString();
+        XHero.Attribute("money").Value = hero.money.ToString();
+        XHero.Attribute("strength").Value = hero.strength.ToString();
+        XHero.Attribute("persistence").Value = hero.persistence.ToString();
+        XHero.Attribute("agility").Value = hero.agility.ToString();
+        XHero.Attribute("attention").Value = hero.attention.ToString();
+
+        var XItems = XHero.Elements("item");
+
+        hero.items.ForEach(item => {
+            XElement XItem = null;
+            if((XItem = XItems.ToList().Find(xi => xi.Attribute("name").Value.Equals(item.name))) != null)
+            {
+                XItem.Attribute("count").Value = item.count.ToString();
+            }
+            else
+            {
+                XItem = new XElement("item");
+                XItem.Add(new XAttribute("name", item.name));
+                XItem.Add(new XAttribute("count", item.count));
+                XHero.Add(XItem);
+            }
+        });
+
+        XDocument doc = new XDocument(root);
+        File.WriteAllText(heroPath, doc.ToString());
+    }
+
     public Hero LoadHero(string heroName)
     {
         XElement root = XDocument.Parse(File.ReadAllText(heroPath)).Element("root");
@@ -134,12 +167,13 @@ public class Helper : MonoBehaviour
         string path = directoryPath + @"/" + roomName + @".xml";
 
         if (!File.Exists(path))
-            throw new FileNotFoundException(string.Format("File {1} not found. Check it and try again."));
+            throw new FileNotFoundException(string.Format("File {0} not found. Check it and try again.", path));
 
         room = XDocument.Parse(File.ReadAllText(path)).Element("room");
 
         List<StoryWord> story = new List<StoryWord>();
         List<Annotation> annotations = new List<Annotation>();
+        List<Event> events = new List<Event>();
 
         room.Element("story").Elements("word").ToList().ForEach(XWord =>
         {
@@ -187,6 +221,59 @@ public class Helper : MonoBehaviour
             annotations.Add(new Annotation(id, words.ToArray()));
         });
 
+        room.Element("events").Elements("event").ToList().ForEach(XEvent => {
+            int event_id = int.Parse(XEvent.Attribute("event_id").Value);
+            EventType event_type = EventType.EMPTY;
+            string room_name = "";
+            string item_name = "";
+            int item_count = -1;
+            int item_chance = -1;
+            StatType stat_type = StatType.EMPTY;
+            int stat_value = -1;
+            int stat_id = -1;
+            List<WindowWord> window_words = new List<WindowWord>();
+            switch (XEvent.Attribute("event_type").Value)
+            {
+                case "next":
+                    event_type = EventType.NEXT;
+                    room_name = XEvent.Attribute("room_name").Value;
+                    break;
+                case "item":
+                    event_type = EventType.ITEM;
+                    item_name = XEvent.Attribute("item_name").Value;
+                    item_count = int.Parse(XEvent.Attribute("item_count").Value);
+                    item_chance = int.Parse(XEvent.Attribute("item_chance").Value);
+                    break;
+                case "stat":
+                    event_type = EventType.STAT;
+                    switch (XEvent.Attribute("stat_type").Value)
+                    {
+                        case "strength":
+                            stat_type = StatType.STRENGTH;
+                            break;
+                        case "persistence":
+                            stat_type = StatType.PERSISTENCE;
+                            break;
+                        case "agility":
+                            stat_type = StatType.AGILITY;
+                            break;
+                        case "attention":
+                            stat_type = StatType.ATTENTION;
+                            break;
+                    }
+                    stat_value = int.Parse(XEvent.Attribute("stat_value").Value);
+                    stat_id = int.Parse(XEvent.Attribute("stat_id").Value);
+                    break;
+                case "window":
+                    event_type = EventType.WINDOW;
+                    XEvent.Elements("word").ToList().ForEach(XWord => {
+                        window_words.Add(new WindowWord(XWord.Value));
+                    });
+                    break;
+            }
+            events.Add(new Event(event_id, event_type, room_name, item_name, item_count, item_chance, stat_type, stat_value, stat_id, window_words.ToArray()));
+        });
+
         StoryType storyType = StoryType.EMPTY;
         switch (room.Attribute("type").Value)
         {
@@ -201,7 +288,7 @@ public class Helper : MonoBehaviour
                 break;
         }
 
-        return new Room(room.Attribute("name").Value, storyType, story.ToArray(), annotations.ToArray());
+        return new Room(room.Attribute("name").Value, storyType, story.ToArray(), annotations.ToArray(), events.ToArray());
     }
 
 
@@ -337,20 +424,22 @@ public struct Room
     public StoryType type;
     public StoryWord[] story;
     public Annotation[] annotations;
+    public Event[] events;
 
-    public Room(string name, StoryType type, StoryWord[] story, Annotation[] annotations)
+    public Room(string name, StoryType type, StoryWord[] story, Annotation[] annotations, Event[] events)
     {
         this.name = name;
         this.type = type;
         this.story = story;
         this.annotations = annotations;
+        this.events = events;
     }
 
     public static Room Empty
     {
         get
         {
-            return new Room("", StoryType.EMPTY, new StoryWord[0], new Annotation[0]);
+            return new Room("", StoryType.EMPTY, new StoryWord[0], new Annotation[0], new Event[0]);
         }
     }
 }

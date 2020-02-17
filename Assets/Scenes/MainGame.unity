@@ -875,7 +875,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0.25}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -650}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &200236983
@@ -931,6 +931,9 @@ MonoBehaviour:
   itemPrefab: {fileID: 5738488754769209800, guid: a61ed3209737da646bdd80d788c17d1b,
     type: 3}
   container: {fileID: 854251332}
+  hidePos: -650
+  showPos: 0
+  delay: 0.5
 --- !u!1 &256171713
 GameObject:
   m_ObjectHideFlags: 0
@@ -1798,7 +1801,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4622aa05732aebb4ba96880d7c68ecd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spacing: 20
+  spacing: 40
   orientation: 1
   resize: 0
 --- !u!1 &854313648
@@ -2791,6 +2794,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1482236379}
   - component: {fileID: 1482236380}
+  - component: {fileID: 1482236381}
   m_Layer: 5
   m_Name: Game
   m_TagString: Untagged
@@ -2833,15 +2837,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 023123273c558ca4e8fa0543f9a09c20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  heroHeader: {fileID: 304940648647108250}
-  heroName: {fileID: 1071469601750774659}
-  level: {fileID: 6808858362138590989}
-  money: {fileID: 3179306140146829624}
-  description: {fileID: 1945271202683712944}
+  hero: {fileID: 304940648647108254}
   speed: 3
   error: 1
   story: {fileID: 1170398567}
   inv: {fileID: 200236985}
+  eventController: {fileID: 1482236381}
+--- !u!114 &1482236381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1482236378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df541a46d1474c547a9397334a48a73b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  game: {fileID: 1482236380}
 --- !u!1 &1619318508
 GameObject:
   m_ObjectHideFlags: 0
@@ -3798,6 +3812,7 @@ GameObject:
   - component: {fileID: 304940648647108250}
   - component: {fileID: 304940648647108248}
   - component: {fileID: 304940648647108251}
+  - component: {fileID: 304940648647108254}
   m_Layer: 5
   m_Name: GameHero
   m_TagString: Untagged
@@ -3805,6 +3820,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &304940648647108254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 304940648647108253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10c5c9572b13f0546b3350ed9dc42b8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rect: {fileID: 304940648647108250}
+  heroNameTxt: {fileID: 1071469601750774659}
+  levelTxt: {fileID: 6808858362138590989}
+  moneyTxt: {fileID: 3179306140146829624}
+  descriptionTxt: {fileID: 1945271202683712944}
 --- !u!114 &1071469601750774659
 MonoBehaviour:
   m_ObjectHideFlags: 0

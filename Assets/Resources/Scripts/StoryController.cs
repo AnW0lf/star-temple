@@ -32,6 +32,8 @@ public class StoryController : MonoBehaviour
     private void ClearStory(float delay)
     {
         words.ForEach(word => word.Hide(hideDelay));
+        words.Clear();
+        annotations.Clear();
     }
 
     private void AddWords(StoryWord[] story)
@@ -58,7 +60,7 @@ public class StoryController : MonoBehaviour
         if (room.annotations.ToList().Where(a => a.id == index).Count() > 0)
         {
             Annotation annotation = room.annotations.ToList().Find(a => a.id == index);
-            print(string.Format("{0} - {1} words", annotation.id, annotation.words.Length));
+            print(string.Format("Id : {0} | Length : {1} words", annotation.id, annotation.words.Length));
             annotations.AddAnnotation(annotation);
         }
         else
@@ -66,7 +68,7 @@ public class StoryController : MonoBehaviour
             print("Not found!!!");
             foreach (var annotation in room.annotations)
             {
-                print(string.Format("{0} - {1} words", annotation.id, annotation.words.Length));
+                print(string.Format("Id : {0} | Length : {1} words", annotation.id, annotation.words.Length));
             }
         }
     }

@@ -7,8 +7,7 @@ using UnityEngine.UI;
 public class GameController : MonoBehaviour
 {
     [Header("Hero header")]
-    public RectTransform heroHeader;
-    public Text heroName, level, money, description;
+    public HeroController hero;
     [Range(0.1f, 10f)]
     public float speed = 1f;
     public float error = 1f;
@@ -19,15 +18,17 @@ public class GameController : MonoBehaviour
     [Header("Inventory")]
     public Inventory inv;
 
+    [Header("Events")]
+    public EventController eventController;
+
     private bool moveHero;
-    private Hero hero = Hero.Empty("");
 
     public int RoomCounter { get; private set; }
     private Room room;
 
     private void OnEnable()
     {
-        heroHeader.anchoredPosition = new Vector2(0f, -1280f);
+        hero.rect.anchoredPosition = new Vector2(0f, -1280f);
         moveHero = true;
     }
 
@@ -38,43 +39,36 @@ public class GameController : MonoBehaviour
 
     public void StartStory(Hero hero)
     {
-        this.hero = hero;
-        FillHero(this.hero);
+        this.hero.Hero = hero;
         LoadInventory();
         RoomCounter = 0;
-        NextRoom();
+        NextRoom("room_1");
     }
 
     private void LoadInventory()
     {
-        inv.LoadItems(hero.items.ToArray());
+        inv.LoadItems(hero.Items.ToArray());
     }
 
-    private void NextRoom()
+    public void NextRoom(string roomName)
     {
-        room = Helper.Instance.LoadRoom("room_1");
         RoomCounter++;
+        room = Helper.Instance.LoadRoom(roomName);
+        if (!room.name.Equals("introduction")) inv.Show();
+        else inv.Hide();
         story.SetStory(room);
+        eventController.Events = room.events;
     }
 
     private void MoveHero()
     {
-        float distance = -heroHeader.anchoredPosition.y * Time.deltaTime * speed;
-        heroHeader.anchoredPosition += Vector2.up * distance;
+        float distance = -hero.rect.anchoredPosition.y * Time.deltaTime * speed;
+        hero.rect.anchoredPosition += Vector2.up * distance;
 
-        if (Mathf.Abs(heroHeader.anchoredPosition.y) < error)
+        if (Mathf.Abs(hero.rect.anchoredPosition.y) < error)
         {
-            heroHeader.anchoredPosition = Vector2.zero;
+            hero.rect.anchoredPosition = Vector2.zero;
             moveHero = false;
         }
-    }
-
-    private void FillHero(Hero hero)
-    {
-        heroName.text = hero.name;
-        level.text = string.Format("Level {0}", hero.level);
-        money.text = string.Format("{0} Coins", hero.money);
-        description.text = string.Format("{0} strength, {1} persistence, {2} agility, {3} attention.",
-            Hero.Convert(hero.strength), Hero.Convert(hero.persistence), Hero.Convert(hero.agility), Hero.Convert(hero.attention));
     }
 }

@@ -13,6 +13,6 @@
 	</story>
 	<annotations/>
 	<events>
-		<event id="1" type="next" name="room_2"/>
+		<event event_id="1" event_type="next" room_name="room_2"/>
 	</events>
 </room>

@@ -1,24 +1,84 @@
-<room name="five rocks" type="common">
+<room name="label" type="first_game">
 	<story>
 		<word type="regular" annotation="1">Star</word>
-		<word type="regular" annotation="1"> Tample</word>
+		<word type="regular" annotation="2"> Temple</word>
 	</story>
 	<annotations>
 		<annotation id="1">
-			<word type="regular">A</word>
+			<word type="regular">* Star</word>
 			<word type="separator"> - </word>
-			<word type="regular"symbol</word>
+			<word type="regular">when</word>
+			<word type="regular"> you</word>
+			<word type="regular"> add</word>
+			<word type="regular"> it</word>
+			<word type="regular"> to</word>
+			<word type="regular"> a</word>
+			<word type="regular"> word</word>			
+			<word type="separator">,</word>
+			<word type="regular"> you</word>
+			<word type="regular"> gain</word>
+			<word type="regular"> a</word>
+			<word type="regular"> footline</word>
+			<word type="separator">.</word>
+			<word type="regular"> It</word>
+			<word type="regular"> can</word>
+			<word type="regular"> contain</word>
+			<word type="regular"> hints</word>
+			<word type="separator">,</word>
+			<word type="regular"> resources</word>
+			<word type="separator">,</word>
+			<word type="regular"> secrets</word>
+			<word type="separator"> - </word>
+			<word type="regular"> everything</word>
+			<word type="separator">.</word>
+			<word type="regular"> Now</word>
+			<word type="regular"> collect</word>
+			<word type="regular"> the</word>
+			<word type="button" event="1"> star</word>
+			<word type="regular"> and</word>
+			<word type="regular"> try</word>
+			<word type="regular"> it</word>
+			<word type="regular"> on</word>
+			<word type="regular"> 'Temple'</word>
 			<word type="separator">.</word>
 		</annotation>
 		<annotation id="2">
-			<word type="regular">A</word>
+			<word type="regular">* Temple</word>
 			<word type="separator"> - </word>
-			<word type="regular">symbol</word>
+			<word type="regular">endless</word>
+			<word type="regular"> labyrinth</word>
+			<word type="regular"> opening</word>
+			<word type="regular"> its</word>
+			<word type="regular"> doors</word>
+			<word type="regular"> to</word>
+			<word type="regular"> heroes</word>			
 			<word type="separator">.</word>
+			<word type="regular"> To</word>
+			<word type="regular"> reach</word>
+			<word type="regular"> a</word>
+			<word type="regular"> Final</word>
+			<word type="regular"> Door</word>
+			<word type="regular"> you</word>
+			<word type="regular"> have</word>
+			<word type="regular"> to</word>
+			<word type="regular"> go</word>
+			<word type="regular"> through</word>
+			<word type="regular"> 15</word>
+			<word type="regular"> random</word>
+			<word type="regular"> rooms</word>
+			<word type="separator">.</word>
+			<word type="regular"> So</word>
+			<word type="separator">,</word>
+			<word type="button" event="2"> Enter the Temple</word>
+			<word type="separator">,</word>
+			<word type="regular"> if</word>
+			<word type="regular"> you</word>
+			<word type="regular"> dare</word>
+			<word type="separator">!</word>
 		</annotation>
 	</annotations>
 	<events>
-		<event id="1" type="item" reward="star" min_count="2" max_count="4" chance="linear"/>
-		<event id="2" type="next" name="room_2"/>
+		<event event_id="1" event_type="item" item_name="*" item_count="2" item_chance="4"/>
+		<event event_id="2" event_type="next" room_name="room_3"/>
 	</events>
 </room>

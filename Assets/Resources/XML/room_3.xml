@@ -1,18 +1,18 @@
 <room name="introduction" type="first_game">
 	<story>
-		<word type="separator">So</word>
-		<word type="separator">,</word>
-		<word type="separator"> you</word>
-		<word type="separator"> are</word>
-		<word type="separator"> about</word>
-		<word type="separator"> to</word>
-		<word type="button" annotation="0" event="1"> come</word>
-		<word type="separator"> to</word>
-		<word type="separator"> the</word>
-		<word type="separator">...</word>
+		<word type="separator">Конец</word>
+		<word type="separator"> тестового</word>
+		<word type="separator"> храма</word>
+		<word type="separator">.</word>
+		<word type="separator"> Нажми</word>
+		<word type="separator"> на</word>
+		<word type="button" annotation="0" event="1"> это</word>
+		<word type="separator"> чтобы</word>
+		<word type="separator"> начать</word>
+		<word type="separator"> заново.</word>
 	</story>
 	<annotations/>
 	<events>
-		<event id="1" type="next" name="room_2"/>
+		<event event_id="1" event_type="next" room_name="room_1"/>
 	</events>
 </room>
