@@ -8,6 +8,10 @@ public class AnnotationsController : MonoBehaviour
 {
     public GameObject annotationPrefab, annotationWordPrefab;
     public Transform content;
+    [Range(0f, 2f)]
+    public float showDelayStep = 0.2f;
+    [Range(0.1f, 2f)]
+    public float showDelay = 0.2f;
 
     public List<GameObject> annotations { get; private set; } = new List<GameObject>();
 
@@ -17,37 +21,28 @@ public class AnnotationsController : MonoBehaviour
         annotations.Add(annotationTransform.gameObject);
         foreach(AnnotationWord word in annotation.words)
         {
-            GameObject obj = Instantiate(annotationWordPrefab, annotationTransform);
-            Text wTxt = obj.GetComponent<Text>();
-            wTxt.text = word.word;
-            switch (word.type)
-            {
-                case WordType.REGULAR:
-                    wTxt.fontStyle = FontStyle.Italic;
-                    break;
-                case WordType.BUTTON:
-                    wTxt.fontStyle = FontStyle.BoldAndItalic;
-                    Button wBtn = obj.GetComponent<Button>();
-                    wBtn.interactable = true;
-                    wBtn.onClick.AddListener(() => EventController.Instance.Execute(word.event_id));
-                    break;
-                case WordType.SEPARATOR:
-                    wTxt.fontStyle = FontStyle.Italic;
-                    break;
-            }
-            Invoke("Show", 0.5f);
+            AnnotationWordController AWord = Instantiate(annotationWordPrefab, annotationTransform).GetComponent<AnnotationWordController>();
+            AWord.SetWord(word);
         }
-        Show();
+        StartCoroutine(ShowWords());
+    }
+
+    private IEnumerator ShowWords()
+    {
+        WaitForSeconds delay = new WaitForSeconds(showDelayStep);
+        foreach (var word in annotations.Last().GetComponentsInChildren<AnnotationWordController>())
+        {
+            if (word != null)
+            {
+                word.Show(showDelay);
+                yield return delay;
+            }
+        }
     }
 
     public void Clear()
     {
         annotations.ForEach(annotation => Destroy(annotation, 0.05f));
         annotations.Clear();
-    }
-
-    private void Show()
-    {
-        annotations.ForEach(annotation => annotation.GetComponentsInChildren<Fader>().ToList().ForEach(fader => fader.Show()));
     }
 }

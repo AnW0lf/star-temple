@@ -42,7 +42,6 @@ public class GameController : MonoBehaviour
         this.hero.Hero = hero;
         LoadInventory();
         RoomCounter = 0;
-        NextRoom("room_1");
     }
 
     private void LoadInventory()
@@ -69,6 +68,7 @@ public class GameController : MonoBehaviour
         {
             hero.rect.anchoredPosition = Vector2.zero;
             moveHero = false;
+            NextRoom("room_1");
         }
     }
 }

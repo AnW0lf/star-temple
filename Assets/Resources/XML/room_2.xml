@@ -78,7 +78,9 @@
 		</annotation>
 	</annotations>
 	<events>
-		<event event_id="1" event_type="item" item_name="*" item_count="2" item_chance="4"/>
+		<event event_id="1" event_type="item" item_name="*" item_count="2" item_chance="50"/>
+		<event event_id="1" event_type="item" item_name="*" item_count="3" item_chance="30"/>
+		<event event_id="1" event_type="item" item_name="*" item_count="4" item_chance="20"/>
 		<event event_id="2" event_type="next" room_name="room_3"/>
 	</events>
 </room>

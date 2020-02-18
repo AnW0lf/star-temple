@@ -11,8 +11,6 @@ public class StoryController : MonoBehaviour
     public float showDelayStep = 0.2f;
     [Range(0.1f, 5f)]
     public float showDelay = 0.8f;
-    [Range(0.1f, 5f)]
-    public float hideDelay = 0.8f;
     public GameObject storyWordPrefab;
     [Header("Annotations")]
     public AnnotationsController annotations;
@@ -24,14 +22,15 @@ public class StoryController : MonoBehaviour
     public void SetStory(Room room)
     {
         this.room = room;
-        ClearStory(hideDelay);
+        ClearStory();
         AddWords(this.room.story);
         StartCoroutine(ShowWords());
     }
 
-    private void ClearStory(float delay)
+    private void ClearStory()
     {
-        words.ForEach(word => word.Hide(hideDelay));
+        words.ForEach(word => word.Hide());
+        StopAllCoroutines();
         words.Clear();
         annotations.Clear();
     }
@@ -48,10 +47,13 @@ public class StoryController : MonoBehaviour
     private IEnumerator ShowWords()
     {
         WaitForSeconds delay = new WaitForSeconds(showDelayStep);
-        foreach (IWord word in words)
+        foreach (var word in words)
         {
-            word.Show(showDelay);
-            yield return delay;
+            if (word != null)
+            {
+                word.Show(showDelay);
+                yield return delay;
+            }
         }
     }
 
@@ -60,16 +62,11 @@ public class StoryController : MonoBehaviour
         if (room.annotations.ToList().Where(a => a.id == index).Count() > 0)
         {
             Annotation annotation = room.annotations.ToList().Find(a => a.id == index);
-            print(string.Format("Id : {0} | Length : {1} words", annotation.id, annotation.words.Length));
             annotations.AddAnnotation(annotation);
         }
         else
         {
             print("Not found!!!");
-            foreach (var annotation in room.annotations)
-            {
-                print(string.Format("Id : {0} | Length : {1} words", annotation.id, annotation.words.Length));
-            }
         }
     }
 }

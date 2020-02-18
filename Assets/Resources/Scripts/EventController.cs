@@ -40,7 +40,6 @@ public class EventController : MonoBehaviour
         {
             List<Event> indexed = events.ToList().FindAll(e => e.event_id == i);
             List<Event> next = indexed.FindAll(e => e.event_type == EventType.NEXT);
-            List<Event> stat = indexed.FindAll(e => e.event_type == EventType.STAT);
             List<Event> window = indexed.FindAll(e => e.event_type == EventType.WINDOW);
 
             executable.Add(i, new List<IDo>());
@@ -87,6 +86,14 @@ public class EventController : MonoBehaviour
                     itemWithChances.ForEach(itemWithChance => executable[i].Add(new DoItem(i, itemWithChance)));
                 }
             }
+
+            //{
+            //    List<Event> stat = indexed.FindAll(e => e.event_type == EventType.STAT);
+            //    if(stat.Count > 0)
+            //    {
+
+            //    }
+            //}
         }
     }
 
