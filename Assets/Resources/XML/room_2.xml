@@ -1,79 +1,76 @@
 <room name="label" type="first_game">
 	<story>
-		<word type="regular" annotation="1">Star</word>
-		<word type="regular" annotation="2"> Temple</word>
+		<word type="regular" annotation="1">Звездный</word>
+		<word type="regular" annotation="2"> Храм</word>
 	</story>
 	<annotations>
 		<annotation id="1">
-			<word type="regular">* Star</word>
+			<word type="regular">* Звездный</word>
 			<word type="separator"> - </word>
-			<word type="regular">when</word>
-			<word type="regular"> you</word>
-			<word type="regular"> add</word>
-			<word type="regular"> it</word>
-			<word type="regular"> to</word>
-			<word type="regular"> a</word>
-			<word type="regular"> word</word>			
+			<word type="regular">когда</word>
+			<word type="regular"> вы</word>
+			<word type="regular"> добавляете</word>
+			<word type="regular"> сноску</word>
+			<word type="regular"> к</word>
+			<word type="regular"> слову</word>			
 			<word type="separator">,</word>
-			<word type="regular"> you</word>
-			<word type="regular"> gain</word>
-			<word type="regular"> a</word>
-			<word type="regular"> footline</word>
+			<word type="regular"> вы</word>
+			<word type="regular"> получаете</word>
+			<word type="regular"> сноску</word>
 			<word type="separator">.</word>
-			<word type="regular"> It</word>
-			<word type="regular"> can</word>
-			<word type="regular"> contain</word>
-			<word type="regular"> hints</word>
+			<word type="regular"> Она</word>
+			<word type="regular"> может</word>
+			<word type="regular"> содержать</word>
+			<word type="regular"> подсказки</word>
 			<word type="separator">,</word>
-			<word type="regular"> resources</word>
+			<word type="regular"> ресурсы</word>
 			<word type="separator">,</word>
-			<word type="regular"> secrets</word>
+			<word type="regular"> секреты</word>
 			<word type="separator"> - </word>
-			<word type="regular"> everything</word>
+			<word type="regular"> все</word>
+			<word type="regular">,</word>
+			<word type="regular"> что</word>
+			<word type="regular"> угодно</word>
 			<word type="separator">.</word>
-			<word type="regular"> Now</word>
-			<word type="regular"> collect</word>
-			<word type="regular"> the</word>
-			<word type="button" event="1"> star</word>
-			<word type="regular"> and</word>
-			<word type="regular"> try</word>
-			<word type="regular"> it</word>
-			<word type="regular"> on</word>
-			<word type="regular"> 'Temple'</word>
+			<word type="regular"> А</word>
+			<word type="regular"> теперь</word>
+			<word type="regular"> возьмите</word>
+			<word type="regular"> еще</word>
+			<word type="button" event="1"> звезду</word>
+			<word type="regular"> и</word>
+			<word type="regular"> используйте</word>
+			<word type="regular"> на</word>
+			<word type="regular"> слове</word>
+			<word type="regular"> 'Храм'</word>
 			<word type="separator">.</word>
 		</annotation>
 		<annotation id="2">
-			<word type="regular">* Temple</word>
+			<word type="regular">* Храм</word>
 			<word type="separator"> - </word>
-			<word type="regular">endless</word>
-			<word type="regular"> labyrinth</word>
-			<word type="regular"> opening</word>
-			<word type="regular"> its</word>
-			<word type="regular"> doors</word>
-			<word type="regular"> to</word>
-			<word type="regular"> heroes</word>			
+			<word type="regular">бесконечный</word>
+			<word type="regular"> лабиринт</word>
+			<word type="regular">,</word>
+			<word type="regular"> открывающий</word>
+			<word type="regular"> свои</word>
+			<word type="regular"> двери</word>
+			<word type="regular"> бесстрашным</word>
+			<word type="regular"> героям</word>			
 			<word type="separator">.</word>
-			<word type="regular"> To</word>
-			<word type="regular"> reach</word>
-			<word type="regular"> a</word>
-			<word type="regular"> Final</word>
-			<word type="regular"> Door</word>
-			<word type="regular"> you</word>
-			<word type="regular"> have</word>
-			<word type="regular"> to</word>
-			<word type="regular"> go</word>
-			<word type="regular"> through</word>
+			<word type="regular"> Пройдите</word>
 			<word type="regular"> 15</word>
-			<word type="regular"> random</word>
-			<word type="regular"> rooms</word>
+			<word type="regular"> случайных</word>
+			<word type="regular"> комнат</word>
+			<word type="regular"> и</word>
+			<word type="regular"> достигните</word>
+			<word type="regular"> Последней</word>
+			<word type="regular"> Двери</word>
 			<word type="separator">.</word>
-			<word type="regular"> So</word>
+			<word type="regular"> Итак</word>
 			<word type="separator">,</word>
-			<word type="button" event="2"> Enter the Temple</word>
+			<word type="button" event="2"> Войдите в Храм</word>
 			<word type="separator">,</word>
-			<word type="regular"> if</word>
-			<word type="regular"> you</word>
-			<word type="regular"> dare</word>
+			<word type="regular"> если</word>
+			<word type="regular"> осмелитесь</word>
 			<word type="separator">!</word>
 		</annotation>
 	</annotations>

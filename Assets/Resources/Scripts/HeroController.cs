@@ -127,7 +127,7 @@ public class HeroController : MonoBehaviour
         heroNameTxt.text = hero.name;
         levelTxt.text = string.Format("Level {0}", hero.level);
         moneyTxt.text = string.Format("{0} Coins", hero.money);
-        descriptionTxt.text = string.Format("{0} strength, {1} persistence, {2} agility, {3} attention.",
+        descriptionTxt.text = string.Format("{0} strength, {1} persistence, {2} agility, {3} attention. <color=#b45f06ff><b>Slightly Injured.</b></color>",
             Hero.Convert(hero.strength), Hero.Convert(hero.persistence), Hero.Convert(hero.agility), Hero.Convert(hero.attention));
     }
 

@@ -1,0 +1,26 @@
+<room name="introduction" type="first_game">
+	<story>
+		<word type="regular">К</word>
+		<word type="regular"> сожалению</word>
+		<word type="regular">,</word>
+		<word type="regular"> вашей</word>
+		<word type="regular"> ловкости</word>
+		<word type="regular"> не</word>
+		<word type="regular"> хватило</word>
+		<word type="regular">.</word>
+		<word type="regular"> Вы</word>
+		<word type="regular"> сломали</word>
+		<word type="regular"> себе</word>
+		<word type="regular"> спину</word>
+		<word type="regular"> и</word>
+		<word type="regular"> умерли</word>
+		<word type="separator">.</word>
+		<word type="button" annotation="0" event="1"> Возвращайтесь</word>
+		<word type="separator"> в</word>
+		<word type="separator">начало.</word>
+	</story>
+	<annotations/>
+	<events>
+		<event event_id="1" event_type="next" room_name="room_1"/>
+	</events>
+</room>

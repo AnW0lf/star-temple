@@ -42,17 +42,17 @@ public class AnnotationWordController : MonoBehaviour
         switch (word.type)
         {
             case WordType.REGULAR:
-                txt.fontStyle = FontStyle.Normal;
+                txt.fontStyle = FontStyle.Italic;
                 txt.raycastTarget = true;
                 btn.interactable = false;
                 break;
             case WordType.SEPARATOR:
-                txt.fontStyle = FontStyle.Normal;
+                txt.fontStyle = FontStyle.Italic;
                 txt.raycastTarget = false;
                 btn.interactable = false;
                 break;
             case WordType.BUTTON:
-                txt.fontStyle = FontStyle.Bold;
+                txt.fontStyle = FontStyle.BoldAndItalic;
                 txt.raycastTarget = true;
                 btn.interactable = true;
                 btn.onClick.AddListener(() => btn.interactable = false);
