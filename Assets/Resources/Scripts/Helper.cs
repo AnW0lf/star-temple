@@ -223,7 +223,7 @@ public class Helper : MonoBehaviour
 
         room.Element("events").Elements("event").ToList().ForEach(XEvent => {
             int event_id = int.Parse(XEvent.Attribute("event_id").Value);
-            EventType event_type = EventType.EMPTY;
+            EventType event_type = Event.ParseEventType(XEvent.Attribute("event_type").Value);
             string room_name = "";
             string item_name = "";
             int item_count = -1;
@@ -232,20 +232,17 @@ public class Helper : MonoBehaviour
             int stat_value = -1;
             int stat_id = -1;
             List<WindowWord> window_words = new List<WindowWord>();
-            switch (XEvent.Attribute("event_type").Value)
+            switch (event_type)
             {
-                case "next":
-                    event_type = EventType.NEXT;
+                case EventType.NEXT:
                     room_name = XEvent.Attribute("room_name").Value;
                     break;
-                case "item":
-                    event_type = EventType.ITEM;
+                case EventType.ITEM:
                     item_name = XEvent.Attribute("item_name").Value;
                     item_count = int.Parse(XEvent.Attribute("item_count").Value);
                     item_chance = int.Parse(XEvent.Attribute("item_chance").Value);
                     break;
-                case "stat":
-                    event_type = EventType.STAT;
+                case EventType.STAT:
                     switch (XEvent.Attribute("stat_type").Value)
                     {
                         case "strength":
@@ -264,8 +261,7 @@ public class Helper : MonoBehaviour
                     stat_value = int.Parse(XEvent.Attribute("stat_value").Value);
                     stat_id = int.Parse(XEvent.Attribute("stat_id").Value);
                     break;
-                case "window":
-                    event_type = EventType.WINDOW;
+                case EventType.WINDOW:
                     XEvent.Elements("word").ToList().ForEach(XWord => {
                         window_words.Add(new WindowWord(XWord.Value));
                     });

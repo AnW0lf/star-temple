@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class RowLayoutGroup : MonoBehaviour
 {
-    public float spacing = 10f;
+    public float verticalSpacing = 10f, horizontalSpacing = 0f;
     public Orientation orientation = Orientation.CENTER;
     public bool resize = true;
     private RectTransform self;
@@ -44,7 +44,7 @@ public class RowLayoutGroup : MonoBehaviour
 
         for (int i = 0; i < children.Count; i++)
         {
-            if (offsetX + sizes[i].x > width || i == children.Count - 1)
+            if (offsetX + horizontalSpacing + sizes[i].x > width || i == children.Count - 1)
             {
                 if (i == children.Count - 1)
                     offsetX += sizes[i].x;
@@ -60,14 +60,14 @@ public class RowLayoutGroup : MonoBehaviour
                         break;
                 }
 
-                offsetY += sizes.ToList().GetRange(startIndex, (i == children.Count - 1 ? i + 1 : i) - startIndex).Max(v => v.y) + (startIndex > 0 ? spacing : 0f);
+                offsetY += sizes.ToList().GetRange(startIndex, (i == children.Count - 1 ? i + 1 : i) - startIndex).Max(v => v.y) + (startIndex > 0 ? verticalSpacing : 0f);
                 offsetX = 0f;
 
                 for (int j = startIndex; j < (i == children.Count - 1 ? i + 1 : i); j++)
                 {
                     float yPos = sizes[j].y - offsetY;
                     newPositions[j] = new Vector2(offsetX + offset, yPos);
-                    offsetX += sizes[j].x;
+                    offsetX += horizontalSpacing + sizes[j].x;
                 }
 
                 offsetX = sizes[i].x;

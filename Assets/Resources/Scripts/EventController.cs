@@ -7,6 +7,7 @@ using UnityEngine;
 public class EventController : MonoBehaviour
 {
     public GameController game;
+    public HeroController hero;
 
     private Event[] events;
     private Dictionary<int, List<IDo>> executable = new Dictionary<int, List<IDo>>();
@@ -87,13 +88,39 @@ public class EventController : MonoBehaviour
                 }
             }
 
-            //{
-            //    List<Event> stat = indexed.FindAll(e => e.event_type == EventType.STAT);
-            //    if(stat.Count > 0)
-            //    {
+            {
+                List<Event> stat = indexed.FindAll(e => e.event_type == EventType.STAT);
+                if (stat.Count > 0)
+                {
+                    stat.Sort(delegate (Event x, Event y) { return x.stat_type.CompareTo(y.stat_type); });
+                    List<StatWithChance> statWithChances = new List<StatWithChance>();
+                    Dictionary<int, int> dict = new Dictionary<int, int>();
+                    StatType stat_type = stat.First().stat_type;
+                    for (int j = 0; j < stat.Count; j++)
+                    {
+                        int stat_value = stat[j].stat_value;
+                        int stat_id = stat[j].stat_id;
+                        if (stat_type.Equals(stat[j].stat_type))
+                        {
+                            dict.Add(stat_value, stat_id);
 
-            //    }
-            //}
+                            if (j == stat.Count - 1)
+                            {
+                                statWithChances.Add(new StatWithChance(stat_type, dict));
+                            }
+                        }
+                        else
+                        {
+                            statWithChances.Add(new StatWithChance(stat_type, dict));
+                            dict.Clear();
+                            stat_type = stat[j].stat_type;
+                            dict.Add(stat_value, stat_id);
+                        }
+                    }
+
+                    statWithChances.ForEach(statWithChance => executable[i].Add(new DoStat(i, hero, statWithChance)));
+                }
+            }
         }
     }
 
@@ -154,6 +181,28 @@ public struct Event
     public static Event Empty()
     {
         return new Event(-1, EventType.EMPTY, "", "", -1, -1, StatType.EMPTY, -1, -1, new WindowWord[0]);
+    }
+
+    public static EventType ParseEventType(string type)
+    {
+        switch (type){
+            case "next": return EventType.NEXT;
+            case "item": return EventType.ITEM;
+            case "stat": return EventType.STAT;
+            case "window": return EventType.WINDOW;
+            default: return EventType.EMPTY;
+        }
+    }
+
+    public static StatType ParseStatType(string type)
+    {
+        switch (type){
+            case "strength": return StatType.STRENGTH;
+            case "persistence": return StatType.PERSISTENCE;
+            case "agility": return StatType.AGILITY;
+            case "attention": return StatType.ATTENTION;
+            default: return StatType.EMPTY;
+        }
     }
 }
 
@@ -248,14 +297,12 @@ public class DoStat : IDo
 {
     private int id;
     private HeroController hero;
-    private EventController eventController;
     private StatWithChance stats;
 
-    public DoStat(int id, HeroController hero, EventController eventController, StatWithChance stats)
+    public DoStat(int id, HeroController hero, StatWithChance stats)
     {
         this.id = id;
         this.hero = hero;
-        this.eventController = eventController;
         this.stats = stats;
     }
 
@@ -284,12 +331,12 @@ public class DoStat : IDo
         }
         foreach (var pair in stats.dict)
         {
-            if (stat <= pair.Key && old_stat <= pair.Key)
+            if (stat >= pair.Key && old_stat <= pair.Key)
             {
                 old_stat = pair.Key;
                 event_id = pair.Value;
             }
         }
-        eventController.Execute(event_id);
+        EventController.Instance.Execute(event_id);
     }
 }

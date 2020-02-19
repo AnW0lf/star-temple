@@ -36,7 +36,7 @@ public class ItemController : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
 
     public void OnDrag(PointerEventData eventData)
     {
-        transform.position = eventData.pointerCurrentRaycast.screenPosition;
+        transform.position = eventData.position;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
