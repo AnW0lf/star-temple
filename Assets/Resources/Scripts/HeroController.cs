@@ -33,7 +33,6 @@ public class HeroController : MonoBehaviour
         set
         {
             hero.money = Mathf.Max(value, 0);
-            Helper.Instance.SaveHero(hero);
             UpdateInfo();
         }
     }
@@ -47,7 +46,6 @@ public class HeroController : MonoBehaviour
         set
         {
             hero.level = Mathf.Max(value, 1);
-            Helper.Instance.SaveHero(hero);
             UpdateInfo();
         }
     }
@@ -61,7 +59,6 @@ public class HeroController : MonoBehaviour
         set
         {
             hero.strength = Mathf.Clamp(value, 0, 100);
-            Helper.Instance.SaveHero(hero);
             UpdateInfo();
         }
     }
@@ -75,7 +72,6 @@ public class HeroController : MonoBehaviour
         set
         {
             hero.persistence = Mathf.Clamp(value, 0, 100);
-            Helper.Instance.SaveHero(hero);
             UpdateInfo();
         }
     }
@@ -89,7 +85,6 @@ public class HeroController : MonoBehaviour
         set
         {
             hero.agility = Mathf.Clamp(value, 0, 100);
-            Helper.Instance.SaveHero(hero);
             UpdateInfo();
         }
     }
@@ -103,7 +98,6 @@ public class HeroController : MonoBehaviour
         set
         {
             hero.attention = Mathf.Clamp(value, 0, 100);
-            Helper.Instance.SaveHero(hero);
             UpdateInfo();
         }
     }
@@ -117,7 +111,6 @@ public class HeroController : MonoBehaviour
         set
         {
             hero.items = value;
-            Helper.Instance.SaveHero(hero);
             UpdateInfo();
         }
     }
@@ -125,10 +118,10 @@ public class HeroController : MonoBehaviour
     private void UpdateInfo()
     {
         heroNameTxt.text = hero.name;
-        levelTxt.text = string.Format("Level {0}", hero.level);
-        moneyTxt.text = string.Format("{0} Coins", hero.money);
+        levelTxt.text = string.Format("Level {0}", Level);
+        moneyTxt.text = string.Format("{0} Coins", Money);
         descriptionTxt.text = string.Format("{0} strength, {1} persistence, {2} agility, {3} attention. <color=#b45f06ff><b>Slightly Injured.</b></color>",
-            Hero.Convert(hero.strength), Hero.Convert(hero.persistence), Hero.Convert(hero.agility), Hero.Convert(hero.attention));
+            Hero.Convert(Strength), Hero.Convert(Persistence), Hero.Convert(Agility), Hero.Convert(Attention));
     }
 
     public void SaveHero()
