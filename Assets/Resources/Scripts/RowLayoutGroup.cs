@@ -5,12 +5,10 @@ using UnityEngine;
 
 public class RowLayoutGroup : MonoBehaviour
 {
-    public float verticalSpacing = 10f, horizontalSpacing = 0f;
+    public float verticalSpacing = 10f, horizontalSpacing = 0f, topPadding = 0f, bottomPadding = 0f;
     public Orientation orientation = Orientation.CENTER;
     public bool resize = true;
     private RectTransform self;
-
-    private bool isPost = false;
 
     private void Awake()
     {
@@ -24,7 +22,7 @@ public class RowLayoutGroup : MonoBehaviour
 
     public void Post()
     {
-        float width = self.sizeDelta.x, offsetX = 0f, offsetY = 0f;
+        float width = self.sizeDelta.x, offsetX = 0f, offsetY = topPadding;
         List<RectTransform> children = new List<RectTransform>();
 
         for(int i = 0; i < transform.childCount; i++)
@@ -85,7 +83,7 @@ public class RowLayoutGroup : MonoBehaviour
         }
 
         if (resize)
-            self.sizeDelta = new Vector2(self.sizeDelta.x, Mathf.Abs(offsetY));
+            self.sizeDelta = new Vector2(self.sizeDelta.x, Mathf.Abs(offsetY) + bottomPadding);
     }
 
 }

@@ -9,7 +9,7 @@
 			<word type="separator"> - </word>
 			<word type="regular">когда</word>
 			<word type="regular"> вы</word>
-			<word type="regular"> добавляете</word>
+			<word type="button" event="3"> добавляете</word>
 			<word type="regular"> сноску</word>
 			<word type="regular"> к</word>
 			<word type="regular"> слову</word>			
@@ -79,5 +79,124 @@
 		<event event_id="1" event_type="item" item_name="*" item_count="3" item_chance="30"/>
 		<event event_id="1" event_type="item" item_name="*" item_count="4" item_chance="20"/>
 		<event event_id="2" event_type="next" room_name="room_3"/>
+		<event event_id="3" event_type="window">
+			<word>Тестовое</word>
+			<word> окно</word>
+			<word>.</word>
+			<word> Какой-то</word>
+			<word> текст</word>
+			<word>.</word>
+			<word> Не</word>
+			<word> хотите</word>
+			<word> ещё</word>
+			<word> этих</word>
+			<word> французских</word>
+			<word> булок</word>
+			<word>?</word>
+			<word>Тестовое</word>
+			<word> окно</word>
+			<word>.</word>
+			<word> Какой-то</word>
+			<word> текст</word>
+			<word>.</word>
+			<word> Не</word>
+			<word> хотите</word>
+			<word> ещё</word>
+			<word> этих</word>
+			<word> французских</word>
+			<word> булок</word>
+			<word>?</word>
+			<word>Тестовое</word>
+			<word> окно</word>
+			<word>.</word>
+			<word> Какой-то</word>
+			<word> текст</word>
+			<word>.</word>
+			<word> Не</word>
+			<word> хотите</word>
+			<word> ещё</word>
+			<word> этих</word>
+			<word> французских</word>
+			<word> булок</word>
+			<word>?</word>
+			<word>Тестовое</word>
+			<word> окно</word>
+			<word>.</word>
+			<word> Какой-то</word>
+			<word> текст</word>
+			<word>.</word>
+			<word> Не</word>
+			<word> хотите</word>
+			<word> ещё</word>
+			<word> этих</word>
+			<word> французских</word>
+			<word> булок</word>
+			<word>?</word>
+			<word>Тестовое</word>
+			<word> окно</word>
+			<word>.</word>
+			<word> Какой-то</word>
+			<word> текст</word>
+			<word>.</word>
+			<word> Не</word>
+			<word> хотите</word>
+			<word> ещё</word>
+			<word> этих</word>
+			<word> французских</word>
+			<word> булок</word>
+			<word>?</word>
+			<word>Тестовое</word>
+			<word> окно</word>
+			<word>.</word>
+			<word> Какой-то</word>
+			<word> текст</word>
+			<word>.</word>
+			<word> Не</word>
+			<word> хотите</word>
+			<word> ещё</word>
+			<word> этих</word>
+			<word> французских</word>
+			<word> булок</word>
+			<word>?</word>
+			<word>Тестовое</word>
+			<word> окно</word>
+			<word>.</word>
+			<word> Какой-то</word>
+			<word> текст</word>
+			<word>.</word>
+			<word> Не</word>
+			<word> хотите</word>
+			<word> ещё</word>
+			<word> этих</word>
+			<word> французских</word>
+			<word> булок</word>
+			<word>?</word>
+			<word>Тестовое</word>
+			<word> окно</word>
+			<word>.</word>
+			<word> Какой-то</word>
+			<word> текст</word>
+			<word>.</word>
+			<word> Не</word>
+			<word> хотите</word>
+			<word> ещё</word>
+			<word> этих</word>
+			<word> французских</word>
+			<word> булок</word>
+			<word>?</word>
+			<word>Тестовое</word>
+			<word> окно</word>
+			<word>.</word>
+			<word> Какой-то</word>
+			<word> текст</word>
+			<word>.</word>
+			<word> Не</word>
+			<word> хотите</word>
+			<word> ещё</word>
+			<word> этих</word>
+			<word> французских</word>
+			<word> булок</word>
+			<word>?</word>
+		</event>
 	</events>
 </room>

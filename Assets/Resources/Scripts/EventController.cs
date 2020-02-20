@@ -41,16 +41,13 @@ public class EventController : MonoBehaviour
         {
             List<Event> indexed = events.ToList().FindAll(e => e.event_id == i);
             List<Event> next = indexed.FindAll(e => e.event_type == EventType.NEXT);
-            List<Event> window = indexed.FindAll(e => e.event_type == EventType.WINDOW);
 
-            executable.Add(i, new List<IDo>());
-            if (next.Count > 0)
-                executable[i].Add(new DoNext(i, next.First().room_name, game));
-
+            //Item Event
             {
                 List<Event> item = indexed.FindAll(e => e.event_type == EventType.ITEM);
                 if (item.Count > 0)
                 {
+                    if (!executable.ContainsKey(i)) executable.Add(i, new List<IDo>());
                     item.Sort(delegate (Event x, Event y) { return x.item_name.CompareTo(y.item_name); });
                     List<ItemWithChance> itemWithChances = new List<ItemWithChance>();
                     Dictionary<int, int> dict = new Dictionary<int, int>();
@@ -88,10 +85,12 @@ public class EventController : MonoBehaviour
                 }
             }
 
+            //Stat Event
             {
                 List<Event> stat = indexed.FindAll(e => e.event_type == EventType.STAT);
                 if (stat.Count > 0)
                 {
+                    if (!executable.ContainsKey(i)) executable.Add(i, new List<IDo>());
                     stat.Sort(delegate (Event x, Event y) { return x.stat_type.CompareTo(y.stat_type); });
                     List<StatWithChance> statWithChances = new List<StatWithChance>();
                     Dictionary<int, int> dict = new Dictionary<int, int>();
@@ -119,6 +118,25 @@ public class EventController : MonoBehaviour
                     }
 
                     statWithChances.ForEach(statWithChance => executable[i].Add(new DoStat(i, hero, statWithChance)));
+                }
+            }
+
+            // Window Event
+            {
+                List<Event> window = indexed.FindAll(e => e.event_type == EventType.WINDOW);
+                if (window.Count > 0)
+                {
+                    if (!executable.ContainsKey(i)) executable.Add(i, new List<IDo>());
+                    window.ForEach(WEvent => executable[i].Add(new DoWindow(i, WEvent.window_words)));
+                }
+            }
+
+            //Next Event
+            {
+                if (next.Count > 0)
+                {
+                    if (!executable.ContainsKey(i)) executable.Add(i, new List<IDo>());
+                    executable[i].Add(new DoNext(i, next.First().room_name, game));
                 }
             }
         }
@@ -185,7 +203,8 @@ public struct Event
 
     public static EventType ParseEventType(string type)
     {
-        switch (type){
+        switch (type)
+        {
             case "next": return EventType.NEXT;
             case "item": return EventType.ITEM;
             case "stat": return EventType.STAT;
@@ -196,7 +215,8 @@ public struct Event
 
     public static StatType ParseStatType(string type)
     {
-        switch (type){
+        switch (type)
+        {
             case "strength": return StatType.STRENGTH;
             case "persistence": return StatType.PERSISTENCE;
             case "agility": return StatType.AGILITY;
@@ -338,5 +358,26 @@ public class DoStat : IDo
             }
         }
         EventController.Instance.Execute(event_id);
+    }
+}
+
+public class DoWindow : IDo
+{
+    private int id;
+    private WindowWord[] words;
+
+    public DoWindow(int id, WindowWord[] words)
+    {
+        this.id = id;
+        this.words = words;
+    }
+
+    public int Id { get => id; set => id = value; }
+
+    public EventType event_type => EventType.WINDOW;
+
+    public void Do()
+    {
+        EventWindow.Instance.ShowWindow(words);
     }
 }
