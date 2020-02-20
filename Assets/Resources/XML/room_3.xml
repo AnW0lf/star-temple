@@ -18,7 +18,7 @@
 		<word type="regular" annotation="11"> и</word>
 		<word type="regular" annotation="12"> белую</word>
 		<word type="separator">.</word>
-		<word type="regular" annotation="13">За</word>
+		<word type="regular" annotation="13"> За</word>
 		<word type="regular" annotation="14"> ними</word>
 		<word type="regular" annotation="15"> дверь</word>
 		<word type="separator">.</word>
@@ -208,27 +208,162 @@
 			<word type="separator">.</word>
 		</annotation>
 		<annotation id="10">
-			<word type="regular">* Зеленую - Вы нажимаете на зеленую платформу и вскрикиваете от боли. Из щелей пола мгновенно высовывается зеленый плющ, колет вас в ногу и втягивается обратно.</word>
+			<word type="regular">* Зеленую </word>
+			<word type="separator">-</word>
+			<word type="regular"> Вы</word>
+			<word type="regular"> нажимаете</word>
+			<word type="regular"> на</word>
+			<word type="regular"> зеленую</word>
+			<word type="regular"> платформу</word>
+			<word type="regular"> и</word>
+			<word type="regular"> вскрикиваете</word>
+			<word type="regular"> от</word>
+			<word type="regular"> боли</word>
+			<word type="separator">.</word>
+			<word type="regular"> Из</word>
+			<word type="regular"> щелей</word>
+			<word type="regular"> пола</word>
+			<word type="regular"> мгновенно</word>
+			<word type="regular"> высовывается</word>
+			<word type="regular"> зеленый</word>
+			<word type="regular"> плющ</word>
+			<word type="separator">,</word>
+			<word type="regular"> колет</word>
+			<word type="regular"> вас</word>
+			<word type="regular"> в</word>
+			<word type="regular"> ногу</word>
+			<word type="regular"> и</word>
+			<word type="regular"> втягивается</word>
+			<word type="regular"> обратно</word>
+			<word type="separator">.</word>
 		</annotation>
 		<annotation id="11">
 			<word type="regular">* Желтую </word>
-			<word type="regular">-</word>
+			<word type="separator">-</word>
 			<word type="regular"> Вы</word>
-			<word type="regular"> нажимаете на желтую платформу. Перед вами появляется</word>
+			<word type="regular"> нажимаете</word>
+			<word type="regular"> на</word>
+			<word type="regular"> желтую</word>
+			<word type="regular"> платформу</word>
+			<word type="separator">.</word>
+			<word type="regular"> Перед</word>
+			<word type="regular"> вами</word>
+			<word type="regular"> появляется</word>
 			<word type="button" event="2"> звездочка</word>
-			<word type="regular">. Она ярко вспыхивает, ослепляя вас, и исчезает.</word>
+			<word type="separator">.</word>
+			<word type="regular"> Она</word>
+			<word type="regular"> ярко</word>
+			<word type="regular"> вспыхивает</word>
+			<word type="separator">,</word>
+			<word type="regular"> ослепляя</word>
+			<word type="regular"> вас</word>
+			<word type="separator">,</word>
+			<word type="regular"> и</word>
+			<word type="regular"> исчезает</word>
+			<word type="separator">.</word>
 		</annotation>
 		<annotation id="12">
-			<word type="regular">* И - "И, и, и", стучит в вашей голове. Спустя несколько минут, вы понимаете, почему: на полу лежит слаборазличимая железная буква И.</word>
+			<word type="regular">* И </word>
+			<word type="separator">-</word>
+			<word type="regular"> "И, и, и"</word>
+			<word type="separator">,</word>
+			<word type="regular"> стучит</word>
+			<word type="regular"> в</word>
+			<word type="regular"> вашей</word>
+			<word type="regular"> голове</word>
+			<word type="separator">.</word>
+			<word type="regular"> Спустя</word>
+			<word type="regular"> несколько</word>
+			<word type="regular"> минут</word>
+			<word type="separator">,</word>
+			<word type="regular"> вы</word>
+			<word type="regular"> понимаете</word>
+			<word type="separator">,</word>
+			<word type="regular"> почему</word>
+			<word type="separator">:</word>
+			<word type="regular"> на</word>
+			<word type="regular"> полу</word>
+			<word type="regular"> лежит</word>
+			<word type="regular"> слаборазличимая</word>
+			<word type="regular"> железная</word>
+			<word type="regular"> буква</word>
+			<word type="regular"> И</word>
+			<word type="separator">.</word>
 		</annotation>
 		<annotation id="13">
-			<word type="regular">* Белую - Вы нажимаете на белую платформу. Сверху на вас падает льдина, больно ударяя по голове и разбиваясь. Внутри нее записка.</word>
+			<word type="regular">* Белую </word>
+			<word type="separator">-</word>
+			<word type="regular"> Вы</word>
+			<word type="regular"> нажимаете</word>
+			<word type="regular"> на</word>
+			<word type="regular"> белую</word>
+			<word type="regular"> платформу</word>
+			<word type="separator">.</word>
+			<word type="regular"> Сверху</word>
+			<word type="regular"> на</word>
+			<word type="regular"> вас</word>
+			<word type="regular"> падает</word>
+			<word type="regular"> льдина</word>
+			<word type="separator">,</word>
+			<word type="regular"> больно</word>
+			<word type="regular"> ударяя</word>
+			<word type="regular"> по</word>
+			<word type="regular"> голове</word>
+			<word type="regular"> и</word>
+			<word type="regular"> разбиваясь</word>
+			<word type="separator">.</word>
+			<word type="regular"> Внутри</word>
+			<word type="regular"> нее</word>
+			<word type="regular"> записка</word>
+			<word type="separator">.</word>
 		</annotation>
 		<annotation id="14">
-			<word type="regular">* За ними - Вы присматриваетесь и замечаете, что чередующийся желтый и коричневый цвет плит пола за платформами образует буквы.</word>
+			<word type="regular">* За </word>
+			<word type="regular"> ними</word>
+			<word type="separator">-</word>
+			<word type="regular"> Вы</word>
+			<word type="regular"> присматриваетесь</word>
+			<word type="regular"> и</word>
+			<word type="regular"> замечаете</word>
+			<word type="separator">,</word>
+			<word type="regular"> что</word>
+			<word type="regular"> чередующийся</word>
+			<word type="regular"> желтый</word>
+			<word type="regular"> и</word>
+			<word type="regular"> коричневый</word>
+			<word type="regular"> цвет</word>
+			<word type="regular"> плит</word>
+			<word type="regular"> пола</word>
+			<word type="regular"> за</word>
+			<word type="regular"> платформами</word>
+			<word type="regular"> образует</word>
+			<word type="regular"> буквы</word>
+			<word type="separator">.</word>
 		</annotation>
 		<annotation id="15">
-			<word type="regular">* Дверь - Это белая садовая дверь с небольшим проходом для кошки или маленькой собаки. Вы ловите себя на мысли, что хотите</word>
+			<word type="regular">* Дверь </word>
+			<word type="separator">-</word>
+			<word type="regular"> Это</word>
+			<word type="regular"> белая</word>
+			<word type="regular"> садовая</word>
+			<word type="regular"> дверь</word>
+			<word type="regular"> с</word>
+			<word type="regular"> небольшим</word>
+			<word type="regular"> проходом</word>
+			<word type="regular"> для</word>
+			<word type="regular"> кошки</word>
+			<word type="regular"> или</word>
+			<word type="regular"> маленькой</word>
+			<word type="regular"> собаки</word>
+			<word type="separator">.</word>
+			<word type="regular"> Вы</word>
+			<word type="regular"> ловите</word>
+			<word type="regular"> себя</word>
+			<word type="regular"> на</word>
+			<word type="regular"> мысли</word>
+			<word type="separator">,</word>
+			<word type="regular"> что</word>
+			<word type="regular"> хотите</word>
 			<word type="button" event="1"> пролезть в него.</word>
 		</annotation>
 		<annotation id="16">
@@ -246,17 +381,72 @@
 			<word type="separator">.</word>
 		</annotation>
 		<annotation id="17">
-			<word type="regular">* Легко - Думаете, все так легко? Ищите получше, в этой комнате точно есть то, что вам понравится!</word>
+			<word type="regular">* Легко </word>
+			<word type="separator">-</word>
+			<word type="regular"> Думаете</word>
+			<word type="separator">,</word>
+			<word type="regular"> все</word>
+			<word type="regular"> так</word>
+			<word type="regular"> легко</word>
+			<word type="separator">?</word>
+			<word type="regular"> Ищите</word>
+			<word type="regular"> получше</word>
+			<word type="separator">,</word>
+			<word type="regular"> в</word>
+			<word type="regular"> этой</word>
+			<word type="regular"> комнате</word>
+			<word type="regular"> точно</word>
+			<word type="regular"> есть</word>
+			<word type="regular"> то</word>
+			<word type="separator">,</word>
+			<word type="regular"> что</word>
+			<word type="regular"> вам</word>
+			<word type="regular"> понравится</word>
+			<word type="separator">!</word>
 		</annotation>
 		<annotation id="18">
-			<word type="regular">* Можете - Помните, что в</word>
+			<word type="regular">* Можете </word>
+			<word type="separator">-</word>
+			<word type="regular"> Помните</word>
+			<word type="separator">,</word>
+			<word type="regular"> что</word>
+			<word type="regular"> в</word>
 			<word type="button" event="2"> Звездном</word>
-			<word type="regular"> Храме вы можете исследовать буквально все!</word>
+			<word type="regular"> Храме</word>
+			<word type="regular"> вы</word>
+			<word type="regular"> можете</word>
+			<word type="regular"> исследовать</word>
+			<word type="regular"> буквально</word>
+			<word type="regular"> все</word>
+			<word type="separator">!</word>
 		</annotation>
 		<annotation id="19">
-			<word type="regular">* Перепрыгнуть - Вы пробуете аккуратно перепрыгнуть платформы, но подскальзываетесь на гладком полу и падаете. Над головой у вас кружатся</word>
+			<word type="regular">* Перепрыгнуть </word>
+			<word type="separator">-</word>
+			<word type="regular"> Вы</word>
+			<word type="regular"> пробуете</word>
+			<word type="regular"> аккуратно</word>
+			<word type="regular"> перепрыгнуть</word>
+			<word type="regular"> платформы</word>
+			<word type="separator">,</word>
+			<word type="regular"> но</word>
+			<word type="regular"> подскальзываетесь</word>
+			<word type="regular"> на</word>
+			<word type="regular"> гладком</word>
+			<word type="regular"> полу</word>
+			<word type="regular"> и</word>
+			<word type="regular"> падаете</word>
+			<word type="separator">.</word>
+			<word type="regular"> Над</word>
+			<word type="regular"> головой</word>
+			<word type="regular"> у</word>
+			<word type="regular"> вас</word>
+			<word type="regular"> кружатся</word>
 			<word type="button" event="2"> звездочки</word>
-			<word type="regular">, ловите скорее!</word>
+			<word type="separator">,</word>
+			<word type="regular"> ловите</word>
+			<word type="regular"> скорее</word>
+			<word type="separator">!</word>
 		</annotation>
 		<annotation id="20">
 			<word type="regular">* Платформы </word>
@@ -287,12 +477,30 @@
 			<word type="separator">.</word>
 		</annotation>
 		<annotation id="21">
-			<word type="regular">* И выйти - В двери вы видите небольшой проход для кошки или маленькой собаки. Хотите потренировать ловкость?</word>
+			<word type="regular">* И</word>
+			<word type="regular"> выйти </word>
+			<word type="separator">-</word>
+			<word type="regular"> В</word>
+			<word type="regular"> двери</word>
+			<word type="regular"> вы</word>
+			<word type="regular"> видите</word>
+			<word type="regular"> небольшой</word>
+			<word type="regular"> проход</word>
+			<word type="regular"> для</word>
+			<word type="regular"> кошки</word>
+			<word type="regular"> или</word>
+			<word type="regular"> маленькой</word>
+			<word type="regular"> собаки</word>
+			<word type="separator">.</word>
+			<word type="regular"> Хотите</word>
+			<word type="regular"> потренировать</word>
+			<word type="regular"> ловкость</word>
+			<word type="separator">?</word>
 			<word type="button" event="1"> Пролезьте в него!</word>
 		</annotation>
 	</annotations>
 	<events>
-		<event event_id="1" event_type="next" room_name="room_1"/>
+		<event event_id="1" event_type="next" room_name="room_5"/>
 		<event event_id="2" event_type="item" item_name="*" item_count="1" item_chance="60"/>
 		<event event_id="2" event_type="item" item_name="*" item_count="2" item_chance="30"/>
 		<event event_id="2" event_type="item" item_name="*" item_count="3" item_chance="10"/>
