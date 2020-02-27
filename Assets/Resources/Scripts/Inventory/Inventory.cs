@@ -16,16 +16,12 @@ public class Inventory : MonoBehaviour
     public float delay = 0.5f;
 
     public List<ItemController> items { get; private set; }
-    public static Inventory Instance { get; private set; } = null;
     private RectTransform self;
 
     private Coroutine moveTo = null;
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
-
         items = new List<ItemController>();
         self = GetComponent<RectTransform>();
     }

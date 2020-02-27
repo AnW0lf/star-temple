@@ -68,9 +68,10 @@ public class Helper : MonoBehaviour
 
         var XItems = XHero.Elements("item");
 
-        hero.items.ForEach(item => {
+        hero.items.ForEach(item =>
+        {
             XElement XItem = null;
-            if((XItem = XItems.ToList().Find(xi => xi.Attribute("name").Value.Equals(item.name))) != null)
+            if ((XItem = XItems.ToList().Find(xi => xi.Attribute("name").Value.Equals(item.name))) != null)
             {
                 XItem.Attribute("count").Value = item.count.ToString();
             }
@@ -169,122 +170,155 @@ public class Helper : MonoBehaviour
         if (!File.Exists(path))
             throw new FileNotFoundException(string.Format("File {0} not found. Check it and try again.", path));
 
-        room = XDocument.Parse(File.ReadAllText(path)).Element("room");
+        room = XDocument.Parse(File.ReadAllText(path)).Root;
+
+        string room_name = "";
+
+        if (room.Attribute("name") == null)
+            throw new ArgumentException(string.Format("Room does not contains attribute \'{0}\'.", "name"));
+
+        room_name = room.Attribute("name").Value;
+
+        RoomType room_type = RoomType.EMPTY;
+
+        if (room.Attribute("type") == null)
+            throw new ArgumentException(string.Format("Room does not contains attribute \'{0}\'.", "type"));
+
+        switch (room.Attribute("type").Value)
+        {
+            case "common":
+                room_type = RoomType.COMMON;
+                break;
+            case "before_battle":
+                room_type = RoomType.BEFORE_BATTLE;
+                break;
+            case "battle":
+                room_type = RoomType.BATTLE;
+                break;
+            default:
+                room_type = RoomType.EMPTY;
+                break;
+        }
+
+        // TODO
+        /*
+        if(room_type == RoomType.EMPTY)
+            throw new ArgumentException(string.Format("Room has incorrect value of attribute \'{0}\' = \'{1}\'.", "type", room.Attribute("type").Value));
+        */
 
         List<StoryWord> story = new List<StoryWord>();
         List<Annotation> annotations = new List<Annotation>();
         List<Event> events = new List<Event>();
 
-        room.Element("story").Elements("word").ToList().ForEach(XWord =>
+        //load story
         {
-            WordType storyWordType = WordType.EMPTY;
-            int annotation_id = -1, event_id = -1;
-            switch (XWord.Attribute("type").Value)
+            if (room.Element("story") != null)
             {
-                case "regular":
-                    storyWordType = WordType.REGULAR;
-                    annotation_id = int.Parse(XWord.Attribute("annotation").Value);
-                    break;
-                case "separator":
-                    storyWordType = WordType.SEPARATOR;
-                    break;
-                case "button":
-                    storyWordType = WordType.BUTTON;
-                    annotation_id = int.Parse(XWord.Attribute("annotation").Value);
-                    event_id = int.Parse(XWord.Attribute("event").Value);
-                    break;
-            }
-            story.Add(new StoryWord(XWord.Value, storyWordType, annotation_id, event_id));
-        });
-
-        room.Element("annotations").Elements("annotation").ToList().ForEach(XAnnotation => {
-            int id = int.Parse(XAnnotation.Attribute("id").Value);
-            List<AnnotationWord> words = new List<AnnotationWord>();
-            XAnnotation.Elements("word").ToList().ForEach(XWord => {
-                WordType annotationWordType = WordType.EMPTY;
-                int event_id = -1;
-                switch (XWord.Attribute("type").Value)
+                foreach (XElement XWord in room.Element("story").Elements("word"))
                 {
-                    case "regular":
-                        annotationWordType = WordType.REGULAR;
-                        break;
-                    case "separator":
-                        annotationWordType = WordType.SEPARATOR;
-                        break;
-                    case "button":
-                        annotationWordType = WordType.BUTTON;
-                        event_id = int.Parse(XWord.Attribute("event").Value);
-                        break;
-                }
-                words.Add(new AnnotationWord(XWord.Value, annotationWordType, event_id));
-            });
-            annotations.Add(new Annotation(id, words.ToArray()));
-        });
+                    StoryWord word = new StoryWord(XWord.Value);
 
-        room.Element("events").Elements("event").ToList().ForEach(XEvent => {
-            int event_id = int.Parse(XEvent.Attribute("event_id").Value);
-            EventType event_type = Event.ParseEventType(XEvent.Attribute("event_type").Value);
-            string room_name = "";
-            string item_name = "";
-            int item_count = -1;
-            int item_chance = -1;
-            StatType stat_type = StatType.EMPTY;
-            int stat_value = -1;
-            int stat_id = -1;
-            List<WindowWord> window_words = new List<WindowWord>();
-            switch (event_type)
-            {
-                case EventType.NEXT:
-                    room_name = XEvent.Attribute("room_name").Value;
-                    break;
-                case EventType.ITEM:
-                    item_name = XEvent.Attribute("item_name").Value;
-                    item_count = int.Parse(XEvent.Attribute("item_count").Value);
-                    item_chance = int.Parse(XEvent.Attribute("item_chance").Value);
-                    break;
-                case EventType.STAT:
-                    switch (XEvent.Attribute("stat_type").Value)
+                    if (XWord.Attribute("annotation") != null && !int.TryParse(XWord.Attribute("annotation").Value, out word.annotation_id))
+                        throw new ArgumentException(string.Format("Story word \"{0}\" attribute \'{1}\' contains incorrect value : {2}.",
+                            XWord.Value, "annotation", XWord.Attribute("annotation").Value));
+
+                    if (XWord.Attribute("event") != null && !int.TryParse(XWord.Attribute("event").Value, out word.event_id))
+                        throw new ArgumentException(string.Format("Story word \"{0}\" attribute \'{1}\' contains incorrect value : {2}.",
+                            XWord.Value, "event", XWord.Attribute("event").Value));
+
+                    if (XWord.Attribute("drop_type") != null && XWord.Attribute("drop") != null)
                     {
-                        case "strength":
-                            stat_type = StatType.STRENGTH;
-                            break;
-                        case "persistence":
-                            stat_type = StatType.PERSISTENCE;
-                            break;
-                        case "agility":
-                            stat_type = StatType.AGILITY;
-                            break;
-                        case "attention":
-                            stat_type = StatType.ATTENTION;
-                            break;
+                        word.drop_type = XWord.Attribute("drop_type").Value;
+                        if (!int.TryParse(XWord.Attribute("drop").Value, out word.drop_id))
+                            throw new ArgumentException(string.Format("Story word \"{0}\" attribute \'{1}\' contains incorrect value : {2}.",
+                            XWord.Value, "drop", XWord.Attribute("drop").Value));
                     }
-                    stat_value = int.Parse(XEvent.Attribute("stat_value").Value);
-                    stat_id = int.Parse(XEvent.Attribute("stat_id").Value);
-                    break;
-                case EventType.WINDOW:
-                    XEvent.Elements("word").ToList().ForEach(XWord => {
-                        window_words.Add(new WindowWord(XWord.Value));
-                    });
-                    break;
-            }
-            events.Add(new Event(event_id, event_type, room_name, item_name, item_count, item_chance, stat_type, stat_value, stat_id, window_words.ToArray()));
-        });
 
-        StoryType storyType = StoryType.EMPTY;
-        switch (room.Attribute("type").Value)
-        {
-            case "common":
-                storyType = StoryType.COMMON;
-                break;
-            case "before_battle":
-                storyType = StoryType.BEFORE_BATTLE;
-                break;
-            case "battle":
-                storyType = StoryType.BATTLE;
-                break;
+                    story.Add(word);
+                }
+            }
         }
 
-        return new Room(room.Attribute("name").Value, storyType, story.ToArray(), annotations.ToArray(), events.ToArray());
+        //load annotations
+        {
+            if (room.Element("annotations") != null)
+            {
+                foreach (XElement XAnnotation in room.Element("annotations").Elements("annotation"))
+                {
+                    int id = -1;
+
+                    if (XAnnotation.Attribute("id") == null)
+                        throw new ArgumentException(string.Format("Annotation does not contains attribute \'{0}\'.", "id"));
+
+                    if (!int.TryParse(XAnnotation.Attribute("event_id").Value, out id))
+                        throw new ArgumentException(string.Format("Annotation has incorrect value of attribute \'{0}\' = \'{1}\'.",
+                            "id", XAnnotation.Attribute("id").Value));
+
+                    Annotation annotation = new Annotation(id);
+
+                    foreach (XElement XWord in XAnnotation.Elements("word"))
+                    {
+                        AnnotationWord word = new AnnotationWord(XWord.Value);
+
+                        if (XWord.Attribute("event") != null && !int.TryParse(XWord.Attribute("event").Value, out word.event_id))
+                            throw new ArgumentException(string.Format("Annotation word \"{0}\" attribute \'{1}\' contains incorrect value : {2}.",
+                                XWord.Value, "event", XWord.Attribute("event").Value));
+
+                        if (XWord.Attribute("drop_type") != null && XWord.Attribute("drop") != null)
+                        {
+                            word.drop_type = XWord.Attribute("drop_type").Value;
+                            if (!int.TryParse(XWord.Attribute("drop").Value, out word.drop_id))
+                                throw new ArgumentException(string.Format("Story word \"{0}\" attribute \'{1}\' contains incorrect value : {2}.",
+                                XWord.Value, "drop", XWord.Attribute("drop").Value));
+                        }
+
+                        annotation.words.Add(word);
+                    }
+                    annotations.Add(annotation);
+                }
+            }
+        }
+
+        //load events
+        {
+            if (room.Element("events") != null)
+            {
+                foreach (XElement XEvent in room.Element("events").Elements("event"))
+                {
+                    int event_id = -1;
+                    EventType event_type = EventType.EMPTY;
+
+                    if (XEvent.Attribute("event_id") == null)
+                        throw new ArgumentException(string.Format("Event does not contains attribute \'{0}\'.", "event_id"));
+
+                    if (!int.TryParse(XEvent.Attribute("event_id").Value, out event_id))
+                        throw new ArgumentException(string.Format("Event has incorrect value of attribute \'{0}\' = \'{1}\'.",
+                            "event_id", XEvent.Attribute("event_id").Value));
+
+                    if (XEvent.Attribute("event_type") == null)
+                        throw new ArgumentException(string.Format("Event does not contains attribute \'{0}\'. Event id = {1}", "event_type", event_id));
+
+                    if ((event_type = Event.ParseEventType(XEvent.Attribute("event_id").Value)) == EventType.EMPTY)
+                        throw new ArgumentException(string.Format("Event has incorrect value of attribute \'{0}\' = \'{1}\'. Event id = {2}",
+                            "event_type", XEvent.Attribute("event_type").Value, event_id));
+
+                    Event @event = new Event(event_id, event_type);
+
+                    foreach (XAttribute attr in XEvent.Attributes().ToList().Where(a => a.Name != "event_id" && a.Name != "event_type"))
+                    {
+                        if (@event.attributes.ContainsKey(attr.Name.ToString()))
+                            throw new ArgumentException(string.Format("Event has too much attributes \'{0}\'. Event id = {1} type = {2}",
+                            attr.Name, @event.event_id, @event.event_type));
+
+                        @event.attributes.Add(attr.Name.ToString(), attr.Value);
+                    }
+
+                    events.Add(@event);
+                }
+            }
+        }
+
+        return new Room(room_name, room_type, story.ToArray(), annotations.ToArray(), events.ToArray());
     }
 
 
@@ -345,51 +379,49 @@ public struct Item
     }
 }
 
-public enum WordType { EMPTY, REGULAR, SEPARATOR, BUTTON }
-
-public enum StoryType { EMPTY, COMMON, BEFORE_BATTLE, BATTLE }
+public enum RoomType { EMPTY, COMMON, BEFORE_BATTLE, BATTLE }
 
 public struct StoryWord
 {
-    public string word;
-    public WordType type;
-    public int annotation_id, event_id;
+    public string word, drop_type;
+    public int annotation_id, event_id, drop_id;
 
-    public StoryWord(string word, WordType type, int annotation_id, int event_id)
+    public StoryWord(string word)
     {
         this.word = word;
-        this.type = type;
-        this.annotation_id = annotation_id;
-        this.event_id = event_id;
+        drop_type = "";
+        annotation_id = -1;
+        event_id = -1;
+        drop_id = -1;
     }
 
     public static StoryWord Empty
     {
         get
         {
-            return new StoryWord("", WordType.EMPTY, -1, -1);
+            return new StoryWord("");
         }
     }
 }
 
 public struct AnnotationWord
 {
-    public string word;
-    public WordType type;
-    public int event_id;
+    public string word, drop_type;
+    public int event_id, drop_id;
 
-    public AnnotationWord(string word, WordType type, int event_id)
+    public AnnotationWord(string word)
     {
         this.word = word;
-        this.type = type;
-        this.event_id = event_id;
+        this.event_id = -1;
+        this.drop_type = "";
+        this.drop_id = -1;
     }
 
     public static AnnotationWord Empty
     {
         get
         {
-            return new AnnotationWord("", WordType.EMPTY, -1);
+            return new AnnotationWord("");
         }
     }
 }
@@ -397,19 +429,19 @@ public struct AnnotationWord
 public struct Annotation
 {
     public int id;
-    public AnnotationWord[] words;
+    public List<AnnotationWord> words;
 
-    public Annotation(int id, AnnotationWord[] words)
+    public Annotation(int id)
     {
         this.id = id;
-        this.words = words;
+        this.words = new List<AnnotationWord>();
     }
 
     public static Annotation Empty
     {
         get
         {
-            return new Annotation(-1, new AnnotationWord[0]);
+            return new Annotation(-1);
         }
     }
 }
@@ -417,12 +449,12 @@ public struct Annotation
 public struct Room
 {
     public string name;
-    public StoryType type;
+    public RoomType type;
     public StoryWord[] story;
     public Annotation[] annotations;
     public Event[] events;
 
-    public Room(string name, StoryType type, StoryWord[] story, Annotation[] annotations, Event[] events)
+    public Room(string name, RoomType type, StoryWord[] story, Annotation[] annotations, Event[] events)
     {
         this.name = name;
         this.type = type;
@@ -435,7 +467,7 @@ public struct Room
     {
         get
         {
-            return new Room("", StoryType.EMPTY, new StoryWord[0], new Annotation[0], new Event[0]);
+            return new Room("", RoomType.EMPTY, new StoryWord[0], new Annotation[0], new Event[0]);
         }
     }
 }

@@ -1,0 +1,6 @@
+<root>
+	<item name="*" type="star"/>
+	<item name="apple" type="food" value="5"/>
+	<item name="water" type="drink" value="5" stat="persistence"/>
+	<item name="passkey" type="picklock"/>
+</root>

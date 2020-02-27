@@ -156,7 +156,7 @@ public class EventController : MonoBehaviour
     }
 }
 
-public enum EventType { EMPTY, NEXT, ITEM, WINDOW, STAT }
+public enum EventType { EMPTY, NEXT, ITEM, WINDOW, STAT, CONDITION, CCONDITION }
 public enum StatType { EMPTY, STRENGTH, PERSISTENCE, AGILITY, ATTENTION }
 
 public struct WindowWord
@@ -171,34 +171,21 @@ public struct WindowWord
 
 public struct Event
 {
+    // core parameters
     public int event_id;
     public EventType event_type;
-    public string room_name;
-    public string item_name;
-    public int item_count;
-    public int item_chance;
-    public StatType stat_type;
-    public int stat_value;
-    public int stat_id;
-    public WindowWord[] window_words;
+    public Dictionary<string, string> attributes;
 
-    public Event(int event_id, EventType event_type, string room_name, string item_name, int item_count, int item_chance, StatType stat_type, int stat_value, int stat_id, WindowWord[] window_words)
+    public Event(int event_id, EventType event_type)
     {
         this.event_id = event_id;
         this.event_type = event_type;
-        this.room_name = room_name;
-        this.item_name = item_name;
-        this.item_count = item_count;
-        this.item_chance = item_chance;
-        this.stat_type = stat_type;
-        this.stat_value = stat_value;
-        this.stat_id = stat_id;
-        this.window_words = window_words;
+        attributes = new Dictionary<string, string>();
     }
 
     public static Event Empty()
     {
-        return new Event(-1, EventType.EMPTY, "", "", -1, -1, StatType.EMPTY, -1, -1, new WindowWord[0]);
+        return new Event(-1, EventType.EMPTY);
     }
 
     public static EventType ParseEventType(string type)
@@ -207,21 +194,11 @@ public struct Event
         {
             case "next": return EventType.NEXT;
             case "item": return EventType.ITEM;
+            case "condition": return EventType.CONDITION;
+            case "ccondition": return EventType.CCONDITION;
             case "stat": return EventType.STAT;
             case "window": return EventType.WINDOW;
             default: return EventType.EMPTY;
-        }
-    }
-
-    public static StatType ParseStatType(string type)
-    {
-        switch (type)
-        {
-            case "strength": return StatType.STRENGTH;
-            case "persistence": return StatType.PERSISTENCE;
-            case "agility": return StatType.AGILITY;
-            case "attention": return StatType.ATTENTION;
-            default: return StatType.EMPTY;
         }
     }
 }
@@ -305,11 +282,11 @@ public class DoItem : IDo
             chance -= pair.Value;
             if (chance <= 0)
             {
-                Inventory.Instance.AddItem(new Item(item.name, pair.Key));
+                HeroController.Instance.AddItem(new Item(item.name, pair.Key));
                 return;
             }
         }
-        Inventory.Instance.AddItem(new Item(item.name, item.dict.Keys.Last()));
+        HeroController.Instance.AddItem(new Item(item.name, item.dict.Keys.Last()));
     }
 }
 

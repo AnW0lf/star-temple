@@ -78,7 +78,7 @@ public class StoryWordController : MonoBehaviour, IDropHandler
     {
         if(!annotated && DragHelper.Instance.item.Item.name == Helper.Star.name)
         {
-            Inventory.Instance.SubtractItem(new Item(Helper.Star.name, -1));
+            HeroController.Instance.SubtractItem(new Item(Helper.Star.name, -1));
             txt.text += Helper.Star.name;
             annotated = true;
             story.AddAnnotation(annotation_id);

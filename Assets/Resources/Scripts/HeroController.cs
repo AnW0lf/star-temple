@@ -9,7 +9,28 @@ public class HeroController : MonoBehaviour
     public RectTransform rect;
     public Text heroNameTxt, levelTxt, moneyTxt, descriptionTxt;
 
+    [Header("Inventory")]
+    public Inventory inventory;
+
+    public static HeroController Instance { get; private set; } = null;
+
     private Hero hero = Hero.Empty("");
+
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+    }
+
+    public void AddItem(Item item)
+    {
+        inventory.AddItem(item);
+    }
+
+    public void SubtractItem(Item item)
+    {
+        inventory.SubtractItem(item);
+    }
 
     public Hero Hero
     {

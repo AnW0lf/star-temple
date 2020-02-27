@@ -400,7 +400,7 @@ RectTransform:
   - {fileID: 926587635}
   - {fileID: 1104781576}
   m_Father: {fileID: 59612261}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -551,8 +551,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 304940648647108250}
   - {fileID: 25695266}
+  - {fileID: 304940648647108250}
   m_Father: {fileID: 1482236379}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4583,7 +4583,7 @@ RectTransform:
   - {fileID: 3412393654808265481}
   - {fileID: 2301144826374557786}
   m_Father: {fileID: 59612261}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -4656,6 +4656,7 @@ MonoBehaviour:
   levelTxt: {fileID: 6808858362138590989}
   moneyTxt: {fileID: 3179306140146829624}
   descriptionTxt: {fileID: 1945271202683712944}
+  inventory: {fileID: 200236985}
 --- !u!114 &1071469601750774659
 MonoBehaviour:
   m_ObjectHideFlags: 0
