@@ -10,7 +10,8 @@ public class AnnotationWordController : MonoBehaviour
     [SerializeField]
     private Text txt;
     private Button btn;
-    private int event_id;
+    private int event_id = -1, drop_id = -1;
+    private string drop_type = "";
     public AnnotationWord word { get; private set; }
 
     private void Awake()
@@ -39,25 +40,42 @@ public class AnnotationWordController : MonoBehaviour
         this.word = word;
         txt.text = word.word;
         event_id = word.event_id;
-        switch (word.type)
+        drop_id = word.drop_id;
+        drop_type = word.drop_type;
+
+        if (drop_id > 0 && event_id > 0)
         {
-            case WordType.REGULAR:
-                txt.fontStyle = FontStyle.Italic;
-                txt.raycastTarget = true;
-                btn.interactable = false;
-                break;
-            case WordType.SEPARATOR:
-                txt.fontStyle = FontStyle.Italic;
-                txt.raycastTarget = false;
-                btn.interactable = false;
-                break;
-            case WordType.BUTTON:
-                txt.fontStyle = FontStyle.BoldAndItalic;
-                txt.raycastTarget = true;
-                btn.interactable = true;
-                btn.onClick.AddListener(() => btn.interactable = false);
-                btn.onClick.AddListener(() => EventController.Instance.Execute(event_id));
-                break;
+            txt.fontStyle = FontStyle.BoldAndItalic;
+            txt.raycastTarget = true;
+            btn.interactable = true;
+
+            btn.onClick.AddListener(() => btn.interactable = false);
+            btn.onClick.AddListener(() => EventController.Instance.Execute(event_id));
+        }
+        else if (drop_id > 0)
+        {
+            txt.fontStyle = FontStyle.Italic;
+            txt.raycastTarget = true;
+            btn.interactable = false;
+
+            btn.onClick.RemoveAllListeners();
+        }
+        else if (event_id > 0)
+        {
+            txt.fontStyle = FontStyle.BoldAndItalic;
+            txt.raycastTarget = true;
+            btn.interactable = true;
+
+            btn.onClick.AddListener(() => btn.interactable = false);
+            btn.onClick.AddListener(() => EventController.Instance.Execute(event_id));
+        }
+        else
+        {
+            txt.fontStyle = FontStyle.Italic;
+            txt.raycastTarget = false;
+            btn.interactable = false;
+
+            btn.onClick.RemoveAllListeners();
         }
     }
 

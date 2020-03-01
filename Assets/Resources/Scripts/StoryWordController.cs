@@ -12,7 +12,8 @@ public class StoryWordController : MonoBehaviour, IDropHandler
     [SerializeField]
     private Text txt;
     private Button btn;
-    private int annotation_id, event_id;
+    private int annotation_id, event_id, drop_id;
+    private string drop_type = "";
     public StoryWord word { get; private set; }
 
     private bool annotated = false;
@@ -50,27 +51,44 @@ public class StoryWordController : MonoBehaviour, IDropHandler
     {
         this.word = word;
         txt.text = word.word;
+        drop_type = word.drop_type;
+        drop_id = word.drop_id;
         annotation_id = word.annotation_id;
         event_id = word.event_id;
-        switch (word.type)
+
+        if (drop_id > 0 && event_id > 0)
         {
-            case WordType.REGULAR:
-                txt.fontStyle = FontStyle.Normal;
-                txt.raycastTarget = true;
-                btn.interactable = false;
-                break;
-            case WordType.SEPARATOR:
-                txt.fontStyle = FontStyle.Normal;
-                txt.raycastTarget = false;
-                btn.interactable = false;
-                break;
-            case WordType.BUTTON:
-                txt.fontStyle = FontStyle.Bold;
-                txt.raycastTarget = true;
-                btn.interactable = true;
-                btn.onClick.AddListener(() => btn.interactable = false);
-                btn.onClick.AddListener(() => EventController.Instance.Execute(event_id));
-                break;
+            txt.fontStyle = FontStyle.Bold;
+            txt.raycastTarget = true;
+            btn.interactable = true;
+
+            btn.onClick.AddListener(() => btn.interactable = false);
+            btn.onClick.AddListener(() => EventController.Instance.Execute(event_id));
+        }
+        else if (drop_id > 0 || annotation_id > 0)
+        {
+            txt.fontStyle = FontStyle.Normal;
+            txt.raycastTarget = true;
+            btn.interactable = false;
+
+            btn.onClick.RemoveAllListeners();
+        }
+        else if (event_id > 0)
+        {
+            txt.fontStyle = FontStyle.Bold;
+            txt.raycastTarget = true;
+            btn.interactable = true;
+
+            btn.onClick.AddListener(() => btn.interactable = false);
+            btn.onClick.AddListener(() => EventController.Instance.Execute(event_id));
+        }
+        else
+        {
+            txt.fontStyle = FontStyle.Normal;
+            txt.raycastTarget = false;
+            btn.interactable = false;
+
+            btn.onClick.RemoveAllListeners();
         }
     }
 

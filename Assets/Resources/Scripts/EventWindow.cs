@@ -5,9 +5,8 @@ using UnityEngine.UI;
 
 public class EventWindow : MonoBehaviour
 {
-    public GameObject wordPrefab;
     public GameObject window;
-    public Transform content;
+    public Text content;
 
     public static EventWindow Instance = null;
 
@@ -17,14 +16,9 @@ public class EventWindow : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    public void ShowWindow(WindowWord[] words)
+    public void ShowWindow(string text)
     {
-        for (int i = content.childCount - 1; i >= 0; i++)
-            Destroy(content.GetChild(i).gameObject);
-
-        foreach (var word in words)
-            Instantiate(wordPrefab, content).GetComponent<Text>().text = word.word;
-
+        content.text = text;
         window.SetActive(true);
     }
 }
