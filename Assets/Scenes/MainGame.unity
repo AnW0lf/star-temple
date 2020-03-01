@@ -1691,8 +1691,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 498369601}
-  - component: {fileID: 498369603}
   - component: {fileID: 498369604}
+  - component: {fileID: 498369603}
+  - component: {fileID: 498369602}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -1716,9 +1717,23 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 25, y: -100}
-  m_SizeDelta: {x: 950, y: 100}
+  m_AnchoredPosition: {x: 25, y: 0}
+  m_SizeDelta: {x: 950, y: 78}
   m_Pivot: {x: 0, y: 1}
+--- !u!114 &498369602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 498369600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!114 &498369603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1728,15 +1743,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 498369600}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4622aa05732aebb4ba96880d7c68ecd9, type: 3}
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  verticalSpacing: 20
-  horizontalSpacing: 0
-  topPadding: 75
-  bottomPadding: 75
-  orientation: 0
-  resize: 1
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.254717, g: 0.254717, b: 0.254717, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 70
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 80
+    m_Alignment: 0
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 
 --- !u!222 &498369604
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2754,10 +2785,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10c90588a61fd6547b91be4b28e5f380, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wordPrefab: {fileID: 7365532107781327341, guid: e914cb09aae2ade439e57bdbb3187ab0,
-    type: 3}
   window: {fileID: 1020776677}
-  content: {fileID: 498369601}
+  content: {fileID: 498369603}
 --- !u!1 &1099405943
 GameObject:
   m_ObjectHideFlags: 0

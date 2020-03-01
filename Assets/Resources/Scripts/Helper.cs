@@ -250,7 +250,7 @@ public class Helper : MonoBehaviour
                     if (XAnnotation.Attribute("id") == null)
                         throw new ArgumentException(string.Format("Annotation does not contains attribute \'{0}\'.", "id"));
 
-                    if (!int.TryParse(XAnnotation.Attribute("event_id").Value, out id))
+                    if (!int.TryParse(XAnnotation.Attribute("id").Value, out id))
                         throw new ArgumentException(string.Format("Annotation has incorrect value of attribute \'{0}\' = \'{1}\'.",
                             "id", XAnnotation.Attribute("id").Value));
 
@@ -298,8 +298,8 @@ public class Helper : MonoBehaviour
                     if (XEvent.Attribute("event_type") == null)
                         throw new ArgumentException(string.Format("Event does not contains attribute \'{0}\'. Event id = {1}", "event_type", event_id));
 
-                    if ((event_type = Event.ParseEventType(XEvent.Attribute("event_id").Value)) == EventType.EMPTY)
-                        throw new ArgumentException(string.Format("Event has incorrect value of attribute \'{0}\' = \'{1}\'. Event id = {2}",
+                    if ((event_type = Event.ParseEventType(XEvent.Attribute("event_type").Value)) == EventType.EMPTY)
+                        throw new ArgumentException(string.Format("Event has incorrect value of attribute \'{0}\' = \'{1}\'. Event id = {2}.",
                             "event_type", XEvent.Attribute("event_type").Value, event_id));
 
                     Event @event = new Event(event_id, event_type);

@@ -218,14 +218,14 @@ public class EventController : MonoBehaviour
 
     private void TryParse(Event @event, string attribute_name, out int value)
     {
-        if (int.TryParse(@event.attributes[attribute_name], out value))
+        if (!int.TryParse(@event.attributes[attribute_name], out value))
             throw new ArgumentException(string.Format("Event attribute \'{0}\' has incorrect value \'{1}\'. Event id = {2}",
                 attribute_name, @event.attributes[attribute_name], @event.event_id));
     }
 
     private void TryParse(Event @event, string attribute_name, out float value)
     {
-        if (float.TryParse(@event.attributes[attribute_name], out value))
+        if (!float.TryParse(@event.attributes[attribute_name], out value))
             throw new ArgumentException(string.Format("Event attribute \'{0}\' has incorrect value \'{1}\'. Event id = {2}",
                 attribute_name, @event.attributes[attribute_name], @event.event_id));
     }
