@@ -40,7 +40,7 @@ public class StoryWordController : MonoBehaviour, IDropHandler
 
     private IEnumerator Showing(float increment)
     {
-        while(txt.color.a < 1f)
+        while (txt.color.a < 1f)
         {
             txt.color += new Color(0f, 0f, 0f, increment * Time.deltaTime);
             yield return null;
@@ -94,12 +94,21 @@ public class StoryWordController : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        if (!annotated && DragHelper.Instance.item.item.name == Helper.Star.name)
+        ItemController droppedItem = DragHelper.Instance.item;
+        if (droppedItem != null)
         {
-            HeroController.Instance.SubtractItem(new Item(Helper.Star.name, -1));
-            txt.text += Helper.Star.name;
-            annotated = true;
-            story.AddAnnotation(annotation_id);
+            if (!annotated && droppedItem.item.name == Helper.Star.name)
+            {
+                HeroController.Instance.SubtractItem(new Item(droppedItem.item.name, -1));
+                txt.text += droppedItem.item.name;
+                annotated = true;
+                story.AddAnnotation(annotation_id);
+            }
+            else if (drop_type == Helper.Instance.GetItemType(droppedItem.item.name))
+            {
+                HeroController.Instance.SubtractItem(new Item(droppedItem.item.name, -1));
+                EventController.Instance.Execute(drop_id);
+            }
         }
     }
 

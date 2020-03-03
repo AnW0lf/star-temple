@@ -10,7 +10,7 @@ public class Helper : MonoBehaviour
 {
     public static Helper Instance = null;
 
-    public static readonly Item Star = new Item("*", 0);
+    public static readonly Item Star = new Item("*", "star", 0);
 
     private string directoryPath, heroPath;
 
@@ -328,6 +328,30 @@ public class Helper : MonoBehaviour
         return new Room(room_name, room_type, story.ToArray(), annotations.ToArray(), events.ToArray());
     }
 
+    public string GetItemType(string name)
+    {
+        XElement root = null;
+
+        string path = directoryPath + @"/item.xml";
+
+        if (!File.Exists(path))
+            throw new FileNotFoundException(string.Format("File {0} not found. Check it and try again.", path));
+
+        root = XDocument.Parse(File.ReadAllText(path)).Root;
+
+        string type = "";
+
+        foreach (XElement item in root.Elements("item"))
+        {
+            if(item.Attribute("name") != null && item.Attribute("name").Value == name)
+            {
+                if (item.Attribute("type") != null) type = item.Attribute("type").Value;
+                return type;
+            }
+        }
+
+        return type;
+    }
 
 }
 
