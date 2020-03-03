@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using Random = UnityEngine.Random;
 
 public class StoryController : MonoBehaviour
 {
@@ -59,14 +60,27 @@ public class StoryController : MonoBehaviour
 
     public void AddAnnotation(int index)
     {
-        if (room.annotations.ToList().Where(a => a.id == index).Count() > 0)
+        List<Annotation> indexed;
+        if ((indexed = room.annotations.ToList().FindAll(a => a.id == index)).Count() > 0)
         {
-            Annotation annotation = room.annotations.ToList().Find(a => a.id == index);
+            Annotation annotation = indexed.Last();
+            int max = 1 + indexed.Sum(i => i.chance);
+            int rnd = Random.Range(0, max);
+            foreach(Annotation i in indexed)
+            {
+                rnd -= i.chance;
+                if(rnd <= 0)
+                {
+                    annotation = i;
+                    break;
+                }
+            }
+
             annotations.AddAnnotation(annotation);
         }
         else
         {
-            print("Not found!!!");
+            print(string.Format("Annotation with id {0} not found.", index));
         }
     }
 }

@@ -245,7 +245,7 @@ public class Helper : MonoBehaviour
             {
                 foreach (XElement XAnnotation in room.Element("annotations").Elements("annotation"))
                 {
-                    int id = -1;
+                    int id = -1, chance = 0;
 
                     if (XAnnotation.Attribute("id") == null)
                         throw new ArgumentException(string.Format("Annotation does not contains attribute \'{0}\'.", "id"));
@@ -254,7 +254,14 @@ public class Helper : MonoBehaviour
                         throw new ArgumentException(string.Format("Annotation has incorrect value of attribute \'{0}\' = \'{1}\'.",
                             "id", XAnnotation.Attribute("id").Value));
 
-                    Annotation annotation = new Annotation(id);
+                    if (XAnnotation.Attribute("chance") == null)
+                        throw new ArgumentException(string.Format("Annotation does not contains attribute \'{0}\'.", "chance"));
+
+                    if (!int.TryParse(XAnnotation.Attribute("chance").Value, out chance))
+                        throw new ArgumentException(string.Format("Annotation has incorrect value of attribute \'{0}\' = \'{1}\'.",
+                            "chance", XAnnotation.Attribute("chance").Value));
+
+                    Annotation annotation = new Annotation(id, chance);
 
                     foreach (XElement XWord in XAnnotation.Elements("word"))
                     {
@@ -428,12 +435,13 @@ public struct AnnotationWord
 
 public struct Annotation
 {
-    public int id;
+    public int id, chance;
     public List<AnnotationWord> words;
 
-    public Annotation(int id)
+    public Annotation(int id, int chance)
     {
         this.id = id;
+        this.chance = chance;
         this.words = new List<AnnotationWord>();
     }
 
@@ -441,7 +449,7 @@ public struct Annotation
     {
         get
         {
-            return new Annotation(-1);
+            return new Annotation(-1, 0);
         }
     }
 }
