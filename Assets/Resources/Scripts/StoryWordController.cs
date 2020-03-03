@@ -94,7 +94,7 @@ public class StoryWordController : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        if(!annotated && DragHelper.Instance.item.Item.name == Helper.Star.name)
+        if (!annotated && DragHelper.Instance.item.item.name == Helper.Star.name)
         {
             HeroController.Instance.SubtractItem(new Item(Helper.Star.name, -1));
             txt.text += Helper.Star.name;

@@ -4,7 +4,7 @@
 		<word type="regular" annotation="2"> Храм</word>
 	</story>
 	<annotations>
-		<annotation id="1">
+		<annotation id="1" chance="10">
 			<word type="regular">* Звездный</word>
 			<word type="separator"> - </word>
 			<word type="regular">когда</word>
@@ -44,7 +44,7 @@
 			<word type="regular"> 'Храм'</word>
 			<word type="separator">.</word>
 		</annotation>
-		<annotation id="2">
+		<annotation id="2" chance="10">
 			<word type="regular">* Храм</word>
 			<word type="separator"> - </word>
 			<word type="regular">бесконечный</word>

@@ -31,7 +31,7 @@
 		<word type="separator">.</word>
 	</story>
 	<annotations>
-		<annotation id="1">
+		<annotation id="1" chance="10">
 			<word type="regular">* На </word>
 			<word type="separator"> - </word>
 			<word type="regular"> Хитрый</word>
@@ -51,7 +51,7 @@
 			<word type="regular"> на</word>
 			<word type="separator">.</word>
 		</annotation>
-		<annotation id="2">
+		<annotation id="2" chance="10">
 			<word type="regular">* Полу </word>
 			<word type="separator">-</word>
 			<word type="regular"> Пол</word>
@@ -74,7 +74,7 @@
 			<word type="regular"> выделяются</word>
 			<word type="separator">.</word>
 		</annotation>
-		<annotation id="3">
+		<annotation id="3" chance="10">
 			<word type="regular">* Вы </word>
 			<word type="separator">-</word>
 			<word type="regular"> Очередной</word>
@@ -88,7 +88,7 @@
 			<word type="regular"> Храма</word>
 			<word type="separator">.</word>
 		</annotation>
-		<annotation id="4">
+		<annotation id="4" chance="10">
 			<word type="regular">* Видите </word>
 			<word type="separator">-</word>
 			<word type="regular"> Помните</word>
@@ -108,7 +108,7 @@
 			<word type="regular"> неочевидное</word>
 			<word type="separator">!</word>
 		</annotation>
-		<annotation id="5">
+		<annotation id="5" chance="10">
 			<word type="regular">* 5 </word>
 			<word type="separator">-</word>
 			<word type="regular"> Вы</word>
@@ -131,7 +131,7 @@
 			<word type="button" event="2"> звезда</word>
 			<word type="separator">.</word>
 		</annotation>
-		<annotation id="6">
+		<annotation id="6" chance="10">
 			<word type="regular">* Платформ </word>
 			<word type="separator">-</word>
 			<word type="regular"> Выглядят</word>
@@ -159,7 +159,7 @@
 			<word type="regular"> случится</word>
 			<word type="separator">.</word>
 		</annotation>
-		<annotation id="7">
+		<annotation id="7" chance="10">
 			<word type="regular">* Красную </word>
 			<word type="separator">-</word>
 			<word type="regular"> Вы</word>
@@ -176,7 +176,7 @@
 			<word type="regular"> бумажка</word>
 			<word type="separator">.</word>
 		</annotation>
-		<annotation id="8">
+		<annotation id="8" chance="10">
 			<word type="regular">* Синюю </word>
 			<word type="separator">-</word>
 			<word type="regular"> Вы</word>
@@ -207,7 +207,7 @@
 			<word type="regular"> сундук</word>
 			<word type="separator">.</word>
 		</annotation>
-		<annotation id="10">
+		<annotation id="10" chance="10">
 			<word type="regular">* Зеленую </word>
 			<word type="separator">-</word>
 			<word type="regular"> Вы</word>
@@ -237,7 +237,7 @@
 			<word type="regular"> обратно</word>
 			<word type="separator">.</word>
 		</annotation>
-		<annotation id="11">
+		<annotation id="11" chance="10">
 			<word type="regular">* Желтую </word>
 			<word type="separator">-</word>
 			<word type="regular"> Вы</word>
@@ -262,7 +262,7 @@
 			<word type="regular"> исчезает</word>
 			<word type="separator">.</word>
 		</annotation>
-		<annotation id="12">
+		<annotation id="12" chance="10">
 			<word type="regular">* И </word>
 			<word type="separator">-</word>
 			<word type="regular"> "И, и, и"</word>
@@ -290,7 +290,7 @@
 			<word type="regular"> И</word>
 			<word type="separator">.</word>
 		</annotation>
-		<annotation id="13">
+		<annotation id="13" chance="10">
 			<word type="regular">* Белую </word>
 			<word type="separator">-</word>
 			<word type="regular"> Вы</word>
@@ -317,7 +317,7 @@
 			<word type="regular"> записка</word>
 			<word type="separator">.</word>
 		</annotation>
-		<annotation id="14">
+		<annotation id="14" chance="10">
 			<word type="regular">* За </word>
 			<word type="regular"> ними</word>
 			<word type="separator">-</word>
@@ -340,7 +340,7 @@
 			<word type="regular"> буквы</word>
 			<word type="separator">.</word>
 		</annotation>
-		<annotation id="15">
+		<annotation id="15" chance="10">
 			<word type="regular">* Дверь </word>
 			<word type="separator">-</word>
 			<word type="regular"> Это</word>
@@ -366,7 +366,7 @@
 			<word type="regular"> хотите</word>
 			<word type="button" event="1"> пролезть в него.</word>
 		</annotation>
-		<annotation id="16">
+		<annotation id="16" chance="10">
 			<word type="regular">* Вы </word>
 			<word type="separator">-</word>
 			<word type="regular"> Очередной</word>
@@ -380,7 +380,7 @@
 			<word type="regular"> Храма</word>
 			<word type="separator">.</word>
 		</annotation>
-		<annotation id="17">
+		<annotation id="17" chance="10">
 			<word type="regular">* Легко </word>
 			<word type="separator">-</word>
 			<word type="regular"> Думаете</word>
@@ -404,7 +404,7 @@
 			<word type="regular"> понравится</word>
 			<word type="separator">!</word>
 		</annotation>
-		<annotation id="18">
+		<annotation id="18" chance="10">
 			<word type="regular">* Можете </word>
 			<word type="separator">-</word>
 			<word type="regular"> Помните</word>
@@ -420,7 +420,7 @@
 			<word type="regular"> все</word>
 			<word type="separator">!</word>
 		</annotation>
-		<annotation id="19">
+		<annotation id="19" chance="10">
 			<word type="regular">* Перепрыгнуть </word>
 			<word type="separator">-</word>
 			<word type="regular"> Вы</word>
@@ -448,7 +448,7 @@
 			<word type="regular"> скорее</word>
 			<word type="separator">!</word>
 		</annotation>
-		<annotation id="20">
+		<annotation id="20" chance="10">
 			<word type="regular">* Платформы </word>
 			<word type="separator">-</word>
 			<word type="regular"> Выглядят</word>
@@ -476,7 +476,7 @@
 			<word type="regular"> случится</word>
 			<word type="separator">.</word>
 		</annotation>
-		<annotation id="21">
+		<annotation id="21" chance="10">
 			<word type="regular">* И</word>
 			<word type="regular"> выйти </word>
 			<word type="separator">-</word>

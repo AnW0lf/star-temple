@@ -14,6 +14,8 @@ public class EventWindow : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
+
+        DontDestroyOnLoad(gameObject);
     }
 
     public void ShowWindow(string text)

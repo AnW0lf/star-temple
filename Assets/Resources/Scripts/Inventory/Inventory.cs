@@ -29,7 +29,7 @@ public class Inventory : MonoBehaviour
     public void AddItem(Item item)
     {
         ItemController existItem;
-        if ((existItem = items.Find(i => i.Item.name.Equals(item.name))) != null)
+        if ((existItem = items.Find(i => i.item.name.Equals(item.name))) != null)
         {
             existItem.ChangeCount(item.count);
         }
@@ -44,7 +44,7 @@ public class Inventory : MonoBehaviour
     public void SubtractItem(Item item)
     {
         ItemController existItem;
-        if ((existItem = items.Find(i => i.Item.name.Equals(item.name))) != null)
+        if ((existItem = items.Find(i => i.item.name.Equals(item.name))) != null)
         {
             existItem.ChangeCount(item.count);
             if (existItem.Count <= 0)

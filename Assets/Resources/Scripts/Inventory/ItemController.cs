@@ -7,9 +7,10 @@ using UnityEngine.UI;
 public class ItemController : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     public Text itemNameTxt, countTxt;
-    public Item Item { get; private set; }
-    public string ItemName { get; private set; }
-    public int Count { get; private set; }
+    [HideInInspector]
+    public Item item;
+    public string ItemName { get { return item.name; } }
+    public int Count { get { return item.count; } private set { item.count = value; } }
 
     private Transform container;
     private Transform grandparent;
@@ -21,9 +22,7 @@ public class ItemController : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
 
     public void Fill(Item item)
     {
-        this.Item = item;
-        ItemName = this.Item.name;
-        Count = this.Item.count;
+        this.item = item;
         itemNameTxt.text = ItemName;
         countTxt.text = Count.ToString();
     }
@@ -51,9 +50,10 @@ public class ItemController : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
     public void OnEndDrag(PointerEventData eventData)
     {
         transform.SetParent(container);
-        if (Item.name.Equals(Helper.Star.name))
+        if (item.name.Equals(Helper.Star.name))
             transform.SetAsFirstSibling();
         countTxt.enabled = true;
         itemNameTxt.raycastTarget = true;
+        DragHelper.Instance.item = null;
     }
 }
