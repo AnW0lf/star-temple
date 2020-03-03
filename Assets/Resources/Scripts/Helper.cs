@@ -10,7 +10,7 @@ public class Helper : MonoBehaviour
 {
     public static Helper Instance = null;
 
-    public static readonly Item Star = new Item("*", "star", 0);
+    public static readonly Item Star = new Item("*", 0);
 
     private string directoryPath, heroPath;
 
