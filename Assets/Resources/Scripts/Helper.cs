@@ -12,7 +12,7 @@ public class Helper : MonoBehaviour
 
     public static readonly Item Star = new Item("*", 0);
 
-    private string directoryPath, heroPath;
+    private string directoryPath, heroPath, itemPath, roomPath;
 
     void Awake()
     {
@@ -23,8 +23,14 @@ public class Helper : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
+#if UNITY_EDITOR
         directoryPath = Application.dataPath + @"/Resources/XML";
+#elif UNITY_ANDROID || UNITY_IOS
+    rootFolder = Application.persistentDataPath;
+#endif
         heroPath = directoryPath + @"/hero.xml";
+        itemPath = directoryPath + @"/item.xml";
+        roomPath = directoryPath + @"/{0}.xml";
     }
 
     public Hero CreateHero(string heroName)
@@ -165,7 +171,7 @@ public class Helper : MonoBehaviour
     {
         XElement room = null;
 
-        string path = directoryPath + @"/" + roomName + @".xml";
+        string path = directoryPath + string.Format(roomPath, roomName);
 
         if (!File.Exists(path))
             throw new FileNotFoundException(string.Format("File {0} not found. Check it and try again.", path));
@@ -332,7 +338,7 @@ public class Helper : MonoBehaviour
     {
         XElement root = null;
 
-        string path = directoryPath + @"/item.xml";
+        string path = itemPath;
 
         if (!File.Exists(path))
             throw new FileNotFoundException(string.Format("File {0} not found. Check it and try again.", path));
