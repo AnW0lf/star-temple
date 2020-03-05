@@ -234,7 +234,27 @@ public class EventController : MonoBehaviour
     {
         if (executable.ContainsKey(id))
         {
-            executable[id].ForEach(e => e.Do());
+            List<IDo> indexed = executable[id];
+            List<IDo> item = indexed.FindAll(i => i.event_type == EventType.ITEM);
+            List<IDo> stat = indexed.FindAll(i => i.event_type == EventType.STAT);
+            List<IDo> condition = indexed.FindAll(i => i.event_type == EventType.CONDITION);
+            List<IDo> ccondition = indexed.FindAll(i => i.event_type == EventType.CCONDITION);
+            List<IDo> window = indexed.FindAll(i => i.event_type == EventType.WINDOW);
+            List<IDo> next = indexed.FindAll(i => i.event_type == EventType.NEXT);
+
+            indexed = new List<IDo>();
+            indexed.AddRange(item);
+            indexed.AddRange(stat);
+            indexed.AddRange(condition);
+            indexed.AddRange(ccondition);
+            indexed.AddRange(window);
+            indexed.AddRange(next);
+
+            for (int i = 1; i < indexed.Count; i++)
+                indexed[i - 1].Link = indexed[i];
+
+            indexed.First().Do();
+
             print(string.Format("Execute id = {0}", id));
         }
         else
@@ -280,11 +300,16 @@ public struct Event
     }
 }
 
-interface IDo
+public interface IDo
 {
     int Id { get; set; }
+    IDo Link { get; set; }
 
     EventType event_type { get; }
+
+    void Condition();
+
+    void Next();
 
     void Do();
 }
@@ -294,6 +319,8 @@ public class DoNext : IDo
     private string roomName;
     private int id;
     private GameController game;
+    private IDo link;
+    public IDo Link { get => link; set => link = value; }
 
     public int Id { get => id; set => id = value; }
 
@@ -304,11 +331,24 @@ public class DoNext : IDo
         Id = id;
         this.roomName = roomName;
         this.game = game;
+        link = null;
     }
 
     public void Do()
     {
         game.NextRoom(roomName);
+        Condition();
+    }
+
+    public void Condition()
+    {
+        if (Link != null)
+            Next();
+    }
+
+    public void Next()
+    {
+        Link.Do();
     }
 }
 
@@ -317,6 +357,9 @@ public class DoItem : IDo
     private int id;
     private string item_name;
     private Dictionary<int, int> chances;
+    private IDo link;
+    public IDo Link { get => link; set => link = value; }
+
     public int Id { get => id; set => id = value; }
 
     public EventType event_type => EventType.ITEM;
@@ -326,6 +369,7 @@ public class DoItem : IDo
         Id = id;
         this.item_name = item_name;
         this.chances = new Dictionary<int, int>(chances);
+        link = null;
     }
 
     public void Do()
@@ -342,6 +386,18 @@ public class DoItem : IDo
             }
         }
         HeroController.Instance.AddItem(new Item(item_name, chances.Keys.Last()));
+        Condition();
+    }
+
+    public void Condition()
+    {
+        if (Link != null)
+            Next();
+    }
+
+    public void Next()
+    {
+        Link.Do();
     }
 }
 
@@ -351,12 +407,15 @@ public class DoStat : IDo
     private HeroController hero;
     private string stat_name;
     private Dictionary<int, int> chances;
+    private IDo link;
+    public IDo Link { get => link; set => link = value; }
 
     public DoStat(int id, string stat_name)
     {
         this.id = id;
         this.stat_name = stat_name;
         chances = new Dictionary<int, int>();
+        link = null;
     }
 
     public int Id { get => id; set => id = value; }
@@ -399,6 +458,18 @@ public class DoStat : IDo
                 HeroController.Instance.Money += value;
                 break;
         }
+        Condition();
+    }
+
+    public void Condition()
+    {
+        if (Link != null)
+            Next();
+    }
+
+    public void Next()
+    {
+        Link.Do();
     }
 }
 
@@ -406,11 +477,14 @@ public class DoWindow : IDo
 {
     private int id;
     private string text;
+    private IDo link;
+    public IDo Link { get => link; set => link = value; }
 
     public DoWindow(int id, string text)
     {
         this.id = id;
         this.text = text;
+        link = null;
     }
 
     public int Id { get => id; set => id = value; }
@@ -419,14 +493,27 @@ public class DoWindow : IDo
 
     public void Do()
     {
-        EventWindow.Instance.ShowWindow(text);
+        EventWindow.Instance.ShowWindow(text, this);
+    }
+
+    public void Condition()
+    {
+        if (Link != null)
+            Next();
+    }
+
+    public void Next()
+    {
+        Link.Do();
     }
 }
 
-public class DoCondition  : IDo
+public class DoCondition : IDo
 {
     private int id, min, max, trueId, falseId;
     private string stat_name, item_name;
+    private IDo link;
+    public IDo Link { get => link; set => link = value; }
 
     public DoCondition(int id, string stat_name, string item_name, int min, int max, int trueId, int falseId)
     {
@@ -437,6 +524,7 @@ public class DoCondition  : IDo
         this.falseId = falseId;
         this.stat_name = stat_name;
         this.item_name = item_name;
+        link = null;
     }
 
     public int Id { get => id; set => id = value; }
@@ -479,11 +567,23 @@ public class DoCondition  : IDo
         }
 
         EventController.Instance.Execute(win ? trueId : falseId);
+        Condition();
     }
 
     private bool InRange(int value, int min, int max)
     {
         return value >= min && value < max;
+    }
+
+    public void Condition()
+    {
+        if (Link != null)
+            Next();
+    }
+
+    public void Next()
+    {
+        Link.Do();
     }
 }
 
@@ -492,6 +592,8 @@ public class DoCCondition : IDo
     private int id, trueId, falseId;
     private float luck;
     private string stat_name, item_name;
+    private IDo link;
+    public IDo Link { get => link; set => link = value; }
 
     public DoCCondition(int id, float luck, string stat_name, string item_name, int trueId, int falseId)
     {
@@ -501,6 +603,7 @@ public class DoCCondition : IDo
         this.falseId = falseId;
         this.stat_name = stat_name;
         this.item_name = item_name;
+        link = null;
     }
 
     public int Id { get => id; set => id = value; }
@@ -544,5 +647,17 @@ public class DoCCondition : IDo
         }
 
         EventController.Instance.Execute(win ? trueId : falseId);
+        Condition();
+    }
+
+    public void Condition()
+    {
+        if (Link != null)
+            Next();
+    }
+
+    public void Next()
+    {
+        Link.Do();
     }
 }

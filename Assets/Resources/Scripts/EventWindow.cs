@@ -9,18 +9,26 @@ public class EventWindow : MonoBehaviour
     public Text content;
 
     public static EventWindow Instance = null;
+    private IDo link = null;
 
     private void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
-
-        DontDestroyOnLoad(gameObject);
     }
 
-    public void ShowWindow(string text)
+    public void ShowWindow(string text, IDo link)
     {
+        this.link = link;
         content.text = text;
         window.SetActive(true);
+    }
+
+    public void HideWindow()
+    {
+        content.text = "";
+        window.SetActive(false);
+        if (link != null)
+            link.Condition();
     }
 }
