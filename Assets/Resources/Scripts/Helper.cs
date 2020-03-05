@@ -26,7 +26,7 @@ public class Helper : MonoBehaviour
 #if UNITY_EDITOR
         directoryPath = Application.dataPath + @"/Resources/XML";
 #elif UNITY_ANDROID || UNITY_IOS
-    rootFolder = Application.persistentDataPath;
+		directoryPath = Application.persistentDataPath;
 #endif
         heroPath = directoryPath + @"/hero.xml";
         itemPath = directoryPath + @"/item.xml";
