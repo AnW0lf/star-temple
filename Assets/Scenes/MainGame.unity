@@ -2209,7 +2209,7 @@ MonoBehaviour:
   horizontalSpacing: 80
   topPadding: 0
   bottomPadding: 0
-  orientation: 1
+  orientation: 0
   resize: 0
 --- !u!1 &854313648
 GameObject:
