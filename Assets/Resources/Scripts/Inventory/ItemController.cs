@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ItemController : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class ItemController : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler
 {
     public Text itemNameTxt, countTxt;
     [HideInInspector]
@@ -55,5 +55,10 @@ public class ItemController : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
         countTxt.enabled = true;
         itemNameTxt.raycastTarget = true;
         DragHelper.Instance.item = null;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        ItemInfoWindowController.Instance.SetText(Helper.Instance.GetItemDescription(ItemName));
     }
 }

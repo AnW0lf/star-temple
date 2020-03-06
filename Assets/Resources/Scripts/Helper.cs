@@ -30,7 +30,7 @@ public class Helper : MonoBehaviour
 #endif
         heroPath = directoryPath + @"/hero.xml";
         itemPath = directoryPath + @"/item.xml";
-        roomPath = directoryPath + @"/{0}.xml";
+        roomPath = directoryPath + "/{0}.xml";
     }
 
     public Hero CreateHero(string heroName)
@@ -171,7 +171,7 @@ public class Helper : MonoBehaviour
     {
         XElement room = null;
 
-        string path = directoryPath + string.Format(roomPath, roomName);
+        string path = string.Format(roomPath, roomName);
 
         if (!File.Exists(path))
             throw new FileNotFoundException(string.Format("File {0} not found. Check it and try again.", path));
@@ -338,12 +338,10 @@ public class Helper : MonoBehaviour
     {
         XElement root = null;
 
-        string path = itemPath;
+        if (!File.Exists(itemPath))
+            throw new FileNotFoundException(string.Format("File {0} not found. Check it and try again.", itemPath));
 
-        if (!File.Exists(path))
-            throw new FileNotFoundException(string.Format("File {0} not found. Check it and try again.", path));
-
-        root = XDocument.Parse(File.ReadAllText(path)).Root;
+        root = XDocument.Parse(File.ReadAllText(itemPath)).Root;
 
         string type = "";
 
@@ -377,6 +375,19 @@ public class Helper : MonoBehaviour
         }
 
         return value;
+    }
+
+    public string GetItemDescription(string name)
+    {
+        if (!File.Exists(itemPath))
+            throw new FileNotFoundException(string.Format("File {0} not found. Check it and try again.", itemPath));
+
+        XElement root = XDocument.Parse(File.ReadAllText(itemPath)).Root;
+        XElement XItem = root.Elements("item").ToList().Find(item => item.Attribute("name").Value == name);
+        if (XItem != null)
+            return XItem.Value;
+
+        return "Description not found";
     }
 }
 

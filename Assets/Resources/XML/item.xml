@@ -1,6 +1,6 @@
 <root>
-	<item name="*" type="star"/>
-	<item name="apple" type="food" value="5"/>
-	<item name="water" type="drink" value="5" stat="persistence"/>
-	<item name="passkey" type="picklock"/>
+	<item name="*" type="star">Звёздочка - основной предмет в игре. Позволяет ставить аннотации.</item>
+	<item name="apple" type="food" value="5">Яблоко - простая еда. Говорят, что яблоки очень полезны для здоровья.</item>
+	<item name="water" type="drink" value="5" stat="persistence">Вода - прозрачная жидкость без запаха и вкуса. Человек без воды может прожить до 7 дней.</item>
+	<item name="passkey" type="picklock">Отмычка - похожа на обычную шпильку, но такой можно открыть простой замок.</item>
 </root>
