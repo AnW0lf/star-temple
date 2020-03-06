@@ -349,7 +349,7 @@ public class Helper : MonoBehaviour
 
         foreach (XElement item in root.Elements("item"))
         {
-            if(item.Attribute("name") != null && item.Attribute("name").Value == name)
+            if (item.Attribute("name") != null && item.Attribute("name").Value == name)
             {
                 if (item.Attribute("type") != null) type = item.Attribute("type").Value;
                 return type;
@@ -359,6 +359,25 @@ public class Helper : MonoBehaviour
         return type;
     }
 
+    public int GetItemValue(string name)
+    {
+        if (!File.Exists(itemPath))
+            throw new FileNotFoundException(string.Format("File {0} not found. Check it and try again.", itemPath));
+
+        XElement root = XDocument.Parse(File.ReadAllText(itemPath)).Root;
+
+        int value = 0;
+
+        XElement XItem = root.Elements("item").ToList().Find(item => item.Attribute("name").Value == name);
+        if (XItem != null && XItem.Attribute("value") != null)
+        {
+            if (!int.TryParse(XItem.Attribute("value").Value, out value))
+                throw new ArgumentException(string.Format("Item {0} has incorrect type of attribute \'{1}\' = {2}",
+                    XItem.Attribute("name").Value, "value", XItem.Attribute("value").Value));
+        }
+
+        return value;
+    }
 }
 
 public struct Hero

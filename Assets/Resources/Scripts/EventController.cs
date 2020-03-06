@@ -432,9 +432,14 @@ public class DoStat : IDo
             chance -= pair.Value;
             if (chance <= 0)
             {
-
+                value = pair.Key;
                 return;
             }
+        }
+
+        if (value == 0 && DragHelper.Instance.item != null)
+        {
+            value = Helper.Instance.GetItemValue(DragHelper.Instance.item.name);
         }
 
         switch (stat_name)
