@@ -45,6 +45,8 @@ public class ItemController : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
         countTxt.enabled = false;
         DragHelper.Instance.item = this;
         itemNameTxt.raycastTarget = false;
+
+        RemoveItemZoneController.Instance.Show();
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -55,6 +57,8 @@ public class ItemController : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
         countTxt.enabled = true;
         itemNameTxt.raycastTarget = true;
         DragHelper.Instance.item = null;
+
+        RemoveItemZoneController.Instance.Hide();
     }
 
     public void OnPointerClick(PointerEventData eventData)

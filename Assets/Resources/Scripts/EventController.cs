@@ -381,11 +381,11 @@ public class DoItem : IDo
             chance -= pair.Value;
             if (chance <= 0)
             {
-                HeroController.Instance.AddItem(new Item(item_name, pair.Key));
+                HeroController.Instance.AddItem(item_name, pair.Key);
                 return;
             }
         }
-        HeroController.Instance.AddItem(new Item(item_name, chances.Keys.Last()));
+        HeroController.Instance.AddItem(item_name, chances.Keys.Last());
         Condition();
     }
 

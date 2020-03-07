@@ -22,14 +22,14 @@ public class HeroController : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    public void AddItem(Item item)
+    public void AddItem(string name, int count)
     {
-        inventory.AddItem(item);
+        inventory.AddItem(new Item(name, count));
     }
 
-    public void SubtractItem(Item item)
+    public void SubtractItem(string name)
     {
-        inventory.SubtractItem(item);
+        inventory.SubtractItem(new Item(name, -1));
     }
 
     public Hero Hero

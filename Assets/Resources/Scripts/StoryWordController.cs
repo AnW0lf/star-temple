@@ -99,14 +99,14 @@ public class StoryWordController : MonoBehaviour, IDropHandler
         {
             if (!annotated && droppedItem.item.name == Helper.Star.name)
             {
-                HeroController.Instance.SubtractItem(new Item(droppedItem.item.name, -1));
+                HeroController.Instance.SubtractItem(droppedItem.item.name);
                 txt.text += droppedItem.item.name;
                 annotated = true;
                 story.AddAnnotation(annotation_id);
             }
             else if (drop_type == Helper.Instance.GetItemType(droppedItem.item.name))
             {
-                HeroController.Instance.SubtractItem(new Item(droppedItem.item.name, -1));
+                HeroController.Instance.SubtractItem(droppedItem.item.name);
                 EventController.Instance.Execute(drop_id);
             }
         }
