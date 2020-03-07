@@ -45,11 +45,8 @@ public class RemoveItemZoneController : MonoBehaviour
 
     public void Remove()
     {
-        if(DragHelper.Instance.item != null)
-        {
-            string itemName = DragHelper.Instance.item.item.name;
-            HeroController.Instance.SubtractItem(itemName);
-        }
+        if (DragHelper.Instance.item != null)
+            RemoveItemWindowController.Instance.Show(DragHelper.Instance.item.item);
         Hide();
     }
 }
