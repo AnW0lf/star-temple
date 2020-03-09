@@ -232,6 +232,10 @@ public class Helper : MonoBehaviour
                         throw new ArgumentException(string.Format("Story word \"{0}\" attribute \'{1}\' contains incorrect value : {2}.",
                             XWord.Value, "event", XWord.Attribute("event").Value));
 
+                    if (XWord.Attribute("event_reusable") != null && !bool.TryParse(XWord.Attribute("event_reusable").Value, out word.reusable_event))
+                        throw new ArgumentException(string.Format("Story word \"{0}\" attribute \'{1}\' contains incorrect value : {2}.",
+                            XWord.Value, "event_reusable", XWord.Attribute("event_reusable").Value));
+
                     if (XWord.Attribute("drop_type") != null && XWord.Attribute("drop") != null)
                     {
                         word.drop_type = XWord.Attribute("drop_type").Value;
@@ -239,6 +243,10 @@ public class Helper : MonoBehaviour
                             throw new ArgumentException(string.Format("Story word \"{0}\" attribute \'{1}\' contains incorrect value : {2}.",
                             XWord.Value, "drop", XWord.Attribute("drop").Value));
                     }
+
+                    if (XWord.Attribute("drop_reusable") != null && !bool.TryParse(XWord.Attribute("drop_reusable").Value, out word.reusable_drop))
+                        throw new ArgumentException(string.Format("Story word \"{0}\" attribute \'{1}\' contains incorrect value : {2}.",
+                            XWord.Value, "drop_reusable", XWord.Attribute("drop_reusable").Value));
 
                     story.Add(word);
                 }
@@ -277,6 +285,10 @@ public class Helper : MonoBehaviour
                             throw new ArgumentException(string.Format("Annotation word \"{0}\" attribute \'{1}\' contains incorrect value : {2}.",
                                 XWord.Value, "event", XWord.Attribute("event").Value));
 
+                        if (XWord.Attribute("event_reusable") != null && !bool.TryParse(XWord.Attribute("event_reusable").Value, out word.reusable_event))
+                            throw new ArgumentException(string.Format("Annotation word \"{0}\" attribute \'{1}\' contains incorrect value : {2}.",
+                                XWord.Value, "event_reusable", XWord.Attribute("event_reusable").Value));
+
                         if (XWord.Attribute("drop_type") != null && XWord.Attribute("drop") != null)
                         {
                             word.drop_type = XWord.Attribute("drop_type").Value;
@@ -284,6 +296,10 @@ public class Helper : MonoBehaviour
                                 throw new ArgumentException(string.Format("Story word \"{0}\" attribute \'{1}\' contains incorrect value : {2}.",
                                 XWord.Value, "drop", XWord.Attribute("drop").Value));
                         }
+
+                        if (XWord.Attribute("drop_reusable") != null && !bool.TryParse(XWord.Attribute("drop_reusable").Value, out word.reusable_drop))
+                            throw new ArgumentException(string.Format("Annotation word \"{0}\" attribute \'{1}\' contains incorrect value : {2}.",
+                                XWord.Value, "drop_reusable", XWord.Attribute("drop_reusable").Value));
 
                         annotation.words.Add(word);
                     }
@@ -452,6 +468,7 @@ public struct StoryWord
 {
     public string word, drop_type;
     public int annotation_id, event_id, drop_id;
+    public bool reusable_event, reusable_drop;
 
     public StoryWord(string word)
     {
@@ -460,6 +477,8 @@ public struct StoryWord
         annotation_id = -1;
         event_id = -1;
         drop_id = -1;
+        reusable_event = false;
+        reusable_drop = false;
     }
 
     public static StoryWord Empty
@@ -475,13 +494,16 @@ public struct AnnotationWord
 {
     public string word, drop_type;
     public int event_id, drop_id;
+    public bool reusable_event, reusable_drop;
 
     public AnnotationWord(string word)
     {
         this.word = word;
-        this.event_id = -1;
-        this.drop_type = "";
-        this.drop_id = -1;
+        event_id = -1;
+        drop_type = "";
+        drop_id = -1;
+        reusable_event = false;
+        reusable_drop = false;
     }
 
     public static AnnotationWord Empty

@@ -16,7 +16,7 @@ public class StoryWordController : MonoBehaviour, IDropHandler
     private string drop_type = "";
     public StoryWord word { get; private set; }
 
-    private bool annotated = false;
+    private bool annotated = false, dropped = false;
 
     private void Awake()
     {
@@ -56,14 +56,16 @@ public class StoryWordController : MonoBehaviour, IDropHandler
         annotation_id = word.annotation_id;
         event_id = word.event_id;
 
+        annotated = false;
+        dropped = false;
+
         if (drop_id > 0 && event_id > 0)
         {
             txt.fontStyle = FontStyle.Bold;
             txt.raycastTarget = true;
             btn.interactable = true;
 
-            btn.onClick.AddListener(() => btn.interactable = false);
-            btn.onClick.AddListener(() => EventController.Instance.Execute(event_id));
+            InitButton(true);
         }
         else if (drop_id > 0 || annotation_id > 0)
         {
@@ -71,16 +73,14 @@ public class StoryWordController : MonoBehaviour, IDropHandler
             txt.raycastTarget = true;
             btn.interactable = false;
 
-            btn.onClick.RemoveAllListeners();
+            InitButton(false);
         }
         else if (event_id > 0)
         {
             txt.fontStyle = FontStyle.Bold;
             txt.raycastTarget = true;
-            btn.interactable = true;
 
-            btn.onClick.AddListener(() => btn.interactable = false);
-            btn.onClick.AddListener(() => EventController.Instance.Execute(event_id));
+            InitButton(true);
         }
         else
         {
@@ -88,8 +88,21 @@ public class StoryWordController : MonoBehaviour, IDropHandler
             txt.raycastTarget = false;
             btn.interactable = false;
 
-            btn.onClick.RemoveAllListeners();
+            InitButton(false);
         }
+    }
+
+    private void InitButton(bool active)
+    {
+        btn.interactable = active;
+
+        if (active)
+        {
+            btn.onClick.AddListener(() => EventController.Instance.Execute(event_id));
+            if (!word.reusable_event)
+                btn.onClick.AddListener(() => btn.interactable = false);
+        }
+        else btn.onClick.RemoveAllListeners();
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -104,10 +117,12 @@ public class StoryWordController : MonoBehaviour, IDropHandler
                 annotated = true;
                 story.AddAnnotation(annotation_id);
             }
-            else if (drop_type == Helper.Instance.GetItemType(droppedItem.item.name))
+            else if (!dropped && drop_type == Helper.Instance.GetItemType(droppedItem.item.name))
             {
                 HeroController.Instance.SubtractItem(droppedItem.item.name);
                 EventController.Instance.Execute(drop_id);
+
+                if (!word.reusable_drop) dropped = true;
             }
         }
     }
