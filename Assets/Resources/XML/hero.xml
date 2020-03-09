@@ -1,7 +1,5 @@
 <root>
-  <hero name="Dmeetry Gusev" level="1" money="0" strength="10" persistence="10" agility="10" attention="10">
-    <item name="*" count="10" />
+  <hero name="Leeroy Jenkins" hp="100" level="1" money="0" strength="10" persistence="10" agility="10" attention="10">
+    <item name="*" count="2" />
   </hero>
-  <hero name="Dmeetry Belotkov" level="1" money="0" strength="10" persistence="10" agility="10" attention="10" />
-  <hero name="Eliza" level="1" money="0" strength="10" persistence="10" agility="10" attention="10" />
 </root>
