@@ -457,7 +457,7 @@ public class DoStat : IDo
                 HeroController.Instance.Attention += value;
                 break;
             case "hp":
-                //HeroController.Instance.Health += value;
+                HeroController.Instance.HP += value;
                 break;
             case "money":
                 HeroController.Instance.Money += value;
@@ -554,7 +554,7 @@ public class DoCondition : IDo
                 win = InRange(HeroController.Instance.Attention, min, max);
                 break;
             case "hp":
-                //win = InRange(HeroController.Instance.Hp, min, max);
+                win = InRange(HeroController.Instance.HP, min, max);
                 break;
             case "money":
                 win = InRange(HeroController.Instance.Money, min, max);
@@ -634,7 +634,7 @@ public class DoCCondition : IDo
                 win = HeroController.Instance.Attention * luck >= chance;
                 break;
             case "hp":
-                //win = InRange(HeroController.Instance.Hp, min, max);
+                win = HeroController.Instance.HP * luck >= chance;
                 break;
             case "money":
                 win = HeroController.Instance.Money * luck >= chance;

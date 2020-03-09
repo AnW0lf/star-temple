@@ -45,6 +45,19 @@ public class HeroController : MonoBehaviour
         }
     }
 
+    public int HP
+    {
+        get
+        {
+            return hero.hp;
+        }
+        set
+        {
+            hero.hp = Mathf.Max(value, 0);
+            UpdateInfo();
+        }
+    }
+
     public int Money
     {
         get

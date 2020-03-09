@@ -65,12 +65,13 @@ public class Helper : MonoBehaviour
         XElement root = XDocument.Parse(File.ReadAllText(heroPath)).Element("root");
         XElement XHero = root.Elements("hero").ToList().Find(h => h.Attribute("name").Value.Equals(hero.name));
         if (XHero == null) return;
-        XHero.Attribute("level").Value = hero.level.ToString();
-        XHero.Attribute("money").Value = hero.money.ToString();
-        XHero.Attribute("strength").Value = hero.strength.ToString();
-        XHero.Attribute("persistence").Value = hero.persistence.ToString();
-        XHero.Attribute("agility").Value = hero.agility.ToString();
-        XHero.Attribute("attention").Value = hero.attention.ToString();
+        XHero.Attribute("hp").SetValue(hero.hp);
+        XHero.Attribute("level").SetValue(hero.level);
+        XHero.Attribute("money").SetValue(hero.money);
+        XHero.Attribute("strength").SetValue(hero.strength);
+        XHero.Attribute("persistence").SetValue(hero.persistence);
+        XHero.Attribute("agility").SetValue(hero.agility);
+        XHero.Attribute("attention").SetValue(hero.attention);
 
         var XItems = XHero.Elements("item");
 
@@ -79,7 +80,7 @@ public class Helper : MonoBehaviour
             XElement XItem = null;
             if ((XItem = XItems.ToList().Find(xi => xi.Attribute("name").Value.Equals(item.name))) != null)
             {
-                XItem.Attribute("count").Value = item.count.ToString();
+                XItem.Attribute("count").SetValue(item.count);
             }
             else
             {
@@ -100,6 +101,7 @@ public class Helper : MonoBehaviour
 
         foreach (XElement hero in root.Elements("hero").Where(l => l.Attribute("name").Value.Equals(heroName)))
         {
+            int hp = int.Parse(hero.Attribute("hp").Value);
             int level = int.Parse(hero.Attribute("level").Value);
             int money = int.Parse(hero.Attribute("money").Value);
             int strength = int.Parse(hero.Attribute("strength").Value);
@@ -113,7 +115,7 @@ public class Helper : MonoBehaviour
                 items.Add(new Item(item.Attribute("name").Value, int.Parse(item.Attribute("count").Value)));
             }
 
-            return new Hero(heroName, level, money, strength, persistence, agility, attention, items);
+            return new Hero(heroName, hp, level, money, strength, persistence, agility, attention, items);
         }
 
         return Hero.Empty(heroName);
@@ -126,6 +128,7 @@ public class Helper : MonoBehaviour
         foreach (XElement hero in root.Elements("hero"))
         {
             string name = hero.Attribute("name").Value;
+            int hp = int.Parse(hero.Attribute("hp").Value);
             int level = int.Parse(hero.Attribute("level").Value);
             int money = int.Parse(hero.Attribute("money").Value);
             int strength = int.Parse(hero.Attribute("strength").Value);
@@ -139,7 +142,7 @@ public class Helper : MonoBehaviour
                 items.Add(new Item(item.Attribute("name").Value, int.Parse(item.Attribute("count").Value)));
             }
 
-            heroes.Add(new Hero(name, level, money, strength, persistence, agility, attention, items));
+            heroes.Add(new Hero(name, hp, level, money, strength, persistence, agility, attention, items));
         }
 
         return heroes.ToArray();
@@ -410,6 +413,7 @@ public class Helper : MonoBehaviour
 public struct Hero
 {
     public string name;
+    public int hp;
     public int level;
     public int money;
     public int strength;
@@ -418,9 +422,10 @@ public struct Hero
     public int attention;
     public List<Item> items;
 
-    public Hero(string name, int level, int money, int strength, int persistence, int agility, int attention, List<Item> items)
+    public Hero(string name, int hp, int level, int money, int strength, int persistence, int agility, int attention, List<Item> items)
     {
         this.name = name;
+        this.hp = hp;
         this.level = level;
         this.money = money;
         this.strength = strength;
@@ -432,7 +437,7 @@ public struct Hero
 
     public static Hero Empty(string name)
     {
-        return new Hero(name, 1, 0, 10, 10, 10, 10, new List<Item>());
+        return new Hero(name, 0, 1, 0, 10, 10, 10, 10, new List<Item>());
     }
 
     public static string Convert(int value)
