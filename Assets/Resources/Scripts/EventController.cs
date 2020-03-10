@@ -198,16 +198,16 @@ public class EventController : MonoBehaviour
                     {
                         int trueId = 0, falseId = 0;
                         float luck = 0f;
-                        TryParse(@event, "condition_min", out luck);
-                        TryParse(@event, "condition_true_id", out trueId);
-                        TryParse(@event, "condition_false_id", out falseId);
+                        TryParse(@event, "ccondition_luck", out luck);
+                        TryParse(@event, "ccondition_true_id", out trueId);
+                        TryParse(@event, "ccondition_false_id", out falseId);
                         string stat_name = "", item_name = "";
 
-                        if (@event.attributes.ContainsKey("condition_stat_name"))
-                            stat_name = @event.attributes["condition_stat_name"];
+                        if (@event.attributes.ContainsKey("ccondition_stat_name"))
+                            stat_name = @event.attributes["ccondition_stat_name"];
 
-                        if (@event.attributes.ContainsKey("condition_item_name"))
-                            item_name = @event.attributes["condition_item_name"];
+                        if (@event.attributes.ContainsKey("ccondition_item_name"))
+                            item_name = @event.attributes["ccondition_item_name"];
 
                         executable[i].Add(new DoCCondition(i, luck, stat_name, item_name, trueId, falseId));
                     }
