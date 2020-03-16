@@ -21,6 +21,9 @@ public class GameController : MonoBehaviour
     [Header("Events")]
     public EventController eventController;
 
+    [Header("First Run")]
+    public string roomName = "room_1";
+
     private bool moveHero;
 
     public int RoomCounter { get; private set; }
@@ -68,7 +71,7 @@ public class GameController : MonoBehaviour
         {
             hero.rect.anchoredPosition = Vector2.zero;
             moveHero = false;
-            NextRoom("room_1");
+            NextRoom(roomName);
         }
     }
 }

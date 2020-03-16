@@ -4862,6 +4862,7 @@ MonoBehaviour:
   story: {fileID: 1170398567}
   inv: {fileID: 200236985}
   eventController: {fileID: 1482236381}
+  roomName: test/test_1
 --- !u!114 &1482236381
 MonoBehaviour:
   m_ObjectHideFlags: 0

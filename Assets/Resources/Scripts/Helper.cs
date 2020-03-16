@@ -225,7 +225,7 @@ public class Helper : MonoBehaviour
             {
                 foreach (XElement XWord in room.Element("story").Elements("word"))
                 {
-                    StoryWord word = new StoryWord(XWord.Value);
+                    StoryWord word = new StoryWord((XWord.Value.Length == 0 ? " " : XWord.Value));
 
                     if (XWord.Attribute("annotation") != null && !int.TryParse(XWord.Attribute("annotation").Value, out word.annotation_id))
                         throw new ArgumentException(string.Format("Story word \"{0}\" attribute \'{1}\' contains incorrect value : {2}.",
@@ -282,7 +282,7 @@ public class Helper : MonoBehaviour
 
                     foreach (XElement XWord in XAnnotation.Elements("word"))
                     {
-                        AnnotationWord word = new AnnotationWord(XWord.Value);
+                        AnnotationWord word = new AnnotationWord((XWord.Value.Length == 0 ? " " : XWord.Value));
 
                         if (XWord.Attribute("event") != null && !int.TryParse(XWord.Attribute("event").Value, out word.event_id))
                             throw new ArgumentException(string.Format("Annotation word \"{0}\" attribute \'{1}\' contains incorrect value : {2}.",
