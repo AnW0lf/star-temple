@@ -98,7 +98,7 @@ public class StoryWordController : MonoBehaviour, IDropHandler
 
         if (active)
         {
-            btn.onClick.AddListener(() => EventController.Instance.Execute(event_id));
+            btn.onClick.AddListener(() => EventController.Instance.Execute(gameObject, event_id));
             if (!word.reusable_event)
                 btn.onClick.AddListener(() => btn.interactable = false);
         }
@@ -120,7 +120,7 @@ public class StoryWordController : MonoBehaviour, IDropHandler
             else if (!dropped && drop_type == Helper.Instance.GetItemType(droppedItem.item.name))
             {
                 HeroController.Instance.SubtractItem(droppedItem.item.name);
-                EventController.Instance.Execute(drop_id);
+                EventController.Instance.Execute(gameObject, drop_id);
 
                 if (!word.reusable_drop) dropped = true;
             }

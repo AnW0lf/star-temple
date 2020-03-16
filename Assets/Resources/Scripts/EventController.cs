@@ -230,7 +230,7 @@ public class EventController : MonoBehaviour
                 attribute_name, @event.attributes[attribute_name], @event.event_id));
     }
 
-    public void Execute(int id)
+    public void Execute(GameObject sender, int id)
     {
         if (executable.ContainsKey(id))
         {
@@ -253,7 +253,7 @@ public class EventController : MonoBehaviour
             for (int i = 1; i < indexed.Count; i++)
                 indexed[i - 1].Link = indexed[i];
 
-            indexed.First().Do();
+            indexed.First().Do(sender);
 
             print(string.Format("Execute id = {0}", id));
         }
@@ -311,7 +311,7 @@ public interface IDo
 
     void Next();
 
-    void Do();
+    void Do(GameObject sender);
 }
 
 public class DoNext : IDo
@@ -320,6 +320,7 @@ public class DoNext : IDo
     private int id;
     private GameController game;
     private IDo link;
+    private GameObject sender;
     public IDo Link { get => link; set => link = value; }
 
     public int Id { get => id; set => id = value; }
@@ -332,10 +333,12 @@ public class DoNext : IDo
         this.roomName = roomName;
         this.game = game;
         link = null;
+        sender = null;
     }
 
-    public void Do()
+    public void Do(GameObject sender)
     {
+        this.sender = sender;
         game.NextRoom(roomName);
         Condition();
     }
@@ -348,7 +351,7 @@ public class DoNext : IDo
 
     public void Next()
     {
-        Link.Do();
+        Link.Do(sender);
     }
 }
 
@@ -358,6 +361,7 @@ public class DoItem : IDo
     private string item_name;
     private Dictionary<int, int> chances;
     private IDo link;
+    private GameObject sender;
     public IDo Link { get => link; set => link = value; }
 
     public int Id { get => id; set => id = value; }
@@ -370,10 +374,12 @@ public class DoItem : IDo
         this.item_name = item_name;
         this.chances = new Dictionary<int, int>(chances);
         link = null;
+        sender = null;
     }
 
-    public void Do()
+    public void Do(GameObject sender)
     {
+        this.sender = sender;
         int max = chances.Values.Sum() + 1;
         int chance = Random.Range(0, max);
         foreach (var pair in chances)
@@ -381,10 +387,12 @@ public class DoItem : IDo
             chance -= pair.Value;
             if (chance <= 0)
             {
+                FlyingTextManager.Instance.AddFlyingText(sender, string.Format("{0} {1}", pair.Key, item_name));
                 HeroController.Instance.AddItem(item_name, pair.Key);
                 return;
             }
         }
+        FlyingTextManager.Instance.AddFlyingText(sender, string.Format("{0} {1}", chances.Keys.Last(), item_name));
         HeroController.Instance.AddItem(item_name, chances.Keys.Last());
         Condition();
     }
@@ -397,7 +405,7 @@ public class DoItem : IDo
 
     public void Next()
     {
-        Link.Do();
+        Link.Do(sender);
     }
 }
 
@@ -408,6 +416,7 @@ public class DoStat : IDo
     private string stat_name;
     private Dictionary<int, int> chances;
     private IDo link;
+    private GameObject sender;
     public IDo Link { get => link; set => link = value; }
 
     public DoStat(int id, string stat_name)
@@ -416,14 +425,16 @@ public class DoStat : IDo
         this.stat_name = stat_name;
         chances = new Dictionary<int, int>();
         link = null;
+        sender = null;
     }
 
     public int Id { get => id; set => id = value; }
 
     public EventType event_type => EventType.STAT;
 
-    public void Do()
+    public void Do(GameObject sender)
     {
+        this.sender = sender;
         int max = chances.Values.Sum() + 1;
         int chance = Random.Range(0, max);
         int value = 0;
@@ -445,21 +456,27 @@ public class DoStat : IDo
         switch (stat_name)
         {
             case "strength":
+                FlyingTextManager.Instance.AddFlyingText(sender, string.Format("{0} {1}", "Strength", value));
                 HeroController.Instance.Strength += value;
                 break;
             case "agility":
+                FlyingTextManager.Instance.AddFlyingText(sender, string.Format("{0} {1}", "Agility", value));
                 HeroController.Instance.Agility += value;
                 break;
             case "persistence":
+                FlyingTextManager.Instance.AddFlyingText(sender, string.Format("{0} {1}", "Persistence", value));
                 HeroController.Instance.Persistence += value;
                 break;
             case "attention":
+                FlyingTextManager.Instance.AddFlyingText(sender, string.Format("{0} {1}", "Attention", value));
                 HeroController.Instance.Attention += value;
                 break;
             case "hp":
+                FlyingTextManager.Instance.AddFlyingText(sender, string.Format("{0} {1}", "HP", value));
                 HeroController.Instance.HP += value;
                 break;
             case "money":
+                FlyingTextManager.Instance.AddFlyingText(sender, string.Format("{0} {1}", value, "coins"));
                 HeroController.Instance.Money += value;
                 break;
         }
@@ -474,7 +491,7 @@ public class DoStat : IDo
 
     public void Next()
     {
-        Link.Do();
+        Link.Do(sender);
     }
 }
 
@@ -483,6 +500,7 @@ public class DoWindow : IDo
     private int id;
     private string text;
     private IDo link;
+    private GameObject sender;
     public IDo Link { get => link; set => link = value; }
 
     public DoWindow(int id, string text)
@@ -490,14 +508,16 @@ public class DoWindow : IDo
         this.id = id;
         this.text = text;
         link = null;
+        sender = null;
     }
 
     public int Id { get => id; set => id = value; }
 
     public EventType event_type => EventType.WINDOW;
 
-    public void Do()
+    public void Do(GameObject sender)
     {
+        this.sender = sender;
         EventWindow.Instance.ShowWindow(text, this);
     }
 
@@ -509,7 +529,7 @@ public class DoWindow : IDo
 
     public void Next()
     {
-        Link.Do();
+        Link.Do(sender);
     }
 }
 
@@ -518,6 +538,7 @@ public class DoCondition : IDo
     private int id, min, max, trueId, falseId;
     private string stat_name, item_name;
     private IDo link;
+    private GameObject sender;
     public IDo Link { get => link; set => link = value; }
 
     public DoCondition(int id, string stat_name, string item_name, int min, int max, int trueId, int falseId)
@@ -530,13 +551,14 @@ public class DoCondition : IDo
         this.stat_name = stat_name;
         this.item_name = item_name;
         link = null;
+        sender = null;
     }
 
     public int Id { get => id; set => id = value; }
 
     public EventType event_type => EventType.CONDITION;
 
-    public void Do()
+    public void Do(GameObject sender)
     {
         bool win = false;
         switch (stat_name)
@@ -571,7 +593,7 @@ public class DoCondition : IDo
                 break;
         }
 
-        EventController.Instance.Execute(win ? trueId : falseId);
+        EventController.Instance.Execute(sender, win ? trueId : falseId);
         Condition();
     }
 
@@ -588,7 +610,7 @@ public class DoCondition : IDo
 
     public void Next()
     {
-        Link.Do();
+        Link.Do(sender);
     }
 }
 
@@ -598,6 +620,7 @@ public class DoCCondition : IDo
     private float luck;
     private string stat_name, item_name;
     private IDo link;
+    private GameObject sender;
     public IDo Link { get => link; set => link = value; }
 
     public DoCCondition(int id, float luck, string stat_name, string item_name, int trueId, int falseId)
@@ -609,14 +632,16 @@ public class DoCCondition : IDo
         this.stat_name = stat_name;
         this.item_name = item_name;
         link = null;
+        sender = null;
     }
 
     public int Id { get => id; set => id = value; }
 
     public EventType event_type => EventType.CCONDITION;
 
-    public void Do()
+    public void Do(GameObject sender)
     {
+        this.sender = sender;
         bool win = false;
         int chance = Random.Range(0, 100);
         switch (stat_name)
@@ -651,7 +676,7 @@ public class DoCCondition : IDo
                 break;
         }
 
-        EventController.Instance.Execute(win ? trueId : falseId);
+        EventController.Instance.Execute(sender, win ? trueId : falseId);
         Condition();
     }
 
@@ -663,6 +688,6 @@ public class DoCCondition : IDo
 
     public void Next()
     {
-        Link.Do();
+        Link.Do(sender);
     }
 }

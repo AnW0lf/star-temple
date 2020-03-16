@@ -29,8 +29,16 @@ public class ItemController : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
 
     public void ChangeCount(int value)
     {
-        Count += value;
-        countTxt.text = Count.ToString();
+        Color oldColor = countTxt.color;
+        countTxt.color = (value > 0) ? Color.green : Color.red;
+        LeanTween.scale(countTxt.gameObject, Vector3.one * 1.5f, 0.3f).setDelay(0.1f)
+            .setOnComplete(() => LeanTween.scale(countTxt.gameObject, Vector3.one, 0.3f)
+            .setOnComplete(() =>
+            {
+                Count += value;
+                countTxt.text = Count.ToString();
+                countTxt.color = oldColor;
+            }));
     }
 
     public void OnDrag(PointerEventData eventData)

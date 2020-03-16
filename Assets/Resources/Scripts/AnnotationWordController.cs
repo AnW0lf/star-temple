@@ -47,36 +47,43 @@ public class AnnotationWordController : MonoBehaviour
         {
             txt.fontStyle = FontStyle.BoldAndItalic;
             txt.raycastTarget = true;
-            btn.interactable = true;
 
-            btn.onClick.AddListener(() => btn.interactable = false);
-            btn.onClick.AddListener(() => EventController.Instance.Execute(event_id));
+            InitButton(true);
         }
         else if (drop_id > 0)
         {
             txt.fontStyle = FontStyle.Italic;
             txt.raycastTarget = true;
-            btn.interactable = false;
 
-            btn.onClick.RemoveAllListeners();
+            InitButton(false);
         }
         else if (event_id > 0)
         {
             txt.fontStyle = FontStyle.BoldAndItalic;
             txt.raycastTarget = true;
-            btn.interactable = true;
 
-            btn.onClick.AddListener(() => btn.interactable = false);
-            btn.onClick.AddListener(() => EventController.Instance.Execute(event_id));
+            InitButton(true);
         }
         else
         {
             txt.fontStyle = FontStyle.Italic;
             txt.raycastTarget = false;
-            btn.interactable = false;
 
-            btn.onClick.RemoveAllListeners();
+            InitButton(false);
         }
+    }
+
+    private void InitButton(bool active)
+    {
+        btn.interactable = active;
+
+        if (active)
+        {
+            btn.onClick.AddListener(() => EventController.Instance.Execute(gameObject, event_id));
+            if (!word.reusable_event)
+                btn.onClick.AddListener(() => btn.interactable = false);
+        }
+        else btn.onClick.RemoveAllListeners();
     }
 
     private void OnDestroy()
