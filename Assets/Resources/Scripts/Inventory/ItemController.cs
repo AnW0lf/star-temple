@@ -12,12 +12,11 @@ public class ItemController : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
     public string ItemName { get { return item.name; } }
     public int Count { get { return item.count; } private set { item.count = value; } }
 
-    private Transform container;
-    private Transform grandparent;
+    private RectTransform draggedItem;
 
     private void Awake()
     {
-        grandparent = transform.parent.parent;
+
     }
 
     public void Fill(Item item)
@@ -43,16 +42,26 @@ public class ItemController : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
 
     public void OnDrag(PointerEventData eventData)
     {
-        transform.position = eventData.position;
+        draggedItem.position = eventData.position;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        container = transform.parent;
-        transform.SetParent(grandparent);
-        countTxt.enabled = false;
+        draggedItem = HeroController.Instance.inventory.draggedItem;
+        draggedItem.gameObject.SetActive(true);
+        draggedItem.GetComponent<Text>().text = item.name;
+
         DragHelper.Instance.item = this;
-        itemNameTxt.raycastTarget = false;
+
+        if (item.count == 1)
+        {
+            itemNameTxt.enabled = false;
+            countTxt.enabled = false;
+        }
+        else
+        {
+            countTxt.text = (item.count - 1).ToString();
+        }
 
         if (item.name != "*")
             RemoveItemZoneController.Instance.Show();
@@ -60,12 +69,15 @@ public class ItemController : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        transform.SetParent(container);
-        if (item.name.Equals(Helper.Star.name))
-            transform.SetAsFirstSibling();
-        countTxt.enabled = true;
-        itemNameTxt.raycastTarget = true;
+        draggedItem.GetComponent<Text>().text = "";
+        draggedItem.gameObject.SetActive(false);
+        draggedItem = null;
+
         DragHelper.Instance.item = null;
+
+        itemNameTxt.enabled = true;
+        countTxt.enabled = true;
+        countTxt.text = item.count.ToString();
 
         RemoveItemZoneController.Instance.Hide();
     }

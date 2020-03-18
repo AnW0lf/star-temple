@@ -10,6 +10,7 @@ public class Inventory : MonoBehaviour
     public RectTransform container;
 
     [Header("Moving")]
+    public RectTransform draggedItem;
     public float hidePos = -650f;
     public float showPos = 0f;
     [Range(0.1f, 10f)]
