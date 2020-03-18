@@ -408,6 +408,26 @@ public class Helper : MonoBehaviour
 
         return "Description not found";
     }
+
+    public int GetItemStarCount(string name)
+    {
+        if (!File.Exists(itemPath))
+            throw new FileNotFoundException(string.Format("File {0} not found. Check it and try again.", itemPath));
+
+        XElement root = XDocument.Parse(File.ReadAllText(itemPath)).Root;
+        XElement XItem = root.Elements("item").ToList().Find(item => item.Attribute("name").Value == name);
+        if (XItem != null && XItem.Attribute("star") != null)
+        {
+            int count = 0;
+            if (!int.TryParse(XItem.Attribute("star").Value, out count))
+                throw new ArgumentException(string.Format("Item \'{0}\' has incorrect value \'{1}\' of star count."
+                    , name, XItem.Attribute("star").Value));
+
+            return count;
+        }
+
+        return 0;
+    }
 }
 
 public struct Hero

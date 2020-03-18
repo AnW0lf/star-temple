@@ -43,7 +43,7 @@ public class RemoveItemZoneController : MonoBehaviour
         panel.anchoredPosition = new Vector2(panel.anchoredPosition.x, ypos);
     }
 
-    public void Remove()
+    public void Spray()
     {
         if (DragHelper.Instance.item != null)
             RemoveItemWindowController.Instance.Show(DragHelper.Instance.item.item);

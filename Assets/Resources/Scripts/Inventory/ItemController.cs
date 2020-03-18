@@ -54,7 +54,8 @@ public class ItemController : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
         DragHelper.Instance.item = this;
         itemNameTxt.raycastTarget = false;
 
-        RemoveItemZoneController.Instance.Show();
+        if (item.name != "*")
+            RemoveItemZoneController.Instance.Show();
     }
 
     public void OnEndDrag(PointerEventData eventData)

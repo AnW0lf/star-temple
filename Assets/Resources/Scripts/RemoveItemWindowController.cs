@@ -44,8 +44,12 @@ public class RemoveItemWindowController : MonoBehaviour
 
     public void Remove(bool all)
     {
+        int count = Helper.Instance.GetItemStarCount(item.name);
         for (int i = 0; i < (all ? item.count : 1); i++)
+        {
             HeroController.Instance.SubtractItem(item.name);
+            HeroController.Instance.AddItem("*", count);
+        }
     }
 
     public void Hide()
