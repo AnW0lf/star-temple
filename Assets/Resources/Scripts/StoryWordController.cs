@@ -11,12 +11,15 @@ public class StoryWordController : MonoBehaviour, IDropHandler
 
     [SerializeField]
     private Text txt;
+    [SerializeField]
+    private WordEffects effects;
     private Button btn;
     private int annotation_id, event_id, drop_id;
     private string drop_type = "";
     public StoryWord word { get; private set; }
-
-    private bool annotated = false, dropped = false;
+    public bool IsAnnotated { get; private set; } = false;
+    public bool IsEvented { get { return !btn.interactable; } }
+    public bool IsDropped { get; private set; } = false;
 
     private void Awake()
     {
@@ -56,8 +59,8 @@ public class StoryWordController : MonoBehaviour, IDropHandler
         annotation_id = word.annotation_id;
         event_id = word.event_id;
 
-        annotated = false;
-        dropped = false;
+        IsAnnotated = false;
+        IsDropped = drop_id <= 0;
 
         if (drop_id > 0 && event_id > 0)
         {
@@ -90,6 +93,10 @@ public class StoryWordController : MonoBehaviour, IDropHandler
 
             InitButton(false);
         }
+
+        if (effects == null) effects = GetComponent<WordEffects>();
+
+        effects.Begin();
     }
 
     private void InitButton(bool active)
@@ -110,19 +117,19 @@ public class StoryWordController : MonoBehaviour, IDropHandler
         ItemController droppedItem = DragHelper.Instance.item;
         if (droppedItem != null)
         {
-            if (!annotated && droppedItem.item.name == Helper.Star.name)
+            if (!IsAnnotated && droppedItem.item.name == Helper.Star.name)
             {
                 HeroController.Instance.SubtractItem(droppedItem.item.name);
                 txt.text += droppedItem.item.name;
-                annotated = true;
+                IsAnnotated = true;
                 story.AddAnnotation(annotation_id);
             }
-            else if (!dropped && drop_type == Helper.Instance.GetItemType(droppedItem.item.name))
+            else if (!IsDropped && drop_type == Helper.Instance.GetItemType(droppedItem.item.name))
             {
                 HeroController.Instance.SubtractItem(droppedItem.item.name);
                 EventController.Instance.Execute(gameObject, drop_id);
 
-                if (!word.reusable_drop) dropped = true;
+                if (!word.reusable_drop) IsDropped = true;
             }
         }
     }

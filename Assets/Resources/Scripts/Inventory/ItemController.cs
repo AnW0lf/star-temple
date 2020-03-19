@@ -14,11 +14,6 @@ public class ItemController : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
 
     private RectTransform draggedItem;
 
-    private void Awake()
-    {
-
-    }
-
     public void Fill(Item item)
     {
         this.item = item;

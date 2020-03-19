@@ -1,18 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class AnnotationWordController : MonoBehaviour
+public class AnnotationWordController : MonoBehaviour, IDropHandler
 {
     public AnnotationsController annotations { get; private set; }
 
     [SerializeField]
     private Text txt;
+    [SerializeField]
+    private WordEffects effects;
     private Button btn;
     private int event_id = -1, drop_id = -1;
     private string drop_type = "";
     public AnnotationWord word { get; private set; }
+    public bool IsEvented { get { return !btn.interactable; } }
+    public bool IsDropped { get; private set; } = false;
 
     private void Awake()
     {
@@ -43,6 +48,8 @@ public class AnnotationWordController : MonoBehaviour
         drop_id = word.drop_id;
         drop_type = word.drop_type;
 
+        IsDropped = drop_id <= 0;
+
         if (drop_id > 0 && event_id > 0)
         {
             txt.fontStyle = FontStyle.BoldAndItalic;
@@ -71,6 +78,10 @@ public class AnnotationWordController : MonoBehaviour
 
             InitButton(false);
         }
+
+        if (effects == null) effects = GetComponent<WordEffects>();
+
+        effects.Begin();
     }
 
     private void InitButton(bool active)
@@ -84,6 +95,21 @@ public class AnnotationWordController : MonoBehaviour
                 btn.onClick.AddListener(() => btn.interactable = false);
         }
         else btn.onClick.RemoveAllListeners();
+    }
+
+    public void OnDrop(PointerEventData eventData)
+    {
+        ItemController droppedItem = DragHelper.Instance.item;
+        if (droppedItem != null)
+        {
+            if (!IsDropped && drop_type == Helper.Instance.GetItemType(droppedItem.item.name))
+            {
+                HeroController.Instance.SubtractItem(droppedItem.item.name);
+                EventController.Instance.Execute(gameObject, drop_id);
+
+                if (!word.reusable_drop) IsDropped = true;
+            }
+        }
     }
 
     private void OnDestroy()
