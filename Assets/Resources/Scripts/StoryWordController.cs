@@ -117,16 +117,16 @@ public class StoryWordController : MonoBehaviour, IDropHandler
         ItemController droppedItem = DragHelper.Instance.item;
         if (droppedItem != null)
         {
-            if (!IsAnnotated && droppedItem.item.name == Helper.Star.name)
+            if (!IsAnnotated && droppedItem.item.Name == Helper.Star.Name)
             {
-                HeroController.Instance.SubtractItem(droppedItem.item.name);
-                txt.text += droppedItem.item.name;
+                HeroController.Instance.SubtractItem(droppedItem.item.Name);
+                txt.text += droppedItem.item.Name;
                 IsAnnotated = true;
                 story.AddAnnotation(annotation_id);
             }
-            else if (!IsDropped && drop_type == Helper.Instance.GetItemType(droppedItem.item.name))
+            else if (!IsDropped && drop_type == Helper.Instance.GetItemType(droppedItem.item.Name))
             {
-                HeroController.Instance.SubtractItem(droppedItem.item.name);
+                HeroController.Instance.SubtractItem(droppedItem.item.Name);
                 EventController.Instance.Execute(gameObject, drop_id);
 
                 if (!word.reusable_drop) IsDropped = true;

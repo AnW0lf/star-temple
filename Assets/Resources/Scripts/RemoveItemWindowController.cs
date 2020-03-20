@@ -23,15 +23,15 @@ public class RemoveItemWindowController : MonoBehaviour
     public void Show(Item item)
     {
         this.item = item;
-        questionTxt.text = string.Format(sentence, item.name);
+        questionTxt.text = string.Format(sentence, item.Name);
 
-        if (item.count > 1)
+        if (item.Count > 1)
         {
             remove.SetActive(false);
             removeOne.SetActive(true);
             removeAll.SetActive(true);
         }
-        else if (item.count == 1)
+        else if (item.Count == 1)
         {
             remove.SetActive(true);
             removeOne.SetActive(false);
@@ -44,10 +44,10 @@ public class RemoveItemWindowController : MonoBehaviour
 
     public void Remove(bool all)
     {
-        int count = Helper.Instance.GetItemStarCount(item.name);
-        for (int i = 0; i < (all ? item.count : 1); i++)
+        int count = Helper.Instance.GetItemStarCount(item.Name);
+        for (int i = 0; i < (all ? item.Count : 1); i++)
         {
-            HeroController.Instance.SubtractItem(item.name);
+            HeroController.Instance.SubtractItem(item.Name);
             HeroController.Instance.AddItem("*", count);
         }
     }

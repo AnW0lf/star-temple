@@ -6,10 +6,9 @@ using UnityEngine;
 public class RemoveItemZoneController : MonoBehaviour
 {
     public RectTransform panel;
-    public float speed = 5f, error = 1f;
+    public float duration = 5f;
+    public LeanTweenType ease;
     public static RemoveItemZoneController Instance { get; private set; } = null;
-
-    private Coroutine moveTo = null;
 
     private void Awake()
     {
@@ -19,28 +18,12 @@ public class RemoveItemZoneController : MonoBehaviour
 
     public void Show()
     {
-        MoveTo(0f);
+        panel.LeanMoveLocalY(0f, duration).setEase(ease);
     }
 
     public void Hide()
     {
-        MoveTo(panel.sizeDelta.y);
-    }
-
-    private void MoveTo(float ypos)
-    {
-        if (moveTo != null) StopCoroutine(moveTo);
-        moveTo = StartCoroutine(MoveToCoroutine(ypos));
-    }
-
-    private IEnumerator MoveToCoroutine(float ypos)
-    {
-        while (Math.Abs(ypos - panel.anchoredPosition.y) > error)
-        {
-            yield return null;
-            panel.anchoredPosition += Vector2.up * speed * Time.deltaTime * Math.Sign(ypos - panel.anchoredPosition.y);
-        }
-        panel.anchoredPosition = new Vector2(panel.anchoredPosition.x, ypos);
+        panel.LeanMoveLocalY(panel.sizeDelta.y, duration).setEase(ease);
     }
 
     public void Spray()

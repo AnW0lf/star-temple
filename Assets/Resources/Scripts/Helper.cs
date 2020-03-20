@@ -78,15 +78,15 @@ public class Helper : MonoBehaviour
         hero.items.ForEach(item =>
         {
             XElement XItem = null;
-            if ((XItem = XItems.ToList().Find(xi => xi.Attribute("name").Value.Equals(item.name))) != null)
+            if ((XItem = XItems.ToList().Find(xi => xi.Attribute("name").Value.Equals(item.Name))) != null)
             {
-                XItem.Attribute("count").SetValue(item.count);
+                XItem.Attribute("count").SetValue(item.Count);
             }
             else
             {
                 XItem = new XElement("item");
-                XItem.Add(new XAttribute("name", item.name));
-                XItem.Add(new XAttribute("count", item.count));
+                XItem.Add(new XAttribute("name", item.Name));
+                XItem.Add(new XAttribute("count", item.Count));
                 XHero.Add(XItem);
             }
         });
@@ -428,6 +428,26 @@ public class Helper : MonoBehaviour
 
         return 0;
     }
+
+    public Item GetItem(string name)
+    {
+        if (!File.Exists(itemPath))
+            throw new FileNotFoundException(string.Format("File {0} not found. Check it and try again.", itemPath));
+
+        XElement root = XDocument.Parse(File.ReadAllText(itemPath)).Root;
+        XElement XItem = root.Elements("item").ToList().Find(item => item.Attribute("name").Value == name);
+        if (XItem != null)
+        {
+            Item item = new Item();
+            if (!int.TryParse(XItem.Attribute("star").Value, out count))
+                throw new ArgumentException(string.Format("Item \'{0}\' has incorrect value \'{1}\' of star count."
+                    , name, XItem.Attribute("star").Value));
+
+            return count;
+        }
+
+        return 0;
+    }
 }
 
 public struct Hero
@@ -475,15 +495,72 @@ public struct Hero
     }
 }
 
-public struct Item
+public class Item
 {
-    public string name;
-    public int count;
+    public string Name { get; private set; } = "";
+    public string Type { get; private set; } = "";
+    public int Count { get; private set; } = 0;
+    public int Star { get; private set; } = 0;
+    public Dictionary<string, string> Options { get; private set; }
 
-    public Item(string name, int count)
+    public Item()
     {
-        this.name = name;
-        this.count = count;
+        Options = new Dictionary<string, string>();
+    }
+
+    public Item(Item other)
+    {
+        Name = other.Name;
+        Type = other.Type;
+        Count = other.Count;
+        Star = other.Star;
+        Options = new Dictionary<string, string>(other.Options);
+    }
+
+    public Item(string name, string type, int count, int star)
+    {
+        Name = name;
+        Type = type;
+        Count = count;
+        Star = star;
+        Options = new Dictionary<string, string>();
+    }
+
+    public void SetName(string name)
+    {
+        Name = name;
+    }
+
+    public void SetType(string type)
+    {
+        Type = type;
+    }
+
+    public void SetCount(int count)
+    {
+        Count = count;
+    }
+
+    public void SetStar(int star)
+    {
+        Star = star;
+    }
+
+    public void AddOption(string key, string value)
+    {
+        if (!Options.ContainsKey(key)) Options.Add(key, value);
+        else Options[key] = value;
+    }
+
+    public void AddOption(KeyValuePair<string, string> pair)
+    {
+        if (!Options.ContainsKey(pair.Key)) Options.Add(pair.Key, pair.Value);
+        else Options[pair.Key] = pair.Value;
+    }
+
+    public void RemoveOption(string key)
+    {
+        if (Options.ContainsKey(key)) Options.Remove(key);
     }
 }
 
