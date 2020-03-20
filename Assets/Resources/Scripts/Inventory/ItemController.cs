@@ -9,8 +9,8 @@ public class ItemController : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
     public Text itemNameTxt, countTxt;
     [HideInInspector]
     public Item item;
-    public string ItemName { get { return item.name; } }
-    public int Count { get { return item.count; } private set { item.count = value; } }
+    public string ItemName { get { return item.Name; } }
+    public int Count { get { return item.Count; } private set { item.SetCount(value); } }
 
     private RectTransform draggedItem;
 
@@ -44,21 +44,21 @@ public class ItemController : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
     {
         draggedItem = HeroController.Instance.inventory.draggedItem;
         draggedItem.gameObject.SetActive(true);
-        draggedItem.GetComponent<Text>().text = item.name;
+        draggedItem.GetComponent<Text>().text = item.Name;
 
         DragHelper.Instance.item = this;
 
-        if (item.count == 1)
+        if (item.Count == 1)
         {
             itemNameTxt.enabled = false;
             countTxt.enabled = false;
         }
         else
         {
-            countTxt.text = (item.count - 1).ToString();
+            countTxt.text = (item.Count - 1).ToString();
         }
 
-        if (item.name != "*")
+        if (item.Name != "*")
             RemoveItemZoneController.Instance.Show();
     }
 
@@ -72,7 +72,7 @@ public class ItemController : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
 
         itemNameTxt.enabled = true;
         countTxt.enabled = true;
-        countTxt.text = item.count.ToString();
+        countTxt.text = item.Count.ToString();
 
         RemoveItemZoneController.Instance.Hide();
     }

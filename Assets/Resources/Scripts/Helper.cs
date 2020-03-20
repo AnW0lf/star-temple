@@ -10,8 +10,6 @@ public class Helper : MonoBehaviour
 {
     public static Helper Instance = null;
 
-    public static readonly Item Star = new Item("*", 0);
-
     private string directoryPath, heroPath, itemPath, roomPath;
 
     void Awake()
@@ -35,8 +33,7 @@ public class Helper : MonoBehaviour
 
     public Hero CreateHero(string heroName)
     {
-        XElement root = null;
-
+        XElement root;
         if (!File.Exists(heroPath))
             root = new XElement("root");
         else
@@ -78,15 +75,15 @@ public class Helper : MonoBehaviour
         hero.items.ForEach(item =>
         {
             XElement XItem = null;
-            if ((XItem = XItems.ToList().Find(xi => xi.Attribute("name").Value.Equals(item.name))) != null)
+            if ((XItem = XItems.ToList().Find(xi => xi.Attribute("name").Value.Equals(item.Name))) != null)
             {
-                XItem.Attribute("count").SetValue(item.count);
+                XItem.Attribute("count").SetValue(item.Count);
             }
             else
             {
                 XItem = new XElement("item");
-                XItem.Add(new XAttribute("name", item.name));
-                XItem.Add(new XAttribute("count", item.count));
+                XItem.Add(new XAttribute("name", item.Name));
+                XItem.Add(new XAttribute("count", item.Count));
                 XHero.Add(XItem);
             }
         });
@@ -110,9 +107,15 @@ public class Helper : MonoBehaviour
             int attention = int.Parse(hero.Attribute("attention").Value);
             List<Item> items = new List<Item>();
 
-            foreach (XElement item in hero.Elements("item"))
+            foreach (XElement XItem in hero.Elements("item"))
             {
-                items.Add(new Item(item.Attribute("name").Value, int.Parse(item.Attribute("count").Value)));
+                Item item = GetItem(XItem.Attribute("name").Value);
+                if (!int.TryParse(XItem.Attribute("count").Value, out int count))
+                    throw new ArgumentException(string.Format("Item \'{0}\' has incorrect value \'{1}\' of star count."
+                        , item.Name, XItem.Attribute("count").Value));
+                item.SetCount(count);
+
+                items.Add(item);
             }
 
             return new Hero(heroName, hp, level, money, strength, persistence, agility, attention, items);
@@ -137,9 +140,15 @@ public class Helper : MonoBehaviour
             int attention = int.Parse(hero.Attribute("attention").Value);
             List<Item> items = new List<Item>();
 
-            foreach (XElement item in hero.Elements("item"))
+            foreach (XElement XItem in hero.Elements("item"))
             {
-                items.Add(new Item(item.Attribute("name").Value, int.Parse(item.Attribute("count").Value)));
+                Item item = GetItem(XItem.Attribute("name").Value);
+                if (!int.TryParse(XItem.Attribute("count").Value, out int count))
+                    throw new ArgumentException(string.Format("Item \'{0}\' has incorrect value \'{1}\' of star count."
+                        , item.Name, XItem.Attribute("count").Value));
+                item.SetCount(count);
+
+                items.Add(item);
             }
 
             heroes.Add(new Hero(name, hp, level, money, strength, persistence, agility, attention, items));
@@ -262,7 +271,7 @@ public class Helper : MonoBehaviour
             {
                 foreach (XElement XAnnotation in room.Element("annotations").Elements("annotation"))
                 {
-                    int id = -1, chance = 0;
+                    int id = -1;
 
                     if (XAnnotation.Attribute("id") == null)
                         throw new ArgumentException(string.Format("Annotation does not contains attribute \'{0}\'.", "id"));
@@ -274,7 +283,7 @@ public class Helper : MonoBehaviour
                     if (XAnnotation.Attribute("chance") == null)
                         throw new ArgumentException(string.Format("Annotation does not contains attribute \'{0}\'.", "chance"));
 
-                    if (!int.TryParse(XAnnotation.Attribute("chance").Value, out chance))
+                    if (!int.TryParse(XAnnotation.Attribute("chance").Value, out int chance))
                         throw new ArgumentException(string.Format("Annotation has incorrect value of attribute \'{0}\' = \'{1}\'.",
                             "chance", XAnnotation.Attribute("chance").Value));
 
@@ -355,13 +364,10 @@ public class Helper : MonoBehaviour
 
     public string GetItemType(string name)
     {
-        XElement root = null;
-
         if (!File.Exists(itemPath))
             throw new FileNotFoundException(string.Format("File {0} not found. Check it and try again.", itemPath));
 
-        root = XDocument.Parse(File.ReadAllText(itemPath)).Root;
-
+        XElement root = XDocument.Parse(File.ReadAllText(itemPath)).Root;
         string type = "";
 
         foreach (XElement item in root.Elements("item"))
@@ -418,8 +424,7 @@ public class Helper : MonoBehaviour
         XElement XItem = root.Elements("item").ToList().Find(item => item.Attribute("name").Value == name);
         if (XItem != null && XItem.Attribute("star") != null)
         {
-            int count = 0;
-            if (!int.TryParse(XItem.Attribute("star").Value, out count))
+            if (!int.TryParse(XItem.Attribute("star").Value, out int count))
                 throw new ArgumentException(string.Format("Item \'{0}\' has incorrect value \'{1}\' of star count."
                     , name, XItem.Attribute("star").Value));
 
@@ -427,6 +432,44 @@ public class Helper : MonoBehaviour
         }
 
         return 0;
+    }
+
+    public Item GetItem(string name)
+    {
+        if (!File.Exists(itemPath))
+            throw new FileNotFoundException(string.Format("File {0} not found. Check it and try again.", itemPath));
+
+        XElement root = XDocument.Parse(File.ReadAllText(itemPath)).Root;
+        XElement XItem = root.Elements("item").ToList().Find(item => item.Attribute("name").Value == name);
+        if (XItem != null)
+        {
+            Item item = new Item();
+            foreach (XAttribute XAttr in XItem.Attributes())
+            {
+                switch (XAttr.Name.ToString())
+                {
+                    case "name":
+                        item.SetName(XAttr.Value);
+                        break;
+                    case "type":
+                        item.SetType(XAttr.Value);
+                        break;
+                    case "star":
+                        int star;
+                        if (!int.TryParse(XAttr.Value, out star))
+                            throw new ArgumentException(string.Format("Item \'{0}\' has incorrect value \'{1}\' of star count."
+                                , name, XAttr.Value));
+                        item.SetStar(star);
+                        break;
+                    default:
+                        item.AddOption(XAttr.Name.ToString(), XAttr.Value);
+                        break;
+                }
+            }
+            return item;
+        }
+
+        return new Item();
     }
 }
 
@@ -475,15 +518,72 @@ public struct Hero
     }
 }
 
-public struct Item
+public class Item
 {
-    public string name;
-    public int count;
+    public string Name { get; private set; } = "";
+    public string Type { get; private set; } = "";
+    public int Count { get; private set; } = 0;
+    public int Star { get; private set; } = 0;
+    public Dictionary<string, string> Options { get; private set; }
 
-    public Item(string name, int count)
+    public Item()
     {
-        this.name = name;
-        this.count = count;
+        Options = new Dictionary<string, string>();
+    }
+
+    public Item(Item other)
+    {
+        Name = other.Name;
+        Type = other.Type;
+        Count = other.Count;
+        Star = other.Star;
+        Options = new Dictionary<string, string>(other.Options);
+    }
+
+    public Item(string name, string type, int count, int star)
+    {
+        Name = name;
+        Type = type;
+        Count = count;
+        Star = star;
+        Options = new Dictionary<string, string>();
+    }
+
+    public void SetName(string name)
+    {
+        Name = name;
+    }
+
+    public void SetType(string type)
+    {
+        Type = type;
+    }
+
+    public void SetCount(int count)
+    {
+        Count = count;
+    }
+
+    public void SetStar(int star)
+    {
+        Star = star;
+    }
+
+    public void AddOption(string key, string value)
+    {
+        if (!Options.ContainsKey(key)) Options.Add(key, value);
+        else Options[key] = value;
+    }
+
+    public void AddOption(KeyValuePair<string, string> pair)
+    {
+        if (!Options.ContainsKey(pair.Key)) Options.Add(pair.Key, pair.Value);
+        else Options[pair.Key] = pair.Value;
+    }
+
+    public void RemoveOption(string key)
+    {
+        if (Options.ContainsKey(key)) Options.Remove(key);
     }
 }
 

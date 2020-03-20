@@ -584,7 +584,7 @@ public class DoCondition : IDo
             case "item":
                 foreach (var item in HeroController.Instance.Items)
                 {
-                    if (item.name.Equals(item_name) && item.count > 0)
+                    if (item.Name.Equals(item_name) && item.Count > 0)
                     {
                         win = true;
                         break;
@@ -667,7 +667,7 @@ public class DoCCondition : IDo
             case "item":
                 foreach (var item in HeroController.Instance.Items)
                 {
-                    if (item.name.Equals(item_name) && item.count > 0)
+                    if (item.Name.Equals(item_name) && item.Count > 0)
                     {
                         win = 50f * luck >= chance;
                         break;

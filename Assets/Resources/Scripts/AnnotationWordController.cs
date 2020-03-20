@@ -102,9 +102,9 @@ public class AnnotationWordController : MonoBehaviour, IDropHandler
         ItemController droppedItem = DragHelper.Instance.item;
         if (droppedItem != null)
         {
-            if (!IsDropped && drop_type == Helper.Instance.GetItemType(droppedItem.item.name))
+            if (!IsDropped && drop_type == Helper.Instance.GetItemType(droppedItem.item.Name))
             {
-                HeroController.Instance.SubtractItem(droppedItem.item.name);
+                HeroController.Instance.SubtractItem(droppedItem.item.Name);
                 EventController.Instance.Execute(gameObject, drop_id);
 
                 if (!word.reusable_drop) IsDropped = true;
