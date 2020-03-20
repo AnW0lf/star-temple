@@ -52,7 +52,7 @@ public class CreateHeroWindow : GameWindow
 
         btnCreate.interactable = canCreate;
 
-        btnCreateText.text = string.Format("Create {0}", name);
+        btnCreateText.text = string.Format("Создать героя {0}", name);
     }
 
     private void UpdateCounter(string name)
