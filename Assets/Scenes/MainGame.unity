@@ -2097,6 +2097,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panel: {fileID: 1261020879}
+  txt: {fileID: 1141767757}
   duration: 0.5
   ease: 19
 --- !u!1 &443156521

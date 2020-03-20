@@ -117,7 +117,7 @@ public class StoryWordController : MonoBehaviour, IDropHandler
         ItemController droppedItem = DragHelper.Instance.item;
         if (droppedItem != null)
         {
-            if (!IsAnnotated && droppedItem.item.Name == Helper.Star.Name)
+            if (!IsAnnotated && droppedItem.item.Type == "star")
             {
                 HeroController.Instance.SubtractItem(droppedItem.item.Name);
                 txt.text += droppedItem.item.Name;

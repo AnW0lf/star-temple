@@ -10,7 +10,7 @@ public class ItemController : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
     [HideInInspector]
     public Item item;
     public string ItemName { get { return item.Name; } }
-    public int Count { get { return item.Count; } private set { item.Count = value; } }
+    public int Count { get { return item.Count; } private set { item.SetCount(value); } }
 
     private RectTransform draggedItem;
 
@@ -72,7 +72,7 @@ public class ItemController : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
 
         itemNameTxt.enabled = true;
         countTxt.enabled = true;
-        countTxt.text = item.count.ToString();
+        countTxt.text = item.Count.ToString();
 
         RemoveItemZoneController.Instance.Hide();
     }

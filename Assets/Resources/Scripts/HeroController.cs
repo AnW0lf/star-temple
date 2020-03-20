@@ -24,12 +24,14 @@ public class HeroController : MonoBehaviour
 
     public void AddItem(string name, int count)
     {
-        inventory.AddItem(new Item(name, count));
+        inventory.AddItem(new Item(name, Helper.Instance.GetItemType(name)
+            , count, Helper.Instance.GetItemStarCount(name)));
     }
 
     public void SubtractItem(string name)
     {
-        inventory.SubtractItem(new Item(name, -1));
+        inventory.SubtractItem(new Item(name, Helper.Instance.GetItemType(name)
+            , -1, Helper.Instance.GetItemStarCount(name)));
     }
 
     public Hero Hero

@@ -2,10 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RemoveItemZoneController : MonoBehaviour
 {
     public RectTransform panel;
+    public Text txt;
     public float duration = 5f;
     public LeanTweenType ease;
     public static RemoveItemZoneController Instance { get; private set; } = null;
@@ -18,6 +20,8 @@ public class RemoveItemZoneController : MonoBehaviour
 
     public void Show()
     {
+        Item item = DragHelper.Instance.item.item;
+        txt.text = string.Format("Распылить \'{0}\'\nи получить {1} *", item.Name, item.Star);
         panel.LeanMoveLocalY(0f, duration).setEase(ease);
     }
 
@@ -28,8 +32,11 @@ public class RemoveItemZoneController : MonoBehaviour
 
     public void Spray()
     {
-        if (DragHelper.Instance.item != null)
-            RemoveItemWindowController.Instance.Show(DragHelper.Instance.item.item);
+        Item item = DragHelper.Instance.item.item;
+
+        HeroController.Instance.AddItem("*", item.Star);
+        HeroController.Instance.SubtractItem(item.Name);
+
         Hide();
     }
 }
