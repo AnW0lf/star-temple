@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -23,16 +21,15 @@ public class ItemController : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
 
     public void ChangeCount(int value)
     {
+        Count += value;
         Color oldColor = countTxt.color;
         countTxt.color = (value > 0) ? Color.green : Color.red;
-        LeanTween.scale(countTxt.gameObject, Vector3.one * 1.5f, 0.3f).setDelay(0.1f)
-            .setOnComplete(() => LeanTween.scale(countTxt.gameObject, Vector3.one, 0.3f)
-            .setOnComplete(() =>
-            {
-                Count += value;
-                countTxt.text = Count.ToString();
-                countTxt.color = oldColor;
-            }));
+        countTxt.gameObject.LeanScale(Vector3.one * 1.5f, 0.3f).setOnComplete(() =>
+        {
+            countTxt.text = Count.ToString();
+            countTxt.color = oldColor;
+        });
+        countTxt.gameObject.LeanDelayedCall(0.4f, () => countTxt.gameObject.LeanScale(Vector3.one * 1.5f, 0.3f));
     }
 
     public void OnDrag(PointerEventData eventData)

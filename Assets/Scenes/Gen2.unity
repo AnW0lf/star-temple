@@ -1006,9 +1006,9 @@ MonoBehaviour:
   - {fileID: 912700805}
   - {fileID: 2082828002}
   - {fileID: 623026611}
-  swapDuration: 0.5
+  swapDuration: 1
   bgImgXSizeOffset: 40
-  swapEase: 19
+  swapEase: 36
 --- !u!1 &1947814643
 GameObject:
   m_ObjectHideFlags: 0

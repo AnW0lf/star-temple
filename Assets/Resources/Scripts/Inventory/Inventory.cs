@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -39,6 +38,9 @@ public class Inventory : MonoBehaviour
             ItemController newItem = Instantiate(itemPrefab, container.transform).GetComponent<ItemController>();
             newItem.Fill(item);
             items.Add(newItem);
+
+            newItem.transform.localScale = Vector3.zero;
+            newItem.gameObject.LeanScale(Vector3.one, 0.3f).setEaseOutBounce();
         }
     }
 
@@ -50,15 +52,15 @@ public class Inventory : MonoBehaviour
             existItem.ChangeCount(item.Count);
             if (existItem.Count <= 0)
             {
-                items.Remove(existItem);
-                Destroy(existItem.gameObject);
+                    items.Remove(existItem);
+                    Destroy(existItem.gameObject);
             }
         }
     }
 
     public void LoadItems(Item[] items)
     {
-        foreach(Item item in items)
+        foreach (Item item in items)
         {
             AddItem(item);
         }
@@ -79,7 +81,7 @@ public class Inventory : MonoBehaviour
     private IEnumerator MoveTo(float pos)
     {
         float speed = Mathf.Abs(hidePos - showPos) / delay;
-        while(Mathf.Abs(self.anchoredPosition.y - pos) > 2f * speed * Time.deltaTime)
+        while (Mathf.Abs(self.anchoredPosition.y - pos) > 2f * speed * Time.deltaTime)
         {
             self.anchoredPosition += Vector2.up * speed * Time.deltaTime * Mathf.Sign(pos - self.anchoredPosition.y);
             yield return null;
