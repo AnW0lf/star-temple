@@ -22,7 +22,7 @@ public class ScrollGamePanels : MonoBehaviour
     {
         if(index < panels.Length)
         {
-            screens.LeanMoveLocalX(-panels[index].anchoredPosition.x, swapDuration).setEase(swapEase);
+            screens.LeanMoveLocalX(500f - panels[index].anchoredPosition.x, swapDuration).setEase(swapEase);
             bgImg.LeanMoveLocalX(btns[index].anchoredPosition.x, swapDuration).setEase(LeanTweenType.easeInOutQuart);
             bgImg.LeanSize(new Vector2(btns[index].sizeDelta.x + bgImgXSizeOffset, bgImg.sizeDelta.y), swapDuration);
         }
