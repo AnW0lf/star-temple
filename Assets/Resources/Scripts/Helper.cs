@@ -31,131 +31,132 @@ public class Helper : MonoBehaviour
         roomPath = directoryPath + "/{0}.xml";
     }
 
-    public Hero CreateHero(string heroName)
-    {
-        XElement root;
-        if (!File.Exists(heroPath))
-            root = new XElement("root");
-        else
-            root = XDocument.Parse(File.ReadAllText(heroPath)).Element("root");
 
-        XElement hero = new XElement("hero");
+    //public Hero CreateHero(string heroName)
+    //{
+    //    XElement root;
+    //    if (!File.Exists(heroPath))
+    //        root = new XElement("root");
+    //    else
+    //        root = XDocument.Parse(File.ReadAllText(heroPath)).Element("root");
 
-        hero.Add(new XAttribute("name", heroName));
-        hero.Add(new XAttribute("level", 1));
-        hero.Add(new XAttribute("money", 0));
-        hero.Add(new XAttribute("strength", 10));
-        hero.Add(new XAttribute("persistence", 10));
-        hero.Add(new XAttribute("agility", 10));
-        hero.Add(new XAttribute("attention", 10));
+    //    XElement hero = new XElement("hero");
 
-        root.Add(hero);
+    //    hero.Add(new XAttribute("name", heroName));
+    //    hero.Add(new XAttribute("level", 1));
+    //    hero.Add(new XAttribute("money", 0));
+    //    hero.Add(new XAttribute("strength", 10));
+    //    hero.Add(new XAttribute("persistence", 10));
+    //    hero.Add(new XAttribute("agility", 10));
+    //    hero.Add(new XAttribute("attention", 10));
 
-        XDocument doc = new XDocument(root);
-        File.WriteAllText(heroPath, doc.ToString());
+    //    root.Add(hero);
 
-        return LoadHero(heroName);
-    }
+    //    XDocument doc = new XDocument(root);
+    //    File.WriteAllText(heroPath, doc.ToString());
 
-    public void SaveHero(Hero hero)
-    {
-        XElement root = XDocument.Parse(File.ReadAllText(heroPath)).Element("root");
-        XElement XHero = root.Elements("hero").ToList().Find(h => h.Attribute("name").Value.Equals(hero.name));
-        if (XHero == null) return;
-        XHero.Attribute("hp").SetValue(hero.hp);
-        XHero.Attribute("level").SetValue(hero.level);
-        XHero.Attribute("money").SetValue(hero.money);
-        XHero.Attribute("strength").SetValue(hero.strength);
-        XHero.Attribute("persistence").SetValue(hero.persistence);
-        XHero.Attribute("agility").SetValue(hero.agility);
-        XHero.Attribute("attention").SetValue(hero.attention);
+    //    return LoadHero(heroName);
+    //}
 
-        var XItems = XHero.Elements("item");
+    //public void SaveHero(Hero hero)
+    //{
+    //    XElement root = XDocument.Parse(File.ReadAllText(heroPath)).Element("root");
+    //    XElement XHero = root.Elements("hero").ToList().Find(h => h.Attribute("name").Value.Equals(hero.name));
+    //    if (XHero == null) return;
+    //    XHero.Attribute("hp").SetValue(hero.hp);
+    //    XHero.Attribute("level").SetValue(hero.level);
+    //    XHero.Attribute("money").SetValue(hero.money);
+    //    XHero.Attribute("strength").SetValue(hero.strength);
+    //    XHero.Attribute("persistence").SetValue(hero.persistence);
+    //    XHero.Attribute("agility").SetValue(hero.agility);
+    //    XHero.Attribute("attention").SetValue(hero.attention);
 
-        hero.items.ForEach(item =>
-        {
-            XElement XItem = null;
-            if ((XItem = XItems.ToList().Find(xi => xi.Attribute("name").Value.Equals(item.Name))) != null)
-            {
-                XItem.Attribute("count").SetValue(item.Count);
-            }
-            else
-            {
-                XItem = new XElement("item");
-                XItem.Add(new XAttribute("name", item.Name));
-                XItem.Add(new XAttribute("count", item.Count));
-                XHero.Add(XItem);
-            }
-        });
+    //    var XItems = XHero.Elements("item");
 
-        XDocument doc = new XDocument(root);
-        File.WriteAllText(heroPath, doc.ToString());
-    }
+    //    hero.items.ForEach(item =>
+    //    {
+    //        XElement XItem = null;
+    //        if ((XItem = XItems.ToList().Find(xi => xi.Attribute("name").Value.Equals(item.Name))) != null)
+    //        {
+    //            XItem.Attribute("count").SetValue(item.Count);
+    //        }
+    //        else
+    //        {
+    //            XItem = new XElement("item");
+    //            XItem.Add(new XAttribute("name", item.Name));
+    //            XItem.Add(new XAttribute("count", item.Count));
+    //            XHero.Add(XItem);
+    //        }
+    //    });
 
-    public Hero LoadHero(string heroName)
-    {
-        XElement root = XDocument.Parse(File.ReadAllText(heroPath)).Element("root");
+    //    XDocument doc = new XDocument(root);
+    //    File.WriteAllText(heroPath, doc.ToString());
+    //}
 
-        foreach (XElement hero in root.Elements("hero").Where(l => l.Attribute("name").Value.Equals(heroName)))
-        {
-            int hp = int.Parse(hero.Attribute("hp").Value);
-            int level = int.Parse(hero.Attribute("level").Value);
-            int money = int.Parse(hero.Attribute("money").Value);
-            int strength = int.Parse(hero.Attribute("strength").Value);
-            int persistence = int.Parse(hero.Attribute("persistence").Value);
-            int agility = int.Parse(hero.Attribute("agility").Value);
-            int attention = int.Parse(hero.Attribute("attention").Value);
-            List<Item> items = new List<Item>();
+    //public Hero LoadHero(string heroName)
+    //{
+    //    XElement root = XDocument.Parse(File.ReadAllText(heroPath)).Element("root");
 
-            foreach (XElement XItem in hero.Elements("item"))
-            {
-                Item item = GetItem(XItem.Attribute("name").Value);
-                if (!int.TryParse(XItem.Attribute("count").Value, out int count))
-                    throw new ArgumentException(string.Format("Item \'{0}\' has incorrect value \'{1}\' of star count."
-                        , item.Name, XItem.Attribute("count").Value));
-                item.SetCount(count);
+    //    foreach (XElement hero in root.Elements("hero").Where(l => l.Attribute("name").Value.Equals(heroName)))
+    //    {
+    //        int hp = int.Parse(hero.Attribute("hp").Value);
+    //        int level = int.Parse(hero.Attribute("level").Value);
+    //        int money = int.Parse(hero.Attribute("money").Value);
+    //        int strength = int.Parse(hero.Attribute("strength").Value);
+    //        int persistence = int.Parse(hero.Attribute("persistence").Value);
+    //        int agility = int.Parse(hero.Attribute("agility").Value);
+    //        int attention = int.Parse(hero.Attribute("attention").Value);
+    //        List<Item> items = new List<Item>();
 
-                items.Add(item);
-            }
+    //        foreach (XElement XItem in hero.Elements("item"))
+    //        {
+    //            Item item = GetItem(XItem.Attribute("name").Value);
+    //            if (!int.TryParse(XItem.Attribute("count").Value, out int count))
+    //                throw new ArgumentException(string.Format("Item \'{0}\' has incorrect value \'{1}\' of star count."
+    //                    , item.Name, XItem.Attribute("count").Value));
+    //            item.SetCount(count);
 
-            return new Hero(heroName, hp, level, money, strength, persistence, agility, attention, items);
-        }
+    //            items.Add(item);
+    //        }
 
-        return Hero.Empty(heroName);
-    }
+    //        return new Hero(heroName, hp, level, money, strength, persistence, agility, attention, items);
+    //    }
 
-    public Hero[] LoadHeroes()
-    {
-        XElement root = XDocument.Parse(File.ReadAllText(heroPath)).Element("root");
-        List<Hero> heroes = new List<Hero>();
-        foreach (XElement hero in root.Elements("hero"))
-        {
-            string name = hero.Attribute("name").Value;
-            int hp = int.Parse(hero.Attribute("hp").Value);
-            int level = int.Parse(hero.Attribute("level").Value);
-            int money = int.Parse(hero.Attribute("money").Value);
-            int strength = int.Parse(hero.Attribute("strength").Value);
-            int persistence = int.Parse(hero.Attribute("persistence").Value);
-            int agility = int.Parse(hero.Attribute("agility").Value);
-            int attention = int.Parse(hero.Attribute("attention").Value);
-            List<Item> items = new List<Item>();
+    //    return Hero.Empty(heroName);
+    //}
 
-            foreach (XElement XItem in hero.Elements("item"))
-            {
-                Item item = GetItem(XItem.Attribute("name").Value);
-                if (!int.TryParse(XItem.Attribute("count").Value, out int count))
-                    throw new ArgumentException(string.Format("Item \'{0}\' has incorrect value \'{1}\' of star count."
-                        , item.Name, XItem.Attribute("count").Value));
-                item.SetCount(count);
+    //public Hero[] LoadHeroes()
+    //{
+    //    XElement root = XDocument.Parse(File.ReadAllText(heroPath)).Element("root");
+    //    List<Hero> heroes = new List<Hero>();
+    //    foreach (XElement hero in root.Elements("hero"))
+    //    {
+    //        string name = hero.Attribute("name").Value;
+    //        int hp = int.Parse(hero.Attribute("hp").Value);
+    //        int level = int.Parse(hero.Attribute("level").Value);
+    //        int money = int.Parse(hero.Attribute("money").Value);
+    //        int strength = int.Parse(hero.Attribute("strength").Value);
+    //        int persistence = int.Parse(hero.Attribute("persistence").Value);
+    //        int agility = int.Parse(hero.Attribute("agility").Value);
+    //        int attention = int.Parse(hero.Attribute("attention").Value);
+    //        List<Item> items = new List<Item>();
 
-                items.Add(item);
-            }
+    //        foreach (XElement XItem in hero.Elements("item"))
+    //        {
+    //            Item item = GetItem(XItem.Attribute("name").Value);
+    //            if (!int.TryParse(XItem.Attribute("count").Value, out int count))
+    //                throw new ArgumentException(string.Format("Item \'{0}\' has incorrect value \'{1}\' of star count."
+    //                    , item.Name, XItem.Attribute("count").Value));
+    //            item.SetCount(count);
 
-            heroes.Add(new Hero(name, hp, level, money, strength, persistence, agility, attention, items));
-        }
+    //            items.Add(item);
+    //        }
 
-        return heroes.ToArray();
-    }
+    //        heroes.Add(new Hero(name, hp, level, money, strength, persistence, agility, attention, items));
+    //    }
+
+    //    return heroes.ToArray();
+    //}
 
     public bool ContainsHero(string heroName)
     {
@@ -470,120 +471,6 @@ public class Helper : MonoBehaviour
         }
 
         return new Item();
-    }
-}
-
-public struct Hero
-{
-    public string name;
-    public int hp;
-    public int level;
-    public int money;
-    public int strength;
-    public int persistence;
-    public int agility;
-    public int attention;
-    public List<Item> items;
-
-    public Hero(string name, int hp, int level, int money, int strength, int persistence, int agility, int attention, List<Item> items)
-    {
-        this.name = name;
-        this.hp = hp;
-        this.level = level;
-        this.money = money;
-        this.strength = strength;
-        this.persistence = persistence;
-        this.agility = agility;
-        this.attention = attention;
-        this.items = items;
-    }
-
-    public static Hero Empty(string name)
-    {
-        return new Hero(name, 0, 1, 0, 10, 10, 10, 10, new List<Item>());
-    }
-
-    public static string Convert(int value)
-    {
-        int d = Mathf.Clamp(value, 0, 100) / 25;
-        switch (d)
-        {
-            case 0: return "no";
-            case 1: return "almost no";
-            case 2: return "have some";
-            case 3: return "enough";
-            case 4: return "a lot of";
-            default: return "unknown";
-        }
-    }
-}
-
-public class Item
-{
-    public string Name { get; private set; } = "";
-    public string Type { get; private set; } = "";
-    public int Count { get; private set; } = 0;
-    public int Star { get; private set; } = 0;
-    public Dictionary<string, string> Options { get; private set; }
-
-    public Item()
-    {
-        Options = new Dictionary<string, string>();
-    }
-
-    public Item(Item other)
-    {
-        Name = other.Name;
-        Type = other.Type;
-        Count = other.Count;
-        Star = other.Star;
-        Options = new Dictionary<string, string>(other.Options);
-    }
-
-    public Item(string name, string type, int count, int star)
-    {
-        Name = name;
-        Type = type;
-        Count = count;
-        Star = star;
-        Options = new Dictionary<string, string>();
-    }
-
-    public void SetName(string name)
-    {
-        Name = name;
-    }
-
-    public void SetType(string type)
-    {
-        Type = type;
-    }
-
-    public void SetCount(int count)
-    {
-        Count = count;
-    }
-
-    public void SetStar(int star)
-    {
-        Star = star;
-    }
-
-    public void AddOption(string key, string value)
-    {
-        if (!Options.ContainsKey(key)) Options.Add(key, value);
-        else Options[key] = value;
-    }
-
-    public void AddOption(KeyValuePair<string, string> pair)
-    {
-        if (!Options.ContainsKey(pair.Key)) Options.Add(pair.Key, pair.Value);
-        else Options[pair.Key] = pair.Value;
-    }
-
-    public void RemoveOption(string key)
-    {
-        if (Options.ContainsKey(key)) Options.Remove(key);
     }
 }
 

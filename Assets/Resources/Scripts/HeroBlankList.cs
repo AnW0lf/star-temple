@@ -78,13 +78,13 @@ public class HeroBlankList : MonoBehaviour
         }
     }
 
-    public void AddHero(Hero hero)
-    {
-        HeroBlank heroBlank = Instantiate(heroBlankPrefab, transform).GetComponent<HeroBlank>();
-        heroBlank.Fill(hero);
+    //public void AddHero(Hero hero)
+    //{
+    //    HeroBlank heroBlank = Instantiate(heroBlankPrefab, transform).GetComponent<HeroBlank>();
+    //    heroBlank.Fill(hero);
 
-        heroes.Add(heroBlank);
-    }
+    //    heroes.Add(heroBlank);
+    //}
 
     public void RemoveSelectedHero()
     {

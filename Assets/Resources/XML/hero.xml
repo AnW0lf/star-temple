@@ -1,5 +1,5 @@
-<root>
-  <hero name="Leeroy Jenkins" hp="100" level="1" money="0" strength="10" persistence="10" agility="10" attention="10">
-    <item name="*" count="2" />
-  </hero>
-</root>
+<hero name="Leeroy Jenkins" hp="100" level="1" money="0">
+	<item name="*" count="3" />
+	<spell name="Удар" count="1"/>
+	<spell name="Блок" count="1"/>
+</hero>

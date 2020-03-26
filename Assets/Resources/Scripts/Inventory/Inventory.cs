@@ -31,7 +31,7 @@ public class Inventory : MonoBehaviour
         ItemController existItem;
         if ((existItem = items.Find(i => i.item.Name.Equals(item.Name))) != null)
         {
-            existItem.ChangeCount(item.Count);
+            //existItem.ChangeCount(item.Count);
         }
         else
         {
@@ -49,12 +49,12 @@ public class Inventory : MonoBehaviour
         ItemController existItem;
         if ((existItem = items.Find(i => i.item.Name.Equals(item.Name))) != null)
         {
-            existItem.ChangeCount(item.Count);
-            if (existItem.Count <= 0)
-            {
-                    items.Remove(existItem);
-                    Destroy(existItem.gameObject);
-            }
+            //existItem.ChangeCount(item.Count);
+            //if (existItem.Count <= 0)
+            //{
+            //        items.Remove(existItem);
+            //        Destroy(existItem.gameObject);
+            //}
         }
     }
 

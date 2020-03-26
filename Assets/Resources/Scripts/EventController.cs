@@ -453,33 +453,33 @@ public class DoStat : IDo
             value = Helper.Instance.GetItemValue(DragHelper.Instance.item.name);
         }
 
-        switch (stat_name)
-        {
-            case "strength":
-                FlyingTextManager.Instance.AddFlyingText(sender, string.Format("{0} {1}", "Strength", value));
-                HeroController.Instance.Strength += value;
-                break;
-            case "agility":
-                FlyingTextManager.Instance.AddFlyingText(sender, string.Format("{0} {1}", "Agility", value));
-                HeroController.Instance.Agility += value;
-                break;
-            case "persistence":
-                FlyingTextManager.Instance.AddFlyingText(sender, string.Format("{0} {1}", "Persistence", value));
-                HeroController.Instance.Persistence += value;
-                break;
-            case "attention":
-                FlyingTextManager.Instance.AddFlyingText(sender, string.Format("{0} {1}", "Attention", value));
-                HeroController.Instance.Attention += value;
-                break;
-            case "hp":
-                FlyingTextManager.Instance.AddFlyingText(sender, string.Format("{0} {1}", "HP", value));
-                HeroController.Instance.HP += value;
-                break;
-            case "money":
-                FlyingTextManager.Instance.AddFlyingText(sender, string.Format("{0} {1}", value, "coins"));
-                HeroController.Instance.Money += value;
-                break;
-        }
+        //switch (stat_name)
+        //{
+        //    case "strength":
+        //        FlyingTextManager.Instance.AddFlyingText(sender, string.Format("{0} {1}", "Strength", value));
+        //        HeroController.Instance.Strength += value;
+        //        break;
+        //    case "agility":
+        //        FlyingTextManager.Instance.AddFlyingText(sender, string.Format("{0} {1}", "Agility", value));
+        //        HeroController.Instance.Agility += value;
+        //        break;
+        //    case "persistence":
+        //        FlyingTextManager.Instance.AddFlyingText(sender, string.Format("{0} {1}", "Persistence", value));
+        //        HeroController.Instance.Persistence += value;
+        //        break;
+        //    case "attention":
+        //        FlyingTextManager.Instance.AddFlyingText(sender, string.Format("{0} {1}", "Attention", value));
+        //        HeroController.Instance.Attention += value;
+        //        break;
+        //    case "hp":
+        //        FlyingTextManager.Instance.AddFlyingText(sender, string.Format("{0} {1}", "HP", value));
+        //        HeroController.Instance.HP += value;
+        //        break;
+        //    case "money":
+        //        FlyingTextManager.Instance.AddFlyingText(sender, string.Format("{0} {1}", value, "coins"));
+        //        HeroController.Instance.Money += value;
+        //        break;
+        //}
         Condition();
     }
 
@@ -561,37 +561,37 @@ public class DoCondition : IDo
     public void Do(GameObject sender)
     {
         bool win = false;
-        switch (stat_name)
-        {
-            case "strength":
-                win = InRange(HeroController.Instance.Strength, min, max);
-                break;
-            case "agility":
-                win = InRange(HeroController.Instance.Agility, min, max);
-                break;
-            case "persistence":
-                win = InRange(HeroController.Instance.Persistence, min, max);
-                break;
-            case "attention":
-                win = InRange(HeroController.Instance.Attention, min, max);
-                break;
-            case "hp":
-                win = InRange(HeroController.Instance.HP, min, max);
-                break;
-            case "money":
-                win = InRange(HeroController.Instance.Money, min, max);
-                break;
-            case "item":
-                foreach (var item in HeroController.Instance.Items)
-                {
-                    if (item.Name.Equals(item_name) && item.Count > 0)
-                    {
-                        win = true;
-                        break;
-                    }
-                }
-                break;
-        }
+        //switch (stat_name)
+        //{
+        //    case "strength":
+        //        win = InRange(HeroController.Instance.Strength, min, max);
+        //        break;
+        //    case "agility":
+        //        win = InRange(HeroController.Instance.Agility, min, max);
+        //        break;
+        //    case "persistence":
+        //        win = InRange(HeroController.Instance.Persistence, min, max);
+        //        break;
+        //    case "attention":
+        //        win = InRange(HeroController.Instance.Attention, min, max);
+        //        break;
+        //    case "hp":
+        //        win = InRange(HeroController.Instance.HP, min, max);
+        //        break;
+        //    case "money":
+        //        win = InRange(HeroController.Instance.Money, min, max);
+        //        break;
+        //    case "item":
+        //        foreach (var item in HeroController.Instance.Items)
+        //        {
+        //            if (item.Name.Equals(item_name) && item.Count > 0)
+        //            {
+        //                win = true;
+        //                break;
+        //            }
+        //        }
+        //        break;
+        //}
 
         EventController.Instance.Execute(sender, win ? trueId : falseId);
         Condition();
@@ -644,37 +644,37 @@ public class DoCCondition : IDo
         this.sender = sender;
         bool win = false;
         int chance = Random.Range(0, 100);
-        switch (stat_name)
-        {
-            case "strength":
-                win = HeroController.Instance.Strength * luck >= chance;
-                break;
-            case "agility":
-                win = HeroController.Instance.Agility * luck >= chance;
-                break;
-            case "persistence":
-                win = HeroController.Instance.Persistence * luck >= chance;
-                break;
-            case "attention":
-                win = HeroController.Instance.Attention * luck >= chance;
-                break;
-            case "hp":
-                win = HeroController.Instance.HP * luck >= chance;
-                break;
-            case "money":
-                win = HeroController.Instance.Money * luck >= chance;
-                break;
-            case "item":
-                foreach (var item in HeroController.Instance.Items)
-                {
-                    if (item.Name.Equals(item_name) && item.Count > 0)
-                    {
-                        win = 50f * luck >= chance;
-                        break;
-                    }
-                }
-                break;
-        }
+        //switch (stat_name)
+        //{
+        //    case "strength":
+        //        win = HeroController.Instance.Strength * luck >= chance;
+        //        break;
+        //    case "agility":
+        //        win = HeroController.Instance.Agility * luck >= chance;
+        //        break;
+        //    case "persistence":
+        //        win = HeroController.Instance.Persistence * luck >= chance;
+        //        break;
+        //    case "attention":
+        //        win = HeroController.Instance.Attention * luck >= chance;
+        //        break;
+        //    case "hp":
+        //        win = HeroController.Instance.HP * luck >= chance;
+        //        break;
+        //    case "money":
+        //        win = HeroController.Instance.Money * luck >= chance;
+        //        break;
+        //    case "item":
+        //        foreach (var item in HeroController.Instance.Items)
+        //        {
+        //            if (item.Name.Equals(item_name) && item.Count > 0)
+        //            {
+        //                win = 50f * luck >= chance;
+        //                break;
+        //            }
+        //        }
+        //        break;
+        //}
 
         EventController.Instance.Execute(sender, win ? trueId : falseId);
         Condition();

@@ -7,11 +7,6 @@ using Random = UnityEngine.Random;
 
 public class WordEffects : MonoBehaviour
 {
-    [Header("Story Word Controller")]
-    public StoryWordController sw;
-    [Header("Annotation Word Controller")]
-    public AnnotationWordController aw;
-
     [Header("Prefab")]
     [SerializeField]
     private GameObject particle;
@@ -31,6 +26,9 @@ public class WordEffects : MonoBehaviour
     private RectTransform rect;
 
     private Color ec, dc;
+
+    public delegate bool Condition();
+    public Condition hasEvent, hasDrop;
 
     public void Begin()
     {
@@ -52,54 +50,26 @@ public class WordEffects : MonoBehaviour
         WaitForSeconds sec = new WaitForSeconds(duration);
         img.rectTransform.localScale = Vector3.zero;
         yield return new WaitForSeconds(Random.Range(0f, duration));
-
-        if (sw)
+        while (hasEvent() || hasDrop())
         {
-            while (!sw.IsEvented || !sw.IsDropped)
-            {
-                if (!sw.IsEvented && !sw.IsDropped)
-                    img.color = Random.Range(0, 1) == 0 ? ec : dc;
-                else if (!sw.IsEvented)
-                    img.color = ec;
-                else if (!sw.IsDropped)
-                    img.color = dc;
-                else break;
+            if (hasEvent() && hasDrop())
+                img.color = Random.Range(0, 1) == 0 ? ec : dc;
+            else if (hasEvent())
+                img.color = ec;
+            else if (hasDrop())
+                img.color = dc;
+            else break;
 
-                img.rectTransform.anchoredPosition = new Vector2(Random.Range(0f, rect.sizeDelta.x), -Random.Range(0f, rect.sizeDelta.y));
-                img.rectTransform.localScale = Vector3.zero;
+            img.rectTransform.anchoredPosition = new Vector2(Random.Range(0f, rect.sizeDelta.x), -Random.Range(0f, rect.sizeDelta.y));
+            img.rectTransform.localScale = Vector3.zero;
 
-                yield return new WaitForSeconds(Random.Range(0f, duration));
+            yield return new WaitForSeconds(Random.Range(0f, duration));
 
-                img.rectTransform.LeanAlpha(1f, duration / 2f).setLoopPingPong(1);
-                img.rectTransform.LeanScale(Vector3.one, duration / 2f).setLoopPingPong(1);
+            img.rectTransform.LeanAlpha(1f, duration / 2f).setLoopPingPong(1);
+            img.rectTransform.LeanScale(Vector3.one, duration / 2f).setLoopPingPong(1);
 
-                yield return sec;
-            }
+            yield return sec;
         }
-        else if (aw)
-        {
-            while (!aw.IsEvented || !aw.IsDropped)
-            {
-                if (!aw.IsEvented && !aw.IsDropped)
-                    img.color = Random.Range(0, 1) == 0 ? ec : dc;
-                else if (!aw.IsEvented)
-                    img.color = ec;
-                else if (!aw.IsDropped)
-                    img.color = dc;
-                else break;
-
-                img.rectTransform.anchoredPosition = new Vector2(Random.Range(0f, rect.sizeDelta.x), -Random.Range(0f, rect.sizeDelta.y));
-                img.rectTransform.localScale = Vector3.zero;
-
-                yield return new WaitForSeconds(Random.Range(0f, duration));
-
-                img.rectTransform.LeanAlpha(1f, duration / 2f).setLoopPingPong(1);
-                img.rectTransform.LeanScale(Vector3.one, duration / 2f).setLoopPingPong(1);
-
-                yield return sec;
-            }
-        }
-
         img.gameObject.SetActive(false);
     }
 

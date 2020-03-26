@@ -24,7 +24,7 @@ public class CreateHeroWindow : GameWindow
         textfield.onValueChanged.AddListener(UpdateBtnCreateText);
         textfield.onValueChanged.AddListener(UpdateCounter);
 
-        btnCreate.onClick.AddListener(CreateHero);
+        //btnCreate.onClick.AddListener(CreateHero);
         btnCreate.onClick.AddListener(Hide);
         btnCancel.onClick.AddListener(Hide);
     }
@@ -60,10 +60,10 @@ public class CreateHeroWindow : GameWindow
         Counter.text = (textfield.characterLimit - name.Length).ToString();
     }
 
-    private void CreateHero()
-    {
-        Hero hero = Helper.Instance.CreateHero(textfield.text);
+    //private void CreateHero()
+    //{
+    //    Hero hero = Helper.Instance.CreateHero(textfield.text);
 
-        heroBlankList.GetComponent<HeroBlankList>().AddHero(hero);
-    }
+    //    heroBlankList.GetComponent<HeroBlankList>().AddHero(hero);
+    //}
 }

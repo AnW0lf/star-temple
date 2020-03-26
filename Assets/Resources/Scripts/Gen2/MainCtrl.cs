@@ -14,7 +14,7 @@ public class MainCtrl : MonoBehaviour
     private void Awake()
     {
         if (current == null) current = this;
-        else Destroy(gameObject);
+        else if (current != this) Destroy(gameObject);
     }
 
     private void Start()

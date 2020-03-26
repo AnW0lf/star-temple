@@ -25,19 +25,19 @@ public class RemoveItemWindowController : MonoBehaviour
         this.item = item;
         questionTxt.text = string.Format(sentence, item.Name);
 
-        if (item.Count > 1)
-        {
-            remove.SetActive(false);
-            removeOne.SetActive(true);
-            removeAll.SetActive(true);
-        }
-        else if (item.Count == 1)
-        {
-            remove.SetActive(true);
-            removeOne.SetActive(false);
-            removeAll.SetActive(false);
-        }
-        else Hide();
+        //if (item.Count > 1)
+        //{
+        //    remove.SetActive(false);
+        //    removeOne.SetActive(true);
+        //    removeAll.SetActive(true);
+        //}
+        //else if (item.Count == 1)
+        //{
+        //    remove.SetActive(true);
+        //    removeOne.SetActive(false);
+        //    removeAll.SetActive(false);
+        //}
+        //else Hide();
 
         window.SetActive(true);
     }
@@ -45,11 +45,11 @@ public class RemoveItemWindowController : MonoBehaviour
     public void Remove(bool all)
     {
         int count = Helper.Instance.GetItemStarCount(item.Name);
-        for (int i = 0; i < (all ? item.Count : 1); i++)
-        {
-            HeroController.Instance.SubtractItem(item.Name);
-            HeroController.Instance.AddItem("*", count);
-        }
+        //for (int i = 0; i < (all ? item.Count : 1); i++)
+        //{
+        //    HeroController.Instance.SubtractItem(item.Name);
+        //    HeroController.Instance.AddItem("*", count);
+        //}
     }
 
     public void Hide()

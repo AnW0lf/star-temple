@@ -48,14 +48,14 @@ public class HeroBlank : MonoBehaviour, IBlank
         description.color = new Color(unselectDescriptionText.r, unselectDescriptionText.g, unselectDescriptionText.b, Alpha);
     }
 
-    public void Fill(Hero hero)
-    {
-        heroName.text = hero.name;
-        level.text = string.Format("Level {0}", hero.level);
-        money.text = string.Format("{0} Coins", hero.money);
-        description.text = string.Format("{0} strength, {1} persistence, {2} agility, {3} attention.",
-            Hero.Convert(hero.strength), Hero.Convert(hero.persistence), Hero.Convert(hero.agility), Hero.Convert(hero.attention));
-    }
+    //public void Fill(Hero hero)
+    //{
+    //    heroName.text = hero.name;
+    //    level.text = string.Format("Level {0}", hero.level);
+    //    money.text = string.Format("{0} Coins", hero.money);
+    //    description.text = string.Format("{0} strength, {1} persistence, {2} agility, {3} attention.",
+    //        Hero.Convert(hero.strength), Hero.Convert(hero.persistence), Hero.Convert(hero.agility), Hero.Convert(hero.attention));
+    //}
 
     public float Alpha
     {

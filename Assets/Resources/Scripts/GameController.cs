@@ -40,17 +40,17 @@ public class GameController : MonoBehaviour
         if (moveHero) MoveHero();
     }
 
-    public void StartStory(Hero hero)
-    {
-        this.hero.Hero = hero;
-        LoadInventory();
-        RoomCounter = 0;
-    }
+    //public void StartStory(Hero hero)
+    //{
+    //    this.hero.Hero = hero;
+    //    LoadInventory();
+    //    RoomCounter = 0;
+    //}
 
-    private void LoadInventory()
-    {
-        inv.LoadItems(hero.Items.ToArray());
-    }
+    //private void LoadInventory()
+    //{
+    //    inv.LoadItems(hero.Items.ToArray());
+    //}
 
     public void NextRoom(string roomName)
     {

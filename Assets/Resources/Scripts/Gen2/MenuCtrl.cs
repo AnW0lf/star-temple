@@ -9,7 +9,7 @@ public class MenuCtrl : MonoBehaviour
     private void Awake()
     {
         if (current == null) current = this;
-        else Destroy(gameObject);
+        else if (current != this) Destroy(gameObject);
     }
 
     public void StartGame()
