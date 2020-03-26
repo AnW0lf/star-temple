@@ -33,11 +33,12 @@ public class AnnotationWordController : MonoBehaviour, IDropHandler
 
     private IEnumerator Showing(float increment)
     {
-        while (txt.color.a < 1f)
+        while (txt.color.a < 0.65f)
         {
             txt.color += new Color(0f, 0f, 0f, increment * Time.deltaTime);
             yield return null;
         }
+        txt.color = new Color(txt.color.r, txt.color.g, txt.color.b, 0.65f);
     }
 
     public void SetWord(AnnotationWord word)
@@ -52,28 +53,28 @@ public class AnnotationWordController : MonoBehaviour, IDropHandler
 
         if (drop_id > 0 && event_id > 0)
         {
-            txt.fontStyle = FontStyle.BoldAndItalic;
+            txt.fontStyle = FontStyle.Bold;
             txt.raycastTarget = true;
 
             InitButton(true);
         }
         else if (drop_id > 0)
         {
-            txt.fontStyle = FontStyle.Italic;
+            txt.fontStyle = FontStyle.Normal;
             txt.raycastTarget = true;
 
             InitButton(false);
         }
         else if (event_id > 0)
         {
-            txt.fontStyle = FontStyle.BoldAndItalic;
+            txt.fontStyle = FontStyle.Bold;
             txt.raycastTarget = true;
 
             InitButton(true);
         }
         else
         {
-            txt.fontStyle = FontStyle.Italic;
+            txt.fontStyle = FontStyle.Normal;
             txt.raycastTarget = false;
 
             InitButton(false);
