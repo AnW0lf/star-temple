@@ -1942,7 +1942,7 @@ public class LTDescr
 	* @example
 	* LeanTween.moveX(gameObject, 5f, 2.0f ).setOnComplete( tweenFinished );
 	*/
-	public LTDescr setOnComplete( Action onComplete ){
+	public LTDescr setOnComplete(System.Action onComplete ){
 		this._optional.onComplete = onComplete;
 		this.hasExtraOnCompletes = true;
 		return this;
@@ -2252,7 +2252,7 @@ public class LTDescr
 	* <i>Javascript:</i><br>
 	* LeanTween.moveX(gameObject, 5f, 2.0f ).setOnStart( function(){ Debug.Log("I started!"); } );
 	*/
-	public LTDescr setOnStart( Action onStart ){
+	public LTDescr setOnStart(System.Action onStart ){
 		this._optional.onStart = onStart;
 		return this;
 	}

@@ -1228,7 +1228,7 @@ public class LeanTween : MonoBehaviour {
     * @return {LTDescr} LTDescr an object that distinguishes the tween
     * @example LeanTween.delayedCall(gameObject, 1f, ()=>{ <br />Debug.Log("I am called one second later!");<br /> }));
     */
-    public static LTDescr delayedCall( float delayTime, Action callback){
+    public static LTDescr delayedCall( float delayTime, System.Action callback){
         return pushNewTween( tweenEmpty, Vector3.zero, delayTime, options().setCallback().setOnComplete(callback) );
     }
 
@@ -1236,7 +1236,7 @@ public class LeanTween : MonoBehaviour {
         return pushNewTween( tweenEmpty, Vector3.zero, delayTime, options().setCallback().setOnComplete(callback) );
     }
 
-    public static LTDescr delayedCall( GameObject gameObject, float delayTime, Action callback){
+    public static LTDescr delayedCall( GameObject gameObject, float delayTime, System.Action callback){
         return pushNewTween( gameObject, Vector3.zero, delayTime, options().setCallback().setOnComplete(callback) );
     }
 

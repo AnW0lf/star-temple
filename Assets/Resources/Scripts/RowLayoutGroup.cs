@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class RowLayoutGroup : MonoBehaviour
 {
-    public float verticalSpacing = 10f, horizontalSpacing = 0f, topPadding = 0f, bottomPadding = 0f;
+    public float verticalSpacing = 10f, horizontalSpacing = 0f, topPadding = 0f, bottomPadding = 0f, leftPadding = 0f, rightPadding = 0f;
     public Orientation orientation = Orientation.CENTER;
     public bool resize = true;
     private RectTransform self;
@@ -22,7 +22,7 @@ public class RowLayoutGroup : MonoBehaviour
 
     public void Post()
     {
-        float width = self.sizeDelta.x, offsetX = 0f, offsetY = topPadding;
+        float width = self.sizeDelta.x, offsetX = leftPadding, offsetY = topPadding;
         List<RectTransform> children = new List<RectTransform>();
 
         for(int i = 0; i < transform.childCount; i++)
@@ -42,7 +42,7 @@ public class RowLayoutGroup : MonoBehaviour
 
         for (int i = 0; i < children.Count; i++)
         {
-            if (offsetX + horizontalSpacing + sizes[i].x > width || i == children.Count - 1)
+            if (offsetX + horizontalSpacing + sizes[i].x + rightPadding > width || i == children.Count - 1)
             {
                 if (i == children.Count - 1)
                     offsetX += sizes[i].x;
@@ -59,7 +59,7 @@ public class RowLayoutGroup : MonoBehaviour
                 }
 
                 offsetY += sizes.ToList().GetRange(startIndex, (i == children.Count - 1 ? i + 1 : i) - startIndex).Max(v => v.y) + (startIndex > 0 ? verticalSpacing : 0f);
-                offsetX = 0f;
+                offsetX = leftPadding;
 
                 for (int j = startIndex; j < (i == children.Count - 1 ? i + 1 : i); j++)
                 {

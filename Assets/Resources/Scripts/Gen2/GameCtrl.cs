@@ -27,8 +27,35 @@ public class GameCtrl : MonoBehaviour
 
     public void LoadRoom(string roomName)
     {
-        room = Helper.Instance.LoadRoom(roomName);
+        room = IOHelper.LoadRoom(roomName);
         story.SetStory(room);
+        CustomEventSystem.current.SetTriggers(room.triggers);
+        CustomEventSystem.current.SetEvents(room.events);
         Counter++;
+    }
+
+    public void CallAnnotation(int id)
+    {
+        story.CallAnnotation(id);
+    }
+}
+
+public class Room
+{
+    public string name;
+    public string type;
+    public StoryWord[] story;
+    public Annotation[] annotations;
+    public CustomEvent[] events;
+    public Dictionary<string, int> triggers;
+
+    public Room(string name, string type, StoryWord[] story, Annotation[] annotations, CustomEvent[] events, Dictionary<string, int> triggers)
+    {
+        this.name = name;
+        this.type = type;
+        this.story = story;
+        this.annotations = annotations;
+        this.events = events;
+        this.triggers = triggers;
     }
 }

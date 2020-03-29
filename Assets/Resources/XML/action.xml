@@ -1,0 +1,4 @@
+<root>
+	<action name="Удар" rarity="0" type="0" value="10"/>
+	<action name="Блок" rarity="0" type="1" value="10"/>
+</root>

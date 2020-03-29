@@ -55,7 +55,7 @@ public class GameController : MonoBehaviour
     public void NextRoom(string roomName)
     {
         RoomCounter++;
-        room = Helper.Instance.LoadRoom(roomName);
+        //room = Helper.Instance.LoadRoom(roomName);
         if (!room.name.Equals("introduction")) inv.Show();
         else inv.Hide();
         story.SetStory(room);

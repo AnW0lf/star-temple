@@ -2,6 +2,8 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System.Xml.Linq;
+using System;
 
 public class StoryWordCtrl : MonoBehaviour, IWord
 {
@@ -24,8 +26,8 @@ public class StoryWordCtrl : MonoBehaviour, IWord
         _a_id = word.annotation_id;
         _e_id = word.event_id;
         _d_id = word.drop_id;
-        _e_r = word.reusable_event;
-        _d_r = word.reusable_drop;
+        _e_r = word.event_reusable;
+        _d_r = word.drop_reusable;
         _d_t = word.drop_type;
 
         Annotated = _a_id > 0;
@@ -46,9 +48,9 @@ public class StoryWordCtrl : MonoBehaviour, IWord
     public void OnClick()
     {
         if (!HasEvent) return;
-        // Вызвать событие по _e_id
+        CustomEventSystem.current.Execute(_e_id);
         HasEvent = _e_r;
-        print("Click on " + txt.text);
+        print("Click on " + txt.text + " event id " + _e_id);
     }
 
     public void OnDrop()
@@ -63,18 +65,62 @@ public class StoryWordCtrl : MonoBehaviour, IWord
             if (Annotated && droppedItem.Item.Type == "star")
             {
                 txt.text += droppedItem.Item.Name;
-                InventoryCtrl.current.SubstractItem(droppedItem.Item, 1);
-                // Вызвать аннотацию
+                InventoryCtrl.current.SubtractItem(droppedItem.Item, 1);
+                GameCtrl.current.CallAnnotation(_a_id);
 
                 Annotated = false;
             }
             else if (HasDrop && _d_t == Helper.Instance.GetItemType(droppedItem.Item.Name))
             {
-                InventoryCtrl.current.SubstractItem(droppedItem.Item, 1);
-                // Вызвать событие по _d_id
+                InventoryCtrl.current.SubtractItem(droppedItem.Item, 1);
+                CustomEventSystem.current.Execute(_d_id, droppedItem.Item);
 
                 HasDrop = _d_r;
             }
         }
     }
 }
+public class StoryWord
+{
+    public string word, drop_type;
+    public int annotation_id, event_id, drop_id;
+    public bool event_reusable, drop_reusable;
+
+    public StoryWord(string word) : this(word, "", -1, -1, -1, false, false)
+    { }
+
+    public StoryWord(string word, string drop_type, int annotation_id, int event_id, int drop_id, bool event_reusable, bool drop_reusable)
+    {
+        this.word = word;
+        this.drop_type = drop_type;
+        this.annotation_id = annotation_id;
+        this.event_id = event_id;
+        this.drop_id = drop_id;
+        this.event_reusable = event_reusable;
+        this.drop_reusable = drop_reusable;
+    }
+
+    public static StoryWord FromXml(XElement element)
+    {
+        if (!IOHelper.GetValue(element, out string word))
+            throw new ArgumentException(string.Format("Story Word has incorrect value."));
+
+        StoryWord storyWord = new StoryWord(word);
+
+        IOHelper.GetAttributeValue(element, "drop_type", out storyWord.drop_type);
+
+        if (!IOHelper.GetAttributeValue(element, "drop_id", out storyWord.drop_id) && storyWord.drop_type != "")
+            throw new ArgumentException(string.Format("Story Word \'{0}\' has incorrect value of attribute \'drop_id\'.", word));
+
+        IOHelper.GetAttributeValue(element, "annotation_id", out storyWord.annotation_id);
+
+        IOHelper.GetAttributeValue(element, "event_id", out storyWord.event_id);
+
+        IOHelper.GetAttributeValue(element, "event_reusable", out storyWord.event_reusable);
+
+        IOHelper.GetAttributeValue(element, "drop_reusable", out storyWord.drop_reusable);
+
+        return storyWord;
+    }
+}
+

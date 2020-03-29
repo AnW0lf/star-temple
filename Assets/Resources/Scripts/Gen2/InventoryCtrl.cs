@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,11 +22,12 @@ public class InventoryCtrl : MonoBehaviour
     [Header("Dragged Text")]
     public Text draggedText;
 
-    private Dictionary<Item, ItemCtrl> items;
-    private Dictionary<Spell, SpellCtrl> spells;
+    private Dictionary<string, ItemCtrl> items;
+    private Dictionary<string, ActionCtrl> spells;
 
     public static InventoryCtrl current { get; private set; } = null;
     public ItemCtrl draggedItem { get; set; } = null;
+    public ActionCtrl draggedAction { get; set; } = null;
 
     public bool Visible
     {
@@ -52,8 +54,8 @@ public class InventoryCtrl : MonoBehaviour
         rect = GetComponent<RectTransform>();
         backpackArea.color = backpackAreaColor;
         spellsArea.color = spellsAreaColor;
-        items = new Dictionary<Item, ItemCtrl>();
-        spells = new Dictionary<Spell, SpellCtrl>();
+        items = new Dictionary<string, ItemCtrl>();
+        spells = new Dictionary<string, ActionCtrl>();
     }
 
     private void Start()
@@ -102,51 +104,51 @@ public class InventoryCtrl : MonoBehaviour
 
     public void AddItem(Item item, int count)
     {
-        if (items.ContainsKey(item))
+        if (items.ContainsKey(item.Name))
         {
-            items[item].Count += count;
+            items[item.Name].Count += count;
         }
         else
         {
             ItemCtrl ic = Instantiate(itemPref, backpackAreaContent).GetComponent<ItemCtrl>();
             ic.Item = item;
             ic.Count = count;
-            items.Add(item, ic);
+            items.Add(item.Name, ic);
         }
     }
-    public void AddSpell(Spell spell, int count)
+    public void AddAction(Action action, int count)
     {
-        if (spells.ContainsKey(spell) && spell.rarity != SpellRarity.STANDART)
+        if (spells.ContainsKey(action.name) && action.rarity != ActionRarity.STANDART)
         {
-            spells[spell].Count += count;
+            spells[action.name].Count += count;
         }
         else
         {
-            SpellCtrl sc = Instantiate(spellPref, spellsAreaContent).GetComponent<SpellCtrl>();
-            sc.Spell = spell;
+            ActionCtrl sc = Instantiate(spellPref, spellsAreaContent).GetComponent<ActionCtrl>();
+            sc.Action = action;
             sc.Count = count;
-            spells.Add(spell, sc);
+            spells.Add(action.name, sc);
         }
     }
 
-    public void SubstractItem(Item item, int count)
+    public void SubtractItem(Item item, int count)
     {
-        if (items.ContainsKey(item))
+        if (items.ContainsKey(item.Name))
         {
-            items[item].Count -= count;
+            items[item.Name].Count -= count;
 
-            if (items[item].Count <= 0)
-                items.Remove(item);
+            if (items[item.Name].Count <= 0)
+                items.Remove(item.Name);
         }
     }
-    public void SubstractSpell(Spell spell, int count)
+    public void SubtractAction(Action action, int count)
     {
-        if (spells.ContainsKey(spell) && spell.rarity != SpellRarity.STANDART)
+        if (spells.ContainsKey(action.name) && action.rarity != ActionRarity.STANDART)
         {
-            spells[spell].Count -= count;
+            spells[action.name].Count -= count;
 
-            if (spells[spell].Count <= 0)
-                spells.Remove(spell);
+            if (spells[action.name].Count <= 0)
+                spells.Remove(action.name);
         }
     }
 

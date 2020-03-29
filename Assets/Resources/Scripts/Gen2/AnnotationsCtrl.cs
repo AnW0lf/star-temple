@@ -1,7 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class AnnotationsCtrl : MonoBehaviour
 {
@@ -56,5 +59,34 @@ public class AnnotationsCtrl : MonoBehaviour
         }
 
         return annotations.Last();
+    }
+}
+
+public class Annotation
+{
+    public int id, chance;
+    public List<AnnotationWord> words;
+
+    public Annotation(int id, int chance)
+    {
+        this.id = id;
+        this.chance = chance;
+        this.words = new List<AnnotationWord>();
+    }
+
+    public static Annotation FromXml(XElement element)
+    {
+        if (!IOHelper.GetAttributeValue(element, "id", out int id))
+            throw new ArgumentException(string.Format("Annotation has incorrec value of attribute \'id\'"));
+
+        if (!IOHelper.GetAttributeValue(element, "chance", out int chance))
+            throw new ArgumentException(string.Format("Annotation has incorrec value of attribute \'chance\'"));
+
+        Annotation annotation = new Annotation(id, chance);
+
+        foreach(XElement XWord in element.Elements("word"))
+            annotation.words.Add(AnnotationWord.FromXml(XWord));
+
+        return annotation;
     }
 }

@@ -1,15 +1,14 @@
 <room name="introduction" type="first_game">
 	<story>
-		<word type="separator">Итак</word>
-		<word type="separator">,</word>
-		<word type="separator"> вы</word>
-		<word type="separator"> собираетесь</word>
-		<word type="button" annotation="0" event="1"> отправиться</word>
-		<word type="separator"> в</word>
-		<word type="separator">...</word>
+		<word>Итак</word>
+		<word>,</word>
+		<word> вы</word>
+		<word> собираетесь</word>
+		<word event_id="1"> отправиться</word>
+		<word> в</word>
+		<word>...</word>
 	</story>
-	<annotations/>
 	<events>
-		<event event_id="1" event_type="next" room_name="room_2"/>
+		<event event_id="1" event_type="0" room_name="room_2"/>
 	</events>
 </room>

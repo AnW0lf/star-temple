@@ -27,11 +27,11 @@ public class LTDescrOptional  {
 	public Action<Vector3,object> onUpdateVector3Object { get; set; }
 	public Action<Color> onUpdateColor { get; set; }
 	public Action<Color,object> onUpdateColorObject { get; set; }
-	public Action onComplete { get; set; }
+	public System.Action onComplete { get; set; }
 	public Action<object> onCompleteObject { get; set; }
 	public object onCompleteParam { get; set; }
 	public object onUpdateParam { get; set; }
-	public Action onStart { get; set; }
+	public System.Action onStart { get; set; }
 
 
 //	#if !UNITY_3_5 && !UNITY_4_0 && !UNITY_4_0_1 && !UNITY_4_1 && !UNITY_4_2

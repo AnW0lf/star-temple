@@ -1,85 +1,83 @@
 <room name="label" type="first_game">
 	<story>
-		<word type="regular" annotation="1">Звездный</word>
-		<word type="regular" annotation="2"> Храм</word>
+		<word annotation_id="1">Звездный</word>
+		<word annotation_id="2"> Храм</word>
 	</story>
 	<annotations>
 		<annotation id="1" chance="10">
-			<word type="regular">* Звездный</word>
-			<word type="separator"> - </word>
-			<word type="regular">когда</word>
-			<word type="regular"> вы</word>
-			<word type="button" event="3"> добавляете</word>
-			<word type="regular"> сноску</word>
-			<word type="regular"> к</word>
-			<word type="regular"> слову</word>			
-			<word type="separator">,</word>
-			<word type="regular"> вы</word>
-			<word type="regular"> получаете</word>
-			<word type="regular"> сноску</word>
-			<word type="separator">.</word>
-			<word type="regular"> Она</word>
-			<word type="regular"> может</word>
-			<word type="regular"> содержать</word>
-			<word type="regular"> подсказки</word>
-			<word type="separator">,</word>
-			<word type="regular" event="4"> ресурсы</word>
-			<word type="separator">,</word>
-			<word type="regular"> секреты</word>
-			<word type="separator"> - </word>
-			<word type="regular"> все</word>
-			<word type="regular">,</word>
-			<word type="regular"> что</word>
-			<word type="regular"> угодно</word>
-			<word type="separator">.</word>
-			<word type="regular"> А</word>
-			<word type="regular"> теперь</word>
-			<word type="regular"> возьмите</word>
-			<word type="regular"> еще</word>
-			<word type="button" event="1"> звезду</word>
-			<word type="regular"> и</word>
-			<word type="regular"> используйте</word>
-			<word type="regular"> на</word>
-			<word type="regular"> слове</word>
-			<word type="regular"> 'Храм'</word>
-			<word type="separator">.</word>
+			<word>* Звездный</word>
+			<word> - </word>
+			<word>когда</word>
+			<word> вы</word>
+			<word event_id="3"> добавляете</word>
+			<word> сноску</word>
+			<word> к</word>
+			<word> слову</word>			
+			<word>,</word>
+			<word> вы</word>
+			<word> получаете</word>
+			<word> сноску</word>
+			<word>.</word>
+			<word> Она</word>
+			<word> может</word>
+			<word> содержать</word>
+			<word> подсказки</word>
+			<word>,</word>
+			<word event_id="4"> ресурсы</word>
+			<word>,</word>
+			<word> секреты</word>
+			<word> - </word>
+			<word> все</word>
+			<word>,</word>
+			<word> что</word>
+			<word> угодно</word>
+			<word>.</word>
+			<word> А</word>
+			<word> теперь</word>
+			<word> возьмите</word>
+			<word> еще</word>
+			<word event_id="1" event_reusable="True"> звезду</word>
+			<word> и</word>
+			<word> используйте</word>
+			<word> на</word>
+			<word> слове</word>
+			<word> 'Храм'</word>
+			<word>.</word>
 		</annotation>
 		<annotation id="2" chance="10">
-			<word type="regular">* Храм</word>
-			<word type="separator"> - </word>
-			<word type="regular">бесконечный</word>
-			<word type="regular"> лабиринт</word>
-			<word type="regular">,</word>
-			<word type="regular"> открывающий</word>
-			<word type="regular"> свои</word>
-			<word type="regular"> двери</word>
-			<word type="regular"> бесстрашным</word>
-			<word type="regular"> героям</word>			
-			<word type="separator">.</word>
-			<word type="regular"> Пройдите</word>
-			<word type="regular"> 15</word>
-			<word type="regular"> случайных</word>
-			<word type="regular"> комнат</word>
-			<word type="regular"> и</word>
-			<word type="regular"> достигните</word>
-			<word type="regular"> Последней</word>
-			<word type="regular"> Двери</word>
-			<word type="separator">.</word>
-			<word type="regular"> Итак</word>
-			<word type="separator">,</word>
-			<word type="button" event="2"> Войдите в Храм</word>
-			<word type="separator">,</word>
-			<word type="regular"> если</word>
-			<word type="regular"> осмелитесь</word>
-			<word type="separator">!</word>
+			<word>* Храм</word>
+			<word> - </word>
+			<word>бесконечный</word>
+			<word> лабиринт</word>
+			<word>,</word>
+			<word> открывающий</word>
+			<word> свои</word>
+			<word> двери</word>
+			<word> бесстрашным</word>
+			<word> героям</word>			
+			<word>.</word>
+			<word> Пройдите</word>
+			<word> 15</word>
+			<word> случайных</word>
+			<word> комнат</word>
+			<word> и</word>
+			<word> достигните</word>
+			<word> Последней</word>
+			<word> Двери</word>
+			<word>.</word>
+			<word> Итак</word>
+			<word>,</word>
+			<word event_id="2"> Войдите в Храм</word>
+			<word>,</word>
+			<word> если</word>
+			<word> осмелитесь</word>
+			<word>!</word>
 		</annotation>
 	</annotations>
 	<events>
-		<event event_id="1" event_type="item" item_name="*" item_count="2" item_chance="50"/>
-		<event event_id="1" event_type="item" item_name="*" item_count="3" item_chance="30"/>
-		<event event_id="1" event_type="item" item_name="*" item_count="4" item_chance="20"/>
-		<event event_id="2" event_type="next" room_name="room_3"/>
-		<event event_id="3" event_type="window" window_text="Тестовое окно"/>
-		<event event_id="4" event_type="item" item_name="apple" item_count="2" item_chance="10"/>
+		<event event_id="1" event_type="3" give_type="3" give_name="*" give_value="3" chance="10"/>
+		<event event_id="2" event_type="0" room_name="room_3"/>
+		<event event_id="3" event_type="1">Тестовое окно</event>
+		<event event_id="4" event_type="3" give_type="3" give_name="apple" give_value="2" chance="10"/>
 	</events>
 </room>

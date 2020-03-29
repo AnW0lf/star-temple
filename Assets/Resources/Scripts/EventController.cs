@@ -10,7 +10,7 @@ public class EventController : MonoBehaviour
     public GameController game;
     public HeroController hero;
 
-    private Event[] events;
+    private CustomEvent[] events;
     private Dictionary<int, List<IDo>> executable = new Dictionary<int, List<IDo>>();
     public static EventController Instance { get; private set; } = null;
 
@@ -20,7 +20,7 @@ public class EventController : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    public Event[] Events
+    public CustomEvent[] Events
     {
         get
         {
@@ -29,201 +29,201 @@ public class EventController : MonoBehaviour
         set
         {
             events = value;
-            CompyleEvents();
+            //CompyleEvents();
         }
     }
 
-    private void CompyleEvents()
-    {
-        executable.Clear();
-        int min = events.ToList().Min(e => e.event_id);
-        int max = events.ToList().Max(e => e.event_id);
-        for (int i = min; i <= max; i++)
-        {
-            List<Event> indexed = events.ToList().FindAll(e => e.event_id == i);
+    //private void CompyleEvents()
+    //{
+    //    executable.Clear();
+    //    int min = events.ToList().Min(e => e.id);
+    //    int max = events.ToList().Max(e => e.id);
+    //    for (int i = min; i <= max; i++)
+    //    {
+    //        List<XmlEvent> indexed = events.ToList().FindAll(e => e.id == i);
 
-            //Item Event
-            {
-                List<Event> item = indexed.FindAll(e => e.event_type == EventType.ITEM);
-                if (item.Count > 0)
-                {
-                    if (!executable.ContainsKey(i)) executable.Add(i, new List<IDo>());
+    //        //Item Event
+    //        {
+    //            List<XmlEvent> item = indexed.FindAll(e => e.event_type == EventType.ITEM);
+    //            if (item.Count > 0)
+    //            {
+    //                if (!executable.ContainsKey(i)) executable.Add(i, new List<IDo>());
 
-                    item.Sort(delegate (Event x, Event y) { return x.attributes["item_name"].CompareTo(y.attributes["item_name"]); });
+    //                item.Sort(delegate (XmlEvent x, XmlEvent y) { return x.attributes["item_name"].CompareTo(y.attributes["item_name"]); });
 
-                    Dictionary<string, Dictionary<int, int>> doItems = new Dictionary<string, Dictionary<int, int>>();
-                    Dictionary<int, int> dict = new Dictionary<int, int>();
-                    string item_name = item.First().attributes["item_name"];
+    //                Dictionary<string, Dictionary<int, int>> doItems = new Dictionary<string, Dictionary<int, int>>();
+    //                Dictionary<int, int> dict = new Dictionary<int, int>();
+    //                string item_name = item.First().attributes["item_name"];
 
-                    for (int j = 0; j < item.Count; j++)
-                    {
-                        int item_count = 0, item_chance = 0;
-                        TryParse(item[j], "item_count", out item_count);
-                        TryParse(item[j], "item_chance", out item_chance);
+    //                for (int j = 0; j < item.Count; j++)
+    //                {
+    //                    int item_count = 0, item_chance = 0;
+    //                    TryParse(item[j], "item_count", out item_count);
+    //                    TryParse(item[j], "item_chance", out item_chance);
 
-                        if (item_name.Equals(item[j].attributes["item_name"]))
-                        {
-                            if (dict.ContainsKey(item_count))
-                            {
-                                dict[item_count] += item_chance;
-                            }
-                            else
-                            {
-                                dict.Add(item_count, item_chance);
-                            }
+    //                    if (item_name.Equals(item[j].attributes["item_name"]))
+    //                    {
+    //                        if (dict.ContainsKey(item_count))
+    //                        {
+    //                            dict[item_count] += item_chance;
+    //                        }
+    //                        else
+    //                        {
+    //                            dict.Add(item_count, item_chance);
+    //                        }
 
-                            if (j == item.Count - 1)
-                            {
-                                doItems.Add(item_name, dict);
-                            }
-                        }
-                        else
-                        {
-                            doItems.Add(item_name, dict);
-                            dict = new Dictionary<int, int>();
-                            item_name = item[j].attributes["item_name"];
-                            dict.Add(item_count, item_chance);
-                        }
-                    }
+    //                        if (j == item.Count - 1)
+    //                        {
+    //                            doItems.Add(item_name, dict);
+    //                        }
+    //                    }
+    //                    else
+    //                    {
+    //                        doItems.Add(item_name, dict);
+    //                        dict = new Dictionary<int, int>();
+    //                        item_name = item[j].attributes["item_name"];
+    //                        dict.Add(item_count, item_chance);
+    //                    }
+    //                }
 
-                    doItems.ToList().ForEach(p => executable[i].Add(new DoItem(i, p.Key, p.Value)));
-                }
-            }
+    //                doItems.ToList().ForEach(p => executable[i].Add(new DoItem(i, p.Key, p.Value)));
+    //            }
+    //        }
 
-            //Stat Event
-            {
-                List<Event> stat = indexed.FindAll(e => e.event_type == EventType.STAT);
-                if (stat.Count > 0)
-                {
-                    if (!executable.ContainsKey(i)) executable.Add(i, new List<IDo>());
+    //        //Stat Event
+    //        {
+    //            List<XmlEvent> stat = indexed.FindAll(e => e.event_type == EventType.STAT);
+    //            if (stat.Count > 0)
+    //            {
+    //                if (!executable.ContainsKey(i)) executable.Add(i, new List<IDo>());
 
-                    stat.Sort(delegate (Event x, Event y) { return x.attributes["stat_name"].CompareTo(y.attributes["stat_name"]); });
+    //                stat.Sort(delegate (XmlEvent x, XmlEvent y) { return x.attributes["stat_name"].CompareTo(y.attributes["stat_name"]); });
 
-                    Dictionary<string, Dictionary<int, int>> doStats = new Dictionary<string, Dictionary<int, int>>();
-                    Dictionary<int, int> dict = new Dictionary<int, int>();
-                    string stat_name = stat.First().attributes["stat_name"];
+    //                Dictionary<string, Dictionary<int, int>> doStats = new Dictionary<string, Dictionary<int, int>>();
+    //                Dictionary<int, int> dict = new Dictionary<int, int>();
+    //                string stat_name = stat.First().attributes["stat_name"];
 
-                    for (int j = 0; j < stat.Count; j++)
-                    {
-                        int stat_count = 0, stat_chance = 0;
-                        TryParse(stat[j], "stat_count", out stat_count);
-                        TryParse(stat[j], "stat_chance", out stat_chance);
+    //                for (int j = 0; j < stat.Count; j++)
+    //                {
+    //                    int stat_count = 0, stat_chance = 0;
+    //                    TryParse(stat[j], "stat_count", out stat_count);
+    //                    TryParse(stat[j], "stat_chance", out stat_chance);
 
-                        if (stat_name.Equals(stat[j].attributes["stat_name"]))
-                        {
-                            if (dict.ContainsKey(stat_count))
-                            {
-                                dict[stat_count] += stat_chance;
-                            }
-                            else
-                            {
-                                dict.Add(stat_count, stat_chance);
-                            }
+    //                    if (stat_name.Equals(stat[j].attributes["stat_name"]))
+    //                    {
+    //                        if (dict.ContainsKey(stat_count))
+    //                        {
+    //                            dict[stat_count] += stat_chance;
+    //                        }
+    //                        else
+    //                        {
+    //                            dict.Add(stat_count, stat_chance);
+    //                        }
 
-                            if (j == stat.Count - 1)
-                            {
-                                doStats.Add(stat_name, dict);
-                            }
-                        }
-                        else
-                        {
-                            doStats.Add(stat_name, dict);
-                            dict = new Dictionary<int, int>();
-                            stat_name = stat[j].attributes["stat_name"];
-                            dict.Add(stat_count, stat_chance);
-                        }
-                    }
+    //                        if (j == stat.Count - 1)
+    //                        {
+    //                            doStats.Add(stat_name, dict);
+    //                        }
+    //                    }
+    //                    else
+    //                    {
+    //                        doStats.Add(stat_name, dict);
+    //                        dict = new Dictionary<int, int>();
+    //                        stat_name = stat[j].attributes["stat_name"];
+    //                        dict.Add(stat_count, stat_chance);
+    //                    }
+    //                }
 
-                    doStats.ToList().ForEach(p => executable[i].Add(new DoItem(i, p.Key, p.Value)));
-                }
-            }
+    //                doStats.ToList().ForEach(p => executable[i].Add(new DoItem(i, p.Key, p.Value)));
+    //            }
+    //        }
 
-            // Window Event
-            {
-                List<Event> window = indexed.FindAll(e => e.event_type == EventType.WINDOW);
-                if (window.Count > 0)
-                {
-                    if (!executable.ContainsKey(i)) executable.Add(i, new List<IDo>());
-                    window.ForEach(WEvent => executable[i].Add(new DoWindow(i, WEvent.attributes["window_text"])));
-                }
-            }
+    //        // Window Event
+    //        {
+    //            List<XmlEvent> window = indexed.FindAll(e => e.event_type == EventType.WINDOW);
+    //            if (window.Count > 0)
+    //            {
+    //                if (!executable.ContainsKey(i)) executable.Add(i, new List<IDo>());
+    //                window.ForEach(WEvent => executable[i].Add(new DoWindow(i, WEvent.attributes["window_text"])));
+    //            }
+    //        }
 
-            //Next Event
-            {
-                List<Event> next = indexed.FindAll(e => e.event_type == EventType.NEXT);
-                if (next.Count > 0)
-                {
-                    if (!executable.ContainsKey(i)) executable.Add(i, new List<IDo>());
-                    executable[i].Add(new DoNext(i, next.First().attributes["room_name"], game));
-                }
-            }
+    //        //Next Event
+    //        {
+    //            List<XmlEvent> next = indexed.FindAll(e => e.event_type == EventType.NEXT);
+    //            if (next.Count > 0)
+    //            {
+    //                if (!executable.ContainsKey(i)) executable.Add(i, new List<IDo>());
+    //                executable[i].Add(new DoNext(i, next.First().attributes["room_name"], game));
+    //            }
+    //        }
 
-            //Condition Event
-            {
-                List<Event> condition = indexed.FindAll(e => e.event_type == EventType.CONDITION);
+    //        //Condition Event
+    //        {
+    //            List<XmlEvent> condition = indexed.FindAll(e => e.event_type == EventType.CONDITION);
 
-                if (condition.Count > 0)
-                {
-                    if (!executable.ContainsKey(i)) executable.Add(i, new List<IDo>());
+    //            if (condition.Count > 0)
+    //            {
+    //                if (!executable.ContainsKey(i)) executable.Add(i, new List<IDo>());
 
-                    foreach (Event @event in condition)
-                    {
-                        int bottom = 0, top = 0, trueId = 0, falseId = 0;
-                        TryParse(@event, "condition_min", out bottom);
-                        TryParse(@event, "condition_max", out top);
-                        TryParse(@event, "condition_true_id", out trueId);
-                        TryParse(@event, "condition_false_id", out falseId);
-                        string stat_name = "", item_name = "";
+    //                foreach (XmlEvent @event in condition)
+    //                {
+    //                    int bottom = 0, top = 0, trueId = 0, falseId = 0;
+    //                    TryParse(@event, "condition_min", out bottom);
+    //                    TryParse(@event, "condition_max", out top);
+    //                    TryParse(@event, "condition_true_id", out trueId);
+    //                    TryParse(@event, "condition_false_id", out falseId);
+    //                    string stat_name = "", item_name = "";
 
-                        if (@event.attributes.ContainsKey("condition_stat_name"))
-                            stat_name = @event.attributes["condition_stat_name"];
+    //                    if (@event.attributes.ContainsKey("condition_stat_name"))
+    //                        stat_name = @event.attributes["condition_stat_name"];
 
-                        if (@event.attributes.ContainsKey("condition_item_name"))
-                            item_name = @event.attributes["condition_item_name"];
+    //                    if (@event.attributes.ContainsKey("condition_item_name"))
+    //                        item_name = @event.attributes["condition_item_name"];
 
-                        executable[i].Add(new DoCondition(i, stat_name, item_name, bottom, top, trueId, falseId));
-                    }
-                }
-            }
+    //                    executable[i].Add(new DoCondition(i, stat_name, item_name, bottom, top, trueId, falseId));
+    //                }
+    //            }
+    //        }
 
-            //ChancedCondition Event
-            {
-                List<Event> ccondition = indexed.FindAll(e => e.event_type == EventType.CCONDITION);
+    //        //ChancedCondition Event
+    //        {
+    //            List<XmlEvent> ccondition = indexed.FindAll(e => e.event_type == EventType.CCONDITION);
 
-                if (ccondition.Count > 0)
-                {
-                    if (!executable.ContainsKey(i)) executable.Add(i, new List<IDo>());
+    //            if (ccondition.Count > 0)
+    //            {
+    //                if (!executable.ContainsKey(i)) executable.Add(i, new List<IDo>());
 
-                    foreach (Event @event in ccondition)
-                    {
-                        int trueId = 0, falseId = 0;
-                        float luck = 0f;
-                        TryParse(@event, "ccondition_luck", out luck);
-                        TryParse(@event, "ccondition_true_id", out trueId);
-                        TryParse(@event, "ccondition_false_id", out falseId);
-                        string stat_name = "", item_name = "";
+    //                foreach (XmlEvent @event in ccondition)
+    //                {
+    //                    int trueId = 0, falseId = 0;
+    //                    float luck = 0f;
+    //                    TryParse(@event, "ccondition_luck", out luck);
+    //                    TryParse(@event, "ccondition_true_id", out trueId);
+    //                    TryParse(@event, "ccondition_false_id", out falseId);
+    //                    string stat_name = "", item_name = "";
 
-                        if (@event.attributes.ContainsKey("ccondition_stat_name"))
-                            stat_name = @event.attributes["ccondition_stat_name"];
+    //                    if (@event.attributes.ContainsKey("ccondition_stat_name"))
+    //                        stat_name = @event.attributes["ccondition_stat_name"];
 
-                        if (@event.attributes.ContainsKey("ccondition_item_name"))
-                            item_name = @event.attributes["ccondition_item_name"];
+    //                    if (@event.attributes.ContainsKey("ccondition_item_name"))
+    //                        item_name = @event.attributes["ccondition_item_name"];
 
-                        executable[i].Add(new DoCCondition(i, luck, stat_name, item_name, trueId, falseId));
-                    }
-                }
-            }
-        }
-    }
+    //                    executable[i].Add(new DoCCondition(i, luck, stat_name, item_name, trueId, falseId));
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
 
-    private void TryParse(Event @event, string attribute_name, out int value)
+    private void TryParse(XmlEvent @event, string attribute_name, out int value)
     {
         if (!int.TryParse(@event.attributes[attribute_name], out value))
             throw new ArgumentException(string.Format("Event attribute \'{0}\' has incorrect value \'{1}\'. Event id = {2}",
                 attribute_name, @event.attributes[attribute_name], @event.event_id));
     }
 
-    private void TryParse(Event @event, string attribute_name, out float value)
+    private void TryParse(XmlEvent @event, string attribute_name, out float value)
     {
         if (!float.TryParse(@event.attributes[attribute_name], out value))
             throw new ArgumentException(string.Format("Event attribute \'{0}\' has incorrect value \'{1}\'. Event id = {2}",
@@ -266,23 +266,23 @@ public class EventController : MonoBehaviour
 
 public enum EventType { EMPTY, NEXT, ITEM, WINDOW, STAT, CONDITION, CCONDITION }
 
-public struct Event
+public struct XmlEvent
 {
     // core parameters
     public int event_id;
     public EventType event_type;
     public Dictionary<string, string> attributes;
 
-    public Event(int event_id, EventType event_type)
+    public XmlEvent(int event_id, EventType event_type)
     {
         this.event_id = event_id;
         this.event_type = event_type;
         attributes = new Dictionary<string, string>();
     }
 
-    public static Event Empty()
+    public static XmlEvent Empty()
     {
-        return new Event(-1, EventType.EMPTY);
+        return new XmlEvent(-1, EventType.EMPTY);
     }
 
     public static EventType ParseEventType(string type)

@@ -8,7 +8,7 @@ using UnityEngine;
 static class IOHelper
 {
     private static bool initialized = false;
-    private static string dirPath, fHero, fItem, fSpell;
+    private static string dirPath, fHero, fItem, fAction;
 
     private static void Initialize()
     {
@@ -22,7 +22,7 @@ static class IOHelper
 
         fHero = "hero.xml";
         fItem = "item.xml";
-        fSpell = "spell.xml";
+        fAction = "action.xml";
 
         initialized = true;
     }
@@ -43,8 +43,8 @@ static class IOHelper
 
         Hero hero = new Hero("Nameless Monk");
         hero.AddItem(GetItem("*"), 3);
-        hero.AddSpell(GetSpell("Удар"), 1);
-        hero.AddSpell(GetSpell("Блок"), 1);
+        hero.AddAction(GetAction("Удар"), 1);
+        hero.AddAction(GetAction("Блок"), 1);
 
         XElement xmlHero = Hero.ToXml(hero);
         WriteXml(fHero, xmlHero);
@@ -58,6 +58,73 @@ static class IOHelper
 
         XElement xmlHero = Hero.ToXml(hero);
         WriteXml(fHero, xmlHero);
+    }
+
+    public static Room LoadRoom(string name)
+    {
+        XElement root = ReadXml(string.Format("{0}.xml", name));
+
+        if (!GetAttributeValue(root, "name", out string roomName))
+            throw new ArgumentException(string.Format("Room {0} has incorrect value of attribute \'name\'", name));
+
+        if (!GetAttributeValue(root, "type", out string roomType))
+            throw new ArgumentException(string.Format("Room {0} has incorrect value of attribute \'type\'", name));
+
+        List<StoryWord> story = new List<StoryWord>();
+        List<Annotation> annotations = new List<Annotation>();
+        List<CustomEvent> events = new List<CustomEvent>();
+        Dictionary<string, int> triggers = new Dictionary<string, int>();
+
+        // Story
+        {
+            XElement XStory = root.Element("story");
+            if (XStory != null)
+            {
+                foreach (XElement XWord in XStory.Elements("word"))
+                    story.Add(StoryWord.FromXml(XWord));
+            }
+        }
+
+        // Annotations
+        {
+            XElement XAnnotations = root.Element("annotations");
+            if (XAnnotations != null)
+            {
+                foreach (XElement XAnnotation in XAnnotations.Elements("annotation"))
+                    annotations.Add(Annotation.FromXml(XAnnotation));
+            }
+        }
+
+        // Events
+        {
+            XElement XEvents = root.Element("events");
+            if (XEvents != null)
+            {
+                foreach (XElement XEvent in XEvents.Elements("event"))
+                {
+                    events.Add(CustomEvent.FromXml(XEvent));
+                }
+            }
+        }
+
+        // Triggers
+        {
+            XElement XTriggers = root.Element("triggers");
+            if (XTriggers != null)
+            {
+                foreach (XElement XTrigger in XTriggers.Elements("trigger"))
+                {
+                    if (!GetAttributeValue(XTrigger, "name", out string triggerName))
+                        throw new ArgumentException(string.Format("Room {0} Trigger has incorrect value of attribete \'name\' = \'{1}\'", roomName, XTrigger.Attribute("name").Value));
+                    if (!GetAttributeValue(XTrigger, "value", out int triggerValue))
+                        throw new ArgumentException(string.Format("Room {0} Trigger {2} has incorrect value of attribete \'value\' = \'{1}\'", roomName, XTrigger.Attribute("value").Value, triggerName));
+
+                    triggers.Add(triggerName, triggerValue);
+                }
+            }
+        }
+
+        return new Room(roomName, roomType, story.ToArray(), annotations.ToArray(), events.ToArray(), triggers);
     }
 
     public static Item GetItem(string itemName)
@@ -100,36 +167,36 @@ static class IOHelper
         return new Item(itemName, type, star, options);
     }
 
-    public static Spell GetSpell(string spellName)
+    public static Action GetAction(string actionName)
     {
         Initialize();
-        XElement root = ReadXml(fSpell);
-        XElement xmlSpell = root.Elements("spell").ToList().Find(l =>
+        XElement root = ReadXml(fAction);
+        XElement xmlAction = root.Elements("action").ToList().Find(l =>
         {
             if (!GetAttributeValue(l, "name", out string name))
-                throw new ArgumentException(string.Format("Spell has incorrect value of attribute \'name\'."));
-            return name == spellName;
+                throw new ArgumentException(string.Format("Action has incorrect value of attribute \'name\'."));
+            return name == actionName;
         });
 
-        if (xmlSpell == null) return null;
+        if (xmlAction == null) return null;
 
-        if (!GetAttributeValue(xmlSpell, "type", out int type))
-            throw new ArgumentException(string.Format("Spell \'{0}\' has incorrect value of attribute \'type\'.", spellName));
+        if (!GetAttributeValue(xmlAction, "type", out int type))
+            throw new ArgumentException(string.Format("Action \'{0}\' has incorrect value of attribute \'type\'.", actionName));
 
-        if (!GetAttributeValue(xmlSpell, "rarity", out int rarity))
-            throw new ArgumentException(string.Format("Spell \'{0}\' has incorrect value of attribute \'rarity\'.", spellName));
+        if (!GetAttributeValue(xmlAction, "rarity", out int rarity))
+            throw new ArgumentException(string.Format("Action \'{0}\' has incorrect value of attribute \'rarity\'.", actionName));
 
-        if (!GetAttributeValue(xmlSpell, "value", out int value))
-            throw new ArgumentException(string.Format("Spell \'{0}\' has incorrect value of attribute \'value\'.", spellName));
+        if (!GetAttributeValue(xmlAction, "value", out int value))
+            throw new ArgumentException(string.Format("Action \'{0}\' has incorrect value of attribute \'value\'.", actionName));
 
-        return new Spell(spellName, (SpellType)type, (SpellRarity)rarity, value);
+        return new Action(actionName, (ActionType)type, (ActionRarity)rarity, value);
     }
 
     public static bool GetValue(XElement element, out int value)
     {
         if (element != null && !element.HasElements && int.TryParse(element.Value, out value))
             return true;
-        value = 0;
+        value = -1;
         return false;
     }
 
@@ -148,7 +215,7 @@ static class IOHelper
     {
         if (attribute != null && int.TryParse(attribute.Value, out value))
             return true;
-        value = 0;
+        value = -1;
         return false;
     }
 
@@ -163,12 +230,20 @@ static class IOHelper
         return false;
     }
 
+    public static bool GetAttributeValue(XAttribute attribute, out bool value)
+    {
+        if (attribute != null && bool.TryParse(attribute.Value, out value))
+            return true;
+        value = false;
+        return false;
+    }
+
     public static bool GetAttributeValue(XElement element, string attrName, out int value)
     {
         if (element != null && element.Attribute(attrName) != null &&
             int.TryParse(element.Attribute(attrName).Value, out value))
             return true;
-        value = 0;
+        value = -1;
         return false;
     }
 
@@ -180,6 +255,15 @@ static class IOHelper
             return true;
         }
         value = "";
+        return false;
+    }
+
+    public static bool GetAttributeValue(XElement element, string attrName, out bool value)
+    {
+        if (element != null && element.Attribute(attrName) != null &&
+            bool.TryParse(element.Attribute(attrName).Value, out value))
+            return true;
+        value = false;
         return false;
     }
 
@@ -205,7 +289,7 @@ public class Hero
     public string name;
     public int money, level, hp;
     public Dictionary<Item, int> items;
-    public Dictionary<Spell, int> spells;
+    public Dictionary<Action, int> actions;
 
     public Hero()
     {
@@ -214,7 +298,7 @@ public class Hero
         this.level = 1;
         this.money = 0;
         this.items = new Dictionary<Item, int>();
-        this.spells = new Dictionary<Spell, int>();
+        this.actions = new Dictionary<Action, int>();
     }
 
     public Hero(string name)
@@ -224,20 +308,20 @@ public class Hero
         this.level = 1;
         this.money = 0;
         this.items = new Dictionary<Item, int>();
-        this.spells = new Dictionary<Spell, int>();
+        this.actions = new Dictionary<Action, int>();
     }
 
-    public Hero(string name, int hp, int level, int money, Dictionary<Item, int> items, Dictionary<Spell, int> spells)
+    public Hero(string name, int hp, int level, int money, Dictionary<Item, int> items, Dictionary<Action, int> actions)
     {
         this.name = name;
         this.hp = hp;
         this.level = level;
         this.money = money;
         this.items = new Dictionary<Item, int>(items);
-        this.spells = new Dictionary<Spell, int>(spells);
+        this.actions = new Dictionary<Action, int>(actions);
     }
 
-    public Hero(Hero other) : this(other.name, other.hp, other.level, other.money, other.items, other.spells)
+    public Hero(Hero other) : this(other.name, other.hp, other.level, other.money, other.items, other.actions)
     { }
 
     public void AddItem(Item item, int count)
@@ -248,12 +332,12 @@ public class Hero
             items.Add(item, count);
     }
 
-    public void AddSpell(Spell spell, int count)
+    public void AddAction(Action action, int count)
     {
-        if (spells.ContainsKey(spell))
-            spells[spell] += count;
+        if (actions.ContainsKey(action))
+            actions[action] += count;
         else
-            spells.Add(spell, count);
+            actions.Add(action, count);
     }
 
     public void SubtractItem(Item item, int count)
@@ -262,15 +346,15 @@ public class Hero
             items[item] -= count;
     }
 
-    public void SubtractSpell(Spell spell, int count)
+    public void SubtractAction(Action action, int count)
     {
-        if (spells.ContainsKey(spell))
-            spells[spell] -= count;
+        if (actions.ContainsKey(action))
+            actions[action] -= count;
     }
 
     public override string ToString()
     {
-        return string.Format("Name:{0} Items:[{1}] Spells:{2}", name, items.ToString(), spells.ToString());
+        return string.Format("Name:{0} Items:[{1}] Actions:{2}", name, items.ToString(), actions.ToString());
     }
 
     public override bool Equals(object obj)
@@ -278,7 +362,7 @@ public class Hero
         return obj is Hero hero &&
                name == hero.name &&
                EqualityComparer<Dictionary<Item, int>>.Default.Equals(items, hero.items) &&
-               EqualityComparer<Dictionary<Spell, int>>.Default.Equals(spells, hero.spells);
+               EqualityComparer<Dictionary<Action, int>>.Default.Equals(actions, hero.actions);
     }
 
     public override int GetHashCode()
@@ -286,7 +370,7 @@ public class Hero
         var hashCode = -826629381;
         hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(name);
         hashCode = hashCode * -1521134295 + EqualityComparer<Dictionary<Item, int>>.Default.GetHashCode(items);
-        hashCode = hashCode * -1521134295 + EqualityComparer<Dictionary<Spell, int>>.Default.GetHashCode(spells);
+        hashCode = hashCode * -1521134295 + EqualityComparer<Dictionary<Action, int>>.Default.GetHashCode(actions);
         return hashCode;
     }
 
@@ -305,7 +389,7 @@ public class Hero
             throw new ArgumentException(string.Format("Hero \'{0}\' has incorrect value of attribute \'money\'", name));
 
         Dictionary<Item, int> items = new Dictionary<Item, int>();
-        Dictionary<Spell, int> spells = new Dictionary<Spell, int>();
+        Dictionary<Action, int> actions = new Dictionary<Action, int>();
 
         foreach (XElement xmlItem in element.Elements("item"))
         {
@@ -320,20 +404,20 @@ public class Hero
             items.Add(item, count);
         }
 
-        foreach (XElement xmlSpell in element.Elements("spell"))
+        foreach (XElement xmlAction in element.Elements("spell"))
         {
-            if (!IOHelper.GetAttributeValue(xmlSpell, "name", out string spellName))
-                throw new ArgumentException(string.Format("Hero \'{0}\' has Spell with incorrect value of attribute \'name\'", name));
+            if (!IOHelper.GetAttributeValue(xmlAction, "name", out string actionName))
+                throw new ArgumentException(string.Format("Hero \'{0}\' has Action with incorrect value of attribute \'name\'", name));
 
-            if (!IOHelper.GetAttributeValue(xmlSpell, "count", out int count))
-                throw new ArgumentException(string.Format("Hero \'{0}\' has Spell \'{1}\' with incorrect value of attribute \'count\'", name, spellName));
+            if (!IOHelper.GetAttributeValue(xmlAction, "count", out int count))
+                throw new ArgumentException(string.Format("Hero \'{0}\' has Action \'{1}\' with incorrect value of attribute \'count\'", name, actionName));
 
-            Spell spell = IOHelper.GetSpell(spellName);
-            if (spell == null) continue;
-            spells.Add(spell, count);
+            Action action = IOHelper.GetAction(actionName);
+            if (action == null) continue;
+            actions.Add(action, count);
         }
 
-        return new Hero(name, hp, level, money, items, spells);
+        return new Hero(name, hp, level, money, items, actions);
     }
 
     public static XElement ToXml(Hero hero)
@@ -352,9 +436,9 @@ public class Hero
             xmlHero.Add(xmlItem);
         }
 
-        foreach (var spell in hero.spells)
+        foreach (var spell in hero.actions)
         {
-            XElement xmlSpell = new XElement("spell");
+            XElement xmlSpell = new XElement("action");
             xmlSpell.Add(new XAttribute("name", spell.Key.name));
             xmlSpell.Add(new XAttribute("count", spell.Value));
             xmlHero.Add(xmlSpell);
@@ -430,8 +514,7 @@ public class Item
         return obj is Item item &&
                Name == item.Name &&
                Type == item.Type &&
-               Star == item.Star &&
-               EqualityComparer<Dictionary<string, string>>.Default.Equals(Options, item.Options);
+               Star == item.Star;
     }
 
     public override int GetHashCode()

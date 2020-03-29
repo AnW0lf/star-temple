@@ -30,6 +30,11 @@ public class StoryCtrl : MonoBehaviour
         words.Clear();
     }
 
+    public void CallAnnotation(int id)
+    {
+        annotations.CallAnnotation(id);
+    }
+
 }
 
 public interface IWord
