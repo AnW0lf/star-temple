@@ -5,10 +5,11 @@ using UnityEngine.EventSystems;
 using System.Xml.Linq;
 using System;
 
-public class StoryWordCtrl : MonoBehaviour, IWord
+public class StoryWordCtrl : MonoBehaviour, IWord, IPointerEnterHandler, IPointerExitHandler
 {
     public Text txt;
     public WordEffects effects;
+    public Outline outline;
 
     private int _a_id, _e_id, _d_id;
     private string _d_t;
@@ -19,6 +20,12 @@ public class StoryWordCtrl : MonoBehaviour, IWord
     public bool HasEvent { get; protected set; }
 
     public bool HasDrop { get; protected set; }
+
+    private bool Highlighted
+    {
+        get => outline.enabled;
+        set => outline.enabled = value;
+    }
 
     public void SetWord(StoryWord word)
     {
@@ -34,15 +41,15 @@ public class StoryWordCtrl : MonoBehaviour, IWord
         HasEvent = _e_id > 0;
         HasDrop = _d_id > 0 && _d_t.Length > 0;
 
-        /* Проверка на выход
-        if (Helper.Instance.IsExitId(_e_id)) txt.fontStyle = FontStyle.Bold;
+        if (CustomEventSystem.current.IsExitId(_e_id)) txt.fontStyle = FontStyle.Bold;
         else txt.fontStyle = FontStyle.Normal;
-        */
 
         effects.hasEvent = () => { return HasEvent; };
         effects.hasDrop = () => { return HasDrop; };
 
         effects.Begin();
+
+        Highlighted = false;
     }
 
     public void OnClick()
@@ -78,6 +85,27 @@ public class StoryWordCtrl : MonoBehaviour, IWord
                 HasDrop = _d_r;
             }
         }
+
+        Highlighted = false;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (Annotated)
+        {
+            ItemCtrl itemCtrl = InventoryCtrl.current.draggedItem;
+            Item item;
+
+            if (itemCtrl != null && (item = itemCtrl.Item) != null && item.Type == "star")
+            {
+                Highlighted = true;
+            }
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        Highlighted = false;
     }
 }
 public class StoryWord

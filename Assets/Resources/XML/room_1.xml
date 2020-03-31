@@ -1,4 +1,4 @@
-<room name="introduction" type="first_game">
+<room name="introduction" type="introduction">
 	<story>
 		<word>Итак</word>
 		<word>,</word>

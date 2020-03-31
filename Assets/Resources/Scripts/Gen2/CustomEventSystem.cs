@@ -48,6 +48,24 @@ public class CustomEventSystem : MonoBehaviour
         });
     }
 
+    internal bool IsExitId(int index)
+    {
+        if (!executable.ContainsKey(index) ||
+            executable[index] == null ||
+            executable[index].Count == 0)
+            return false;
+
+        foreach(IExecute execute in executable[index])
+        {
+            if (execute is ExecuteNext) return true;
+            else if (execute is ExecuteCondition &&
+                (IsExitId(((ExecuteCondition)execute).falseId) ||
+                IsExitId(((ExecuteCondition)execute).trueId))) return true;
+        }
+
+        return false;
+    }
+
     public void SetTriggers(Dictionary<string, int> triggers)
     {
         Local.Clear();

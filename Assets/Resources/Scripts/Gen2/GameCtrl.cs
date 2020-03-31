@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameCtrl : MonoBehaviour
 {
     public string roomName = "room_1";
     public StoryCtrl story;
+    public string chapterNumberPattern;
+    public Text chapterNumber, chapterName;
     public static GameCtrl current { get; private set; } = null;
 
     public int Counter { get; private set; } = 0;
@@ -28,9 +31,24 @@ public class GameCtrl : MonoBehaviour
     public void LoadRoom(string roomName)
     {
         room = IOHelper.LoadRoom(roomName);
-        story.SetStory(room);
+
+        InventoryCtrl.current.Visible = room.type != "introduction";
+
         CustomEventSystem.current.SetTriggers(room.triggers);
         CustomEventSystem.current.SetEvents(room.events);
+        story.SetStory(room);
+
+        if (Counter == 0)
+        {
+            chapterNumber.text = "";
+            chapterName.text = room.name;
+        }
+        else
+        {
+            chapterNumber.text = string.Format(chapterNumberPattern, Counter);
+            chapterName.text = room.name;
+        }
+
         Counter++;
     }
 

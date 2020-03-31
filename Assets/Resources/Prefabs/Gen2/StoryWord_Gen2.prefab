@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2543619841139050164}
   - component: {fileID: 512490848173986081}
   - component: {fileID: 895313731717461034}
+  - component: {fileID: 6366280120487988961}
   m_Layer: 5
   m_Name: StoryWord_Gen2
   m_TagString: Untagged
@@ -68,7 +69,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 0f834cffd34eee9439d929198dd26f5d, type: 3}
     m_FontSize: 80
     m_FontStyle: 0
     m_BestFit: 0
@@ -109,6 +110,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   txt: {fileID: 4381410242377554964}
   effects: {fileID: 512490848173986081}
+  outline: {fileID: 6366280120487988961}
 --- !u!114 &512490848173986081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,7 +128,7 @@ MonoBehaviour:
   eventColor: {r: 1, g: 1, b: 0, a: 1}
   dropColor: {r: 0.4117647, g: 0.7019608, b: 1, a: 1}
   count: 10
-  duration: 2
+  duration: 1
 --- !u!114 &895313731717461034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,3 +172,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &6366280120487988961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2543619841139050163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0.97842216, b: 1, a: 0.5}
+  m_EffectDistance: {x: 2, y: 2}
+  m_UseGraphicAlpha: 1

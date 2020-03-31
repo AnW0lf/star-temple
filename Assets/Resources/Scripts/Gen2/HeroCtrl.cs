@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HeroCtrl : MonoBehaviour
 {
     public InventoryCtrl inventory;
+    public Text heroName, heroLevel, heroMoney, heroHPState;
+    public string levelPattern, moneyPattern;
 
     public static HeroCtrl current { get; private set; } = null;
 
@@ -22,6 +25,7 @@ public class HeroCtrl : MonoBehaviour
         set
         {
             hero.hp = value;
+            UpdateInfo();
         }
     }
 
@@ -31,6 +35,7 @@ public class HeroCtrl : MonoBehaviour
         set
         {
             hero.money = value;
+            UpdateInfo();
         }
     }
 
@@ -40,6 +45,7 @@ public class HeroCtrl : MonoBehaviour
         set
         {
             hero.level = value;
+            UpdateInfo();
         }
     }
 
@@ -95,5 +101,15 @@ public class HeroCtrl : MonoBehaviour
         if (hero == null) hero = IOHelper.CreateHero("Nameless Monk");
         hero.items.ToList().ForEach(pair => inventory.AddItem(pair.Key, pair.Value));
         hero.actions.ToList().ForEach(pair => inventory.AddAction(pair.Key, pair.Value));
+
+        UpdateInfo();
+    }
+
+    private void UpdateInfo()
+    {
+        heroName.text = hero.name;
+        heroLevel.text = string.Format(levelPattern, hero.level);
+        heroMoney.text = string.Format(moneyPattern, hero.money);
+        heroHPState.text = hero.hp.ToString();
     }
 }

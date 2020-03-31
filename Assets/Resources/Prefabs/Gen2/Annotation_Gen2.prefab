@@ -61,7 +61,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -91,6 +91,8 @@ MonoBehaviour:
   horizontalSpacing: 0
   topPadding: 0
   bottomPadding: 0
+  leftPadding: 0
+  rightPadding: 0
   orientation: 0
   resize: 1
 --- !u!114 &8002760782963189000

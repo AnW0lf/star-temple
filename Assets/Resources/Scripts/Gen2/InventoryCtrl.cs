@@ -60,7 +60,6 @@ public class InventoryCtrl : MonoBehaviour
 
     private void Start()
     {
-        Show();
         OpenBackpack();
     }
 

@@ -29,13 +29,13 @@ public class AnnotationWordCtrl : MonoBehaviour, IWord
         HasEvent = _e_id > 0;
         HasDrop = _d_id > 0 && _d_t.Length > 0;
 
-        /* Проверка на выход
-        if (Helper.Instance.IsExitId(_e_id)) txt.fontStyle = FontStyle.BoldAndItalic;
+        if (CustomEventSystem.current.IsExitId(_e_id)) txt.fontStyle = FontStyle.BoldAndItalic;
         else txt.fontStyle = FontStyle.Italic;
-        */
 
         effects.hasEvent = () => { return HasEvent; };
         effects.hasDrop = () => { return HasDrop; };
+
+        txt.raycastTarget = HasEvent || HasDrop;
 
         effects.Begin();
     }
@@ -45,6 +45,8 @@ public class AnnotationWordCtrl : MonoBehaviour, IWord
         if (!HasEvent) return;
         CustomEventSystem.current.Execute(_e_id);
         HasEvent = _e_r;
+
+        txt.raycastTarget = HasEvent || HasDrop;
     }
 
     public void OnDrop()
@@ -58,6 +60,8 @@ public class AnnotationWordCtrl : MonoBehaviour, IWord
                 CustomEventSystem.current.Execute(_d_id, droppedItem.Item);
 
                 HasDrop = _d_r;
+
+                txt.raycastTarget = HasEvent || HasDrop;
             }
         }
     }

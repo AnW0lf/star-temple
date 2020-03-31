@@ -87,8 +87,8 @@ public class ItemCtrl : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDrag
                 counter.gameObject.LeanScaleX(1f, 0.15f);
             });
         }
-
-        // Открыть окно распыления
+        if (Item.Type != "star")
+            SprayCtrl.current.Visible = true;
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -109,6 +109,8 @@ public class ItemCtrl : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDrag
                 counter.gameObject.LeanScaleX(1f, 0.15f);
             });
         }
+
+        SprayCtrl.current.Visible = false;
     }
 
     public void OnPointerClick()
