@@ -2821,7 +2821,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 605bf5e71e5f41648a1ec326d45b6496, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomName: room_1
+  roomName: hobbit_1
   story: {fileID: 1985365150}
   chapterNumberPattern: "\u0413\u043B\u0430\u0432\u0430 {0}"
   chapterNumber: {fileID: 1320208587}

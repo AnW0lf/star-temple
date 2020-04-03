@@ -91,6 +91,8 @@ public class AnnotationWord
         if (!IOHelper.GetValue(element, out string word))
             throw new ArgumentException(string.Format("Story Word has incorrect value."));
 
+        if (word == "") word = " ";
+
         AnnotationWord annotationWord = new AnnotationWord(word);
 
         IOHelper.GetAttributeValue(element, "drop_type", out annotationWord.drop_type);

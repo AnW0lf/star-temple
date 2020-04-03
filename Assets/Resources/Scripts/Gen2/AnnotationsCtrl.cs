@@ -11,7 +11,7 @@ public class AnnotationsCtrl : MonoBehaviour
     public GameObject annotationPref, annotationWordPref;
     public Transform content;
 
-    private List<GameObject> lstAnnot;
+    private List<GameObject> lstAnnot = new List<GameObject>();
     private Annotation[] _annotations;
     public Annotation[] annotations
     {
@@ -27,7 +27,7 @@ public class AnnotationsCtrl : MonoBehaviour
     {
         if (lstAnnot != null && lstAnnot.Count > 0)
             lstAnnot.ForEach(a => Destroy(a, 0.05f));
-        lstAnnot = new List<GameObject>();
+        lstAnnot.Clear();
     }
 
     public void CallAnnotation(int id)
@@ -39,6 +39,7 @@ public class AnnotationsCtrl : MonoBehaviour
             {
                 Annotation a = rndAnnotation(ans);
                 Transform container = Instantiate(annotationPref, content).transform;
+                lstAnnot.Add(container.gameObject);
                 foreach (AnnotationWord word in a.words)
                     Instantiate(annotationWordPref, container).GetComponent<AnnotationWordCtrl>().SetWord(word);
             }

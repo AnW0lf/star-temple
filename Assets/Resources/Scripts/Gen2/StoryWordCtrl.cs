@@ -133,6 +133,8 @@ public class StoryWord
         if (!IOHelper.GetValue(element, out string word))
             throw new ArgumentException(string.Format("Story Word has incorrect value."));
 
+        if (word == "") word = " ";
+
         StoryWord storyWord = new StoryWord(word);
 
         IOHelper.GetAttributeValue(element, "drop_type", out storyWord.drop_type);

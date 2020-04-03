@@ -176,9 +176,6 @@ public class CustomEvent
             }
         }
 
-        if (!element.HasElements && element.Value.Length != 0)
-            options.Add("text", element.Value);
-
         return new CustomEvent(id, type, options);
     }
 }
