@@ -60,6 +60,12 @@ static class IOHelper
         WriteXml(fHero, xmlHero);
     }
 
+    public static Enemy LoadEnemy(string name)
+    {
+        XElement root = ReadXml(string.Format("{0}.xml", name));
+        return new Enemy(root);
+    }
+
     public static Room LoadRoom(string name)
     {
         XElement root = ReadXml(string.Format("{0}.xml", name));
@@ -167,7 +173,7 @@ static class IOHelper
         return new Item(itemName, type, star, options);
     }
 
-    public static Action GetAction(string actionName)
+    public static CustomAction GetAction(string actionName)
     {
         Initialize();
         XElement root = ReadXml(fAction);
@@ -180,16 +186,22 @@ static class IOHelper
 
         if (xmlAction == null) return null;
 
-        if (!GetAttributeValue(xmlAction, "type", out int type))
-            throw new ArgumentException(string.Format("Action \'{0}\' has incorrect value of attribute \'type\'.", actionName));
-
         if (!GetAttributeValue(xmlAction, "rarity", out int rarity))
             throw new ArgumentException(string.Format("Action \'{0}\' has incorrect value of attribute \'rarity\'.", actionName));
 
-        if (!GetAttributeValue(xmlAction, "value", out int value))
-            throw new ArgumentException(string.Format("Action \'{0}\' has incorrect value of attribute \'value\'.", actionName));
+        if (!GetAttributeValue(xmlAction, "damage", out int damage))
+            throw new ArgumentException(string.Format("Action \'{0}\' has incorrect value of attribute \'damage\'.", actionName));
 
-        return new Action(actionName, (ActionType)type, (ActionRarity)rarity, value);
+        if (!GetAttributeValue(xmlAction, "percent_damage", out int percent_damage))
+            throw new ArgumentException(string.Format("Action \'{0}\' has incorrect value of attribute \'percent_damage\'.", actionName));
+
+        if (!GetAttributeValue(xmlAction, "defence", out int defence))
+            throw new ArgumentException(string.Format("Action \'{0}\' has incorrect value of attribute \'defence\'.", actionName));
+
+        if (!GetAttributeValue(xmlAction, "percent_defence", out int percent_defence))
+            throw new ArgumentException(string.Format("Action \'{0}\' has incorrect value of attribute \'percent_defence\'.", actionName));
+
+        return new CustomAction(actionName, (ActionRarity)rarity, damage, percent_damage, defence, percent_defence);
     }
 
     public static bool GetValue(XElement element, out int value)
@@ -289,7 +301,7 @@ public class Hero
     public string name;
     public int money, level, hp;
     public Dictionary<Item, int> items;
-    public Dictionary<Action, int> actions;
+    public Dictionary<CustomAction, int> actions;
 
     public Hero()
     {
@@ -298,7 +310,7 @@ public class Hero
         this.level = 1;
         this.money = 0;
         this.items = new Dictionary<Item, int>();
-        this.actions = new Dictionary<Action, int>();
+        this.actions = new Dictionary<CustomAction, int>();
     }
 
     public Hero(string name)
@@ -308,17 +320,17 @@ public class Hero
         this.level = 1;
         this.money = 0;
         this.items = new Dictionary<Item, int>();
-        this.actions = new Dictionary<Action, int>();
+        this.actions = new Dictionary<CustomAction, int>();
     }
 
-    public Hero(string name, int hp, int level, int money, Dictionary<Item, int> items, Dictionary<Action, int> actions)
+    public Hero(string name, int hp, int level, int money, Dictionary<Item, int> items, Dictionary<CustomAction, int> actions)
     {
         this.name = name;
         this.hp = hp;
         this.level = level;
         this.money = money;
         this.items = new Dictionary<Item, int>(items);
-        this.actions = new Dictionary<Action, int>(actions);
+        this.actions = new Dictionary<CustomAction, int>(actions);
     }
 
     public Hero(Hero other) : this(other.name, other.hp, other.level, other.money, other.items, other.actions)
@@ -332,7 +344,7 @@ public class Hero
             items.Add(item, count);
     }
 
-    public void AddAction(Action action, int count)
+    public void AddAction(CustomAction action, int count)
     {
         if (actions.ContainsKey(action))
             actions[action] += count;
@@ -346,7 +358,7 @@ public class Hero
             items[item] -= count;
     }
 
-    public void SubtractAction(Action action, int count)
+    public void SubtractAction(CustomAction action, int count)
     {
         if (actions.ContainsKey(action))
             actions[action] -= count;
@@ -362,7 +374,7 @@ public class Hero
         return obj is Hero hero &&
                name == hero.name &&
                EqualityComparer<Dictionary<Item, int>>.Default.Equals(items, hero.items) &&
-               EqualityComparer<Dictionary<Action, int>>.Default.Equals(actions, hero.actions);
+               EqualityComparer<Dictionary<CustomAction, int>>.Default.Equals(actions, hero.actions);
     }
 
     public override int GetHashCode()
@@ -370,7 +382,7 @@ public class Hero
         var hashCode = -826629381;
         hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(name);
         hashCode = hashCode * -1521134295 + EqualityComparer<Dictionary<Item, int>>.Default.GetHashCode(items);
-        hashCode = hashCode * -1521134295 + EqualityComparer<Dictionary<Action, int>>.Default.GetHashCode(actions);
+        hashCode = hashCode * -1521134295 + EqualityComparer<Dictionary<CustomAction, int>>.Default.GetHashCode(actions);
         return hashCode;
     }
 
@@ -389,7 +401,7 @@ public class Hero
             throw new ArgumentException(string.Format("Hero \'{0}\' has incorrect value of attribute \'money\'", name));
 
         Dictionary<Item, int> items = new Dictionary<Item, int>();
-        Dictionary<Action, int> actions = new Dictionary<Action, int>();
+        Dictionary<CustomAction, int> actions = new Dictionary<CustomAction, int>();
 
         foreach (XElement xmlItem in element.Elements("item"))
         {
@@ -412,7 +424,7 @@ public class Hero
             if (!IOHelper.GetAttributeValue(xmlAction, "count", out int count))
                 throw new ArgumentException(string.Format("Hero \'{0}\' has Action \'{1}\' with incorrect value of attribute \'count\'", name, actionName));
 
-            Action action = IOHelper.GetAction(actionName);
+            CustomAction action = IOHelper.GetAction(actionName);
             if (action == null) continue;
             actions.Add(action, count);
         }
@@ -530,5 +542,155 @@ public class Item
     public override string ToString()
     {
         return Name;
+    }
+}
+
+public class Enemy
+{
+    public string name, description;
+    public int hp, exp;
+    public Dictionary<Phrase, int> phrases;
+
+    public Enemy(XElement element)
+    {
+        // TODO
+        if (!IOHelper.GetAttributeValue(element, "name", out name)) throw new ArgumentException();
+        if (!IOHelper.GetAttributeValue(element, "hp", out hp)) throw new ArgumentException();
+        if (!IOHelper.GetAttributeValue(element, "exp", out exp)) throw new ArgumentException();
+
+        phrases = new Dictionary<Phrase, int>();
+
+        foreach (XElement XPhrase in element.Elements("phrase"))
+        {
+            if (!IOHelper.GetValue(XPhrase, out string text)) throw new ArgumentException();
+            if (!IOHelper.GetAttributeValue(XPhrase, "chance", out int chance)) throw new ArgumentException();
+
+            List<string> words = new List<string>(text.Split(' '));
+            for (int i = words.Count - 1; i > 0; i--)
+                words.Insert(i, " ");
+
+            if (!IOHelper.GetAttributeValue(XPhrase, "kick_1", out int kick_1_id)) throw new ArgumentException();
+            if (!IOHelper.GetAttributeValue(XPhrase, "kick_2", out int kick_2_id)) throw new ArgumentException();
+            if (!IOHelper.GetAttributeValue(XPhrase, "chance_1", out int chance_1)) throw new ArgumentException();
+            if (!IOHelper.GetAttributeValue(XPhrase, "chance_2", out int chance_2)) throw new ArgumentException();
+
+            Kick kick_1, kick_2;
+
+            {
+                XElement XKick = element.Elements("kick").ToList().Find(a => int.Parse(a.Attribute("id").Value) == kick_1_id);
+                if (XKick == null) throw new ArgumentException();
+
+                if (!IOHelper.GetAttributeValue(XKick, "name", out string kick_name)) throw new ArgumentException();
+                if (!IOHelper.GetAttributeValue(XKick, "damage", out int kick_damage)) throw new ArgumentException();
+                if (!IOHelper.GetAttributeValue(XKick, "percent_damage", out int kick_percent_damage)) throw new ArgumentException();
+                if (!IOHelper.GetAttributeValue(XKick, "defence", out int kick_defence)) throw new ArgumentException();
+                if (!IOHelper.GetAttributeValue(XKick, "percent_defence", out int kick_percent_defence)) throw new ArgumentException();
+
+                kick_1 = new Kick(kick_name, kick_damage, kick_percent_damage, kick_defence, kick_percent_defence);
+            }
+
+            {
+                XElement XKick = element.Elements("kick").ToList().Find(a => int.Parse(a.Attribute("id").Value) == kick_2_id);
+                if (XKick == null) throw new ArgumentException();
+
+                if (!IOHelper.GetAttributeValue(XKick, "name", out string kick_name)) throw new ArgumentException();
+                if (!IOHelper.GetAttributeValue(XKick, "damage", out int kick_damage)) throw new ArgumentException();
+                if (!IOHelper.GetAttributeValue(XKick, "percent_damage", out int kick_percent_damage)) throw new ArgumentException();
+                if (!IOHelper.GetAttributeValue(XKick, "defence", out int kick_defence)) throw new ArgumentException();
+                if (!IOHelper.GetAttributeValue(XKick, "percent_defence", out int kick_percent_defence)) throw new ArgumentException();
+
+                kick_2 = new Kick(kick_name, kick_damage, kick_percent_damage, kick_defence, kick_percent_defence);
+            }
+
+            Phrase phrase = new Phrase(words.ToArray(), new KeyValuePair<Kick, int>(kick_1, chance_1), new KeyValuePair<Kick, int>(kick_2, chance_2));
+            if (!phrases.ContainsKey(phrase)) phrases.Add(phrase, chance);
+        }
+    }
+
+    public override bool Equals(object obj)
+    {
+        return obj is Enemy enemy &&
+               name == enemy.name &&
+               description == enemy.description &&
+               hp == enemy.hp &&
+               exp == enemy.exp &&
+               EqualityComparer<Dictionary<Phrase, int>>.Default.Equals(phrases, enemy.phrases);
+    }
+
+    public override int GetHashCode()
+    {
+        var hashCode = -2094107515;
+        hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(name);
+        hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(description);
+        hashCode = hashCode * -1521134295 + hp.GetHashCode();
+        hashCode = hashCode * -1521134295 + exp.GetHashCode();
+        hashCode = hashCode * -1521134295 + EqualityComparer<Dictionary<Phrase, int>>.Default.GetHashCode(phrases);
+        return hashCode;
+    }
+}
+
+public class Phrase
+{
+    public string[] words;
+    public KeyValuePair<Kick, int> kick_1, kick_2;
+
+    public Phrase(string[] words, KeyValuePair<Kick, int> kick_1, KeyValuePair<Kick, int> kick_2)
+    {
+        this.words = words;
+        this.kick_1 = kick_1;
+        this.kick_2 = kick_2;
+    }
+
+    public override bool Equals(object obj)
+    {
+        return obj is Phrase phrase &&
+               EqualityComparer<string[]>.Default.Equals(words, phrase.words) &&
+               EqualityComparer<KeyValuePair<Kick, int>>.Default.Equals(kick_1, phrase.kick_1) &&
+               EqualityComparer<KeyValuePair<Kick, int>>.Default.Equals(kick_2, phrase.kick_2);
+    }
+
+    public override int GetHashCode()
+    {
+        var hashCode = -1029707461;
+        hashCode = hashCode * -1521134295 + EqualityComparer<string[]>.Default.GetHashCode(words);
+        hashCode = hashCode * -1521134295 + kick_1.GetHashCode();
+        hashCode = hashCode * -1521134295 + kick_2.GetHashCode();
+        return hashCode;
+    }
+}
+
+public class Kick
+{
+    public string name;
+    public int damage, percent_damage, defence, percent_defence;
+
+    public Kick(string name, int damage, int percent_damage, int defence, int percent_defence)
+    {
+        this.name = name;
+        this.damage = damage;
+        this.percent_damage = percent_damage;
+        this.defence = defence;
+        this.percent_defence = percent_defence;
+    }
+
+    public override bool Equals(object obj)
+    {
+        return obj is Kick kick &&
+               name == kick.name &&
+               damage == kick.damage &&
+               percent_damage == kick.percent_damage &&
+               defence == kick.defence &&
+               percent_defence == kick.percent_defence;
+    }
+
+    public override int GetHashCode()
+    {
+        var hashCode = 639002108;
+        hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(name);
+        hashCode = hashCode * -1521134295 + damage.GetHashCode();
+        hashCode = hashCode * -1521134295 + percent_damage.GetHashCode();
+        hashCode = hashCode * -1521134295 + defence.GetHashCode();
+        hashCode = hashCode * -1521134295 + percent_defence.GetHashCode();
+        return hashCode;
     }
 }

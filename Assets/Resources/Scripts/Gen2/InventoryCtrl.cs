@@ -115,7 +115,7 @@ public class InventoryCtrl : MonoBehaviour
             items.Add(item.Name, ic);
         }
     }
-    public void AddAction(Action action, int count)
+    public void AddAction(CustomAction action, int count)
     {
         if (spells.ContainsKey(action.name) && action.rarity != ActionRarity.STANDART)
         {
@@ -140,7 +140,7 @@ public class InventoryCtrl : MonoBehaviour
                 items.Remove(item.Name);
         }
     }
-    public void SubtractAction(Action action, int count)
+    public void SubtractAction(CustomAction action, int count)
     {
         if (spells.ContainsKey(action.name) && action.rarity != ActionRarity.STANDART)
         {

@@ -20,6 +20,12 @@ public class CustomEventSystem : MonoBehaviour
         else if (current != this) Destroy(gameObject);
     }
 
+    public void Clear()
+    {
+        Local.Clear();
+        executable.Clear();
+    }
+
     public void SetEvents(CustomEvent[] xmlEvents)
     {
         executable = new Dictionary<int, List<IExecute>>();
@@ -68,7 +74,7 @@ public class CustomEventSystem : MonoBehaviour
 
     public void SetTriggers(Dictionary<string, int> triggers)
     {
-        Local.Clear();
+        Clear();
 
         foreach(var pair in triggers)
         {
@@ -103,7 +109,7 @@ public class CustomEventSystem : MonoBehaviour
     }
 
     //TODO
-    public void Execute(int id, Action action)
+    public void Execute(int id, CustomAction action)
     {
         Execute(id);
     }

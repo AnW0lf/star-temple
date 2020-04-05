@@ -1,0 +1,9 @@
+﻿<root name="Кот Обормот" type="test" difficult="1" hp="15" exp="25">
+  <description>Большой и страшный монстр с зубами, когтями и лапами.</description>
+  <phrase chance="10" kick_1="1" kick_2="2" chance_1="10" chance_2="20">Монстр расправил зуба и приготовил губы.</phrase>
+  <phrase chance="20" kick_1="3" kick_2="4" chance_1="10" chance_2="20">Монстр собрался задействовать лапы.</phrase>
+  <kick id="1" name="Укус" damage="5" percent_damage="0" defence="0" percent_defence="0"/>
+  <kick id="2" name="Блок" damage="0" percent_damage="0" defence="5" percent_defence="0"/>
+  <kick id="3" name="Прыжок" damage="5" percent_damage="5" defence="0" percent_defence="0"/>
+  <kick id="4" name="Уворот" damage="0" percent_damage="0" defence="0" percent_defence="50"/>
+</root>

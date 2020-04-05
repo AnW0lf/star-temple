@@ -12,7 +12,7 @@ public class ActionCtrl : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDr
     public float destroyDuration;
     public LeanTweenType destroyEase;
 
-    public Action Action
+    public CustomAction Action
     {
         get => _action;
         set
@@ -45,7 +45,7 @@ public class ActionCtrl : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDr
 
     private Text txt;
     private Outline outline;
-    private Action _action;
+    private CustomAction _action;
     private int _count;
 
     private void Awake()
@@ -165,40 +165,43 @@ public class ActionCtrl : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDr
 
 public enum ActionRarity { STANDART, COMMON, RARE, MYTHICAL }
 
-public enum ActionType { ATTACK, DEFENCE, SUPPORT }
-
 [Serializable]
-public class Action
+public class CustomAction
 {
     public string name;
-    public ActionType type;
     public ActionRarity rarity;
-    public int value;
+    public int damage, percent_damage, defence, percent_defence;
 
-    public Action(string name, ActionType type, ActionRarity rarity, int value)
+    public CustomAction(string name, ActionRarity rarity, int damage, int percent_damage, int defence, int percent_defence)
     {
         this.name = name;
-        this.type = type;
         this.rarity = rarity;
-        this.value = value;
+        this.damage = damage;
+        this.percent_damage = percent_damage;
+        this.defence = defence;
+        this.percent_defence = percent_defence;
     }
 
     public override bool Equals(object obj)
     {
-        return obj is Action spell &&
-               name == spell.name &&
-               type == spell.type &&
-               rarity == spell.rarity &&
-               value == spell.value;
+        return obj is CustomAction action &&
+               name == action.name &&
+               rarity == action.rarity &&
+               damage == action.damage &&
+               percent_damage == action.percent_damage &&
+               defence == action.defence &&
+               percent_defence == action.percent_defence;
     }
 
     public override int GetHashCode()
     {
-        var hashCode = -714267209;
+        var hashCode = -2015201098;
         hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(name);
-        hashCode = hashCode * -1521134295 + type.GetHashCode();
         hashCode = hashCode * -1521134295 + rarity.GetHashCode();
-        hashCode = hashCode * -1521134295 + value.GetHashCode();
+        hashCode = hashCode * -1521134295 + damage.GetHashCode();
+        hashCode = hashCode * -1521134295 + percent_damage.GetHashCode();
+        hashCode = hashCode * -1521134295 + defence.GetHashCode();
+        hashCode = hashCode * -1521134295 + percent_defence.GetHashCode();
         return hashCode;
     }
 
@@ -207,13 +210,13 @@ public class Action
         return name;
     }
 
-    public static bool operator ==(Action left, Action right)
+    public static bool operator ==(CustomAction left, CustomAction right)
     {
         if (left is null && right is null) return true;
         return left.Equals(right);
     }
 
-    public static bool operator !=(Action left, Action right)
+    public static bool operator !=(CustomAction left, CustomAction right)
     {
         return !(left == right);
     }

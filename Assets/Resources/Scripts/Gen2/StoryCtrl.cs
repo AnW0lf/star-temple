@@ -22,12 +22,13 @@ public class StoryCtrl : MonoBehaviour
         annotations.annotations = room.annotations;
     }
 
-    private void Clear()
+    public void Clear()
     {
         if (words != null && words.Count > 0)
             words.ForEach(word => Destroy(word.gameObject));
 
         words.Clear();
+        annotations.Clear();
     }
 
     public void CallAnnotation(int id)

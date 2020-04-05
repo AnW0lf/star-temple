@@ -23,7 +23,7 @@ public class AnnotationsCtrl : MonoBehaviour
         }
     }
 
-    private void Clear()
+    public void Clear()
     {
         if (lstAnnot != null && lstAnnot.Count > 0)
             lstAnnot.ForEach(a => Destroy(a, 0.05f));

@@ -56,7 +56,7 @@ public class HeroCtrl : MonoBehaviour
         inventory.AddItem(item, count);
     }
 
-    public void Add(Action action, int count)
+    public void Add(CustomAction action, int count)
     {
         if (count <= 0) return;
         hero.AddAction(action, count);
@@ -70,7 +70,7 @@ public class HeroCtrl : MonoBehaviour
         inventory.SubtractItem(item, count);
     }
 
-    public void Subtract(Action action, int count)
+    public void Subtract(CustomAction action, int count)
     {
         if (count <= 0) return;
         hero.SubtractAction(action, count);
@@ -83,7 +83,7 @@ public class HeroCtrl : MonoBehaviour
         else return 0;
     }
 
-    public int Count(Action action)
+    public int Count(CustomAction action)
     {
         if (hero.actions.ContainsKey(action)) return hero.actions[action];
         else return 0;
