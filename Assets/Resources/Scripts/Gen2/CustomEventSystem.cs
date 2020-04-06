@@ -240,7 +240,7 @@ public class ExecuteNext : IExecute
 
     public void Execute()
     {
-        GameCtrl.current.LoadRoom(roomName);
+        GameCtrl.current.NextRoom();
         Next();
     }
 
@@ -273,8 +273,8 @@ public class ExecuteWindow : IExecute
 
     public void Execute()
     {
-        // Открыть окно с текстом text
-        Next();
+        WindowCtrl.current.Show(text);
+        WindowCtrl.current.OnHide += Next;
     }
 
     public void Next()

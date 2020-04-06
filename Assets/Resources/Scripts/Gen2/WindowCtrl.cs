@@ -6,7 +6,7 @@ using System;
 public class WindowCtrl : MonoBehaviour
 {
     public static WindowCtrl current { get; private set; } = null;
-    public GameObject fader, window;
+    public Image fader, window;
     public Text text;
 
     public Action OnHide;
@@ -15,6 +15,7 @@ public class WindowCtrl : MonoBehaviour
     {
         if (current == null) current = this;
         else if (current != this) Destroy(gameObject);
+        Hide();
     }
 
     public void Clear()
@@ -26,14 +27,21 @@ public class WindowCtrl : MonoBehaviour
     public void Show(string text)
     {
         this.text.text = text;
-        fader.SetActive(true);
-        window.SetActive(true);
+        this.text.enabled = true;
+        Invoke("ShowScroll", 0.05f);
+    }
+
+    private void ShowScroll()
+    {
+        fader.enabled = true;
+        window.enabled = true;
     }
 
     public void Hide()
     {
-        fader.SetActive(false);
-        window.SetActive(false);
+        fader.enabled = false;
+        this.text.enabled = false;
+        window.enabled = false;
         OnHide?.Invoke();
     }
 }

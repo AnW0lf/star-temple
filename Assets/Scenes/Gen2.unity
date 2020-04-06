@@ -1326,10 +1326,10 @@ RectTransform:
   m_Father: {fileID: 1833646842}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 330, y: -27.555555}
-  m_SizeDelta: {x: 660, y: 55.11111}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 330, y: 0}
+  m_SizeDelta: {x: 660, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &486778457
 MonoBehaviour:
@@ -1352,7 +1352,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 486778455}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
@@ -1872,7 +1872,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &886907057
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1927,7 +1927,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 886907056}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -2153,8 +2153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ecec5acda4315e4ea868cdcfd4334ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fader: {fileID: 886907056}
-  window: {fileID: 1902107327}
+  fader: {fileID: 886907059}
+  window: {fileID: 1902107331}
   text: {fileID: 486778458}
 --- !u!1 &1050177632
 GameObject:
@@ -3082,9 +3082,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 605bf5e71e5f41648a1ec326d45b6496, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadEnemies: 1
-  roomName: hobbit_1
-  enemyName: monster_1
   story: {fileID: 1985365150}
   battle: {fileID: 1985365151}
   chapterNumberPattern: "\u0413\u043B\u0430\u0432\u0430 {0}"
@@ -3705,10 +3702,10 @@ RectTransform:
   m_Father: {fileID: 1902107328}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 450, y: -177.55556}
-  m_SizeDelta: {x: 660, y: 55.11111}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1833646843
 MonoBehaviour:
@@ -3803,7 +3800,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1902107328
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3822,7 +3819,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 900, y: 355.1111}
+  m_SizeDelta: {x: 900, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1902107329
 MonoBehaviour:
@@ -3870,7 +3867,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1902107327}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 

@@ -473,5 +473,3 @@ public class Helper : MonoBehaviour
         return new Item();
     }
 }
-
-public enum RoomType { EMPTY, COMMON, BEFORE_BATTLE, BATTLE }

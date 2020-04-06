@@ -4,11 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 static class IOHelper
 {
     private static bool initialized = false;
-    private static string dirPath, fHero, fItem, fAction;
+    private static string dirPath, fHero, fItem, fAction, fJourney;
 
     private static void Initialize()
     {
@@ -23,6 +24,7 @@ static class IOHelper
         fHero = "hero.xml";
         fItem = "item.xml";
         fAction = "action.xml";
+        fJourney = "journeys.xml";
 
         initialized = true;
     }
@@ -202,6 +204,44 @@ static class IOHelper
             throw new ArgumentException(string.Format("Action \'{0}\' has incorrect value of attribute \'percent_defence\'.", actionName));
 
         return new CustomAction(actionName, (ActionRarity)rarity, damage, percent_damage, defence, percent_defence);
+    }
+
+    public static Journey LoadJourney(int difficult)
+    {
+        XElement root = ReadXml(fJourney);
+
+        XElement[] XJourneys = root.Elements("journey").ToList().FindAll(j => int.Parse(j.Attribute("difficult").Value) == difficult).ToArray();
+        if (XJourneys == null || XJourneys.Length == 0) return new Journey();
+
+        XElement XJourney = XJourneys[Random.Range(0, XJourneys.Length)];
+
+        List<KeyValuePair<string, RoomType>> rooms = new List<KeyValuePair<string, RoomType>>();
+        foreach (XElement XRoom in XJourney.Elements("room"))
+        {
+            if (!GetAttributeValue(XRoom, "type", out string stype))
+                throw new ArgumentException(string.Format("Room has incorrect value of attribute \'type\'."));
+
+            RoomType type;
+
+            switch (stype)
+            {
+                case "riddle":
+                    type = RoomType.RIDDLE;
+                    break;
+                case "battle":
+                    type = RoomType.BATTLE;
+                    break;
+                default:
+                    throw new ArgumentException(string.Format("Room has incorrect value of attribute \'type\'."));
+            }
+
+            if (!GetValue(XRoom, out string fileName))
+                throw new ArgumentException(string.Format("Room has incorrect value."));
+
+            rooms.Add(new KeyValuePair<string, RoomType>(fileName, type));
+        }
+
+        return new Journey(difficult, rooms);
     }
 
     public static bool GetValue(XElement element, out int value)

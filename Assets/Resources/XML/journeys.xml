@@ -1,0 +1,6 @@
+<root>
+  <journey id="1" difficult="1">
+    <room type="riddle">hobbit_1</room>
+    <room type="battle">monster_1</room>
+  </journey>
+</root>

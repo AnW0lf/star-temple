@@ -6,10 +6,6 @@ using UnityEngine.UI;
 
 public class GameCtrl : MonoBehaviour
 {
-    [Header("Load enemies")]
-    public bool loadEnemies = false;
-
-    public string roomName = "room_1", enemyName = "monster_1";
     public StoryCtrl story;
     public BattleCtrl battle;
     public string chapterNumberPattern;
@@ -21,6 +17,7 @@ public class GameCtrl : MonoBehaviour
     private Room room;
     private Enemy enemy;
     private Phrase phrase;
+    private Journey journey;
 
     private void Awake()
     {
@@ -32,52 +29,83 @@ public class GameCtrl : MonoBehaviour
 
     public void Clear()
     {
-        Counter = 0;
+        Counter = -1;
     }
 
-    public void LoadRoom(string roomName)
+    public void StartGame()
+    {
+        Clear();
+        journey = IOHelper.LoadJourney(HeroCtrl.current.Level);
+        NextRoom();
+    }
+
+    public void NextRoom()
+    {
+        Counter++;
+        if (Counter >= journey.journey.Count)
+        {
+            MainCtrl.current.MoveTo(1);
+            return;
+        }
+        LoadRoom(journey.journey[Counter].Key, journey.journey[Counter].Value);
+    }
+
+    public void LoadRoom(string fileName, RoomType type)
     {
         CustomEventSystem.current.Clear();
         story.Clear();
         battle.Clear();
 
-        if (loadEnemies)
+        switch (type)
         {
-            enemy = IOHelper.LoadEnemy(enemyName);
-            InventoryCtrl.current.Visible = true;
+            case RoomType.RIDDLE:
+                LoadRiddle(fileName);
+                break;
+            case RoomType.BATTLE:
+                LoadBattle(fileName);
+                break;
+            default:
+                NextRoom();
+                return;
+        }
 
+    }
+
+    private void LoadRiddle(string fileName)
+    {
+        room = IOHelper.LoadRoom(fileName);
+
+        InventoryCtrl.current.Visible = room.type != "hideinventory";
+
+        CustomEventSystem.current.SetTriggers(room.triggers);
+        CustomEventSystem.current.SetEvents(room.events);
+        story.SetStory(room);
+
+        if (Counter == 0)
+        {
             chapterNumber.text = "";
-            chapterName.text = enemy.name;
-
-            InventoryCtrl.current.OpenSpells();
-
-            phrase = enemy.phrases.First().Key;
-
-            battle.SetBattle(enemy, phrase);
+            chapterName.text = room.name;
         }
         else
         {
-            room = IOHelper.LoadRoom(roomName);
-
-            InventoryCtrl.current.Visible = room.type != "introduction";
-
-            CustomEventSystem.current.SetTriggers(room.triggers);
-            CustomEventSystem.current.SetEvents(room.events);
-            story.SetStory(room);
-
-            if (Counter == 0)
-            {
-                chapterNumber.text = "";
-                chapterName.text = room.name;
-            }
-            else
-            {
-                chapterNumber.text = string.Format(chapterNumberPattern, Counter);
-                chapterName.text = room.name;
-            }
-
-            Counter++;
+            chapterNumber.text = string.Format(chapterNumberPattern, Counter);
+            chapterName.text = room.name;
         }
+    }
+
+    private void LoadBattle(string fileName)
+    {
+        enemy = IOHelper.LoadEnemy(fileName);
+        InventoryCtrl.current.Visible = true;
+
+        chapterNumber.text = "";
+        chapterName.text = enemy.name;
+
+        InventoryCtrl.current.OpenSpells();
+
+        phrase = enemy.phrases.First().Key;
+
+        battle.SetBattle(enemy, phrase);
     }
 
     public void BattleStep(CustomAction action)
@@ -151,7 +179,7 @@ public class GameCtrl : MonoBehaviour
         else
         {
             WindowCtrl.current.Show(string.Format("Вы убили это исчадье, которое именуют {0}, и за победу получаете {1} опыта.", enemy.name, enemy.exp));
-            LoadRoom(roomName);
+            WindowCtrl.current.OnHide += NextRoom;
         }
     }
 
@@ -178,5 +206,25 @@ public class Room
         this.annotations = annotations;
         this.events = events;
         this.triggers = triggers;
+    }
+}
+
+public enum RoomType { RIDDLE, BATTLE }
+
+public class Journey
+{
+    public int difficult;
+    public List<KeyValuePair<string, RoomType>> journey;
+
+    public Journey()
+    {
+        this.difficult = 0;
+        this.journey = new List<KeyValuePair<string, RoomType>>();
+    }
+
+    public Journey(int difficult, List<KeyValuePair<string, RoomType>> journey)
+    {
+        this.difficult = difficult;
+        this.journey = journey;
     }
 }

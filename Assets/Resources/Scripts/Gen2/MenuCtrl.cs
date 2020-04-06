@@ -15,6 +15,6 @@ public class MenuCtrl : MonoBehaviour
     public void StartGame()
     {
         MainCtrl.current.MoveTo(2);
-        GameCtrl.current.LoadRoom(GameCtrl.current.roomName);
+        GameCtrl.current.StartGame();
     }
 }
